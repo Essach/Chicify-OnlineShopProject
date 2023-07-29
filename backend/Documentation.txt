@@ -1,7 +1,8 @@
 Access levels:
     0: Guest
     1: User
-    2: Admin
+    2: Seller
+    3: Admin
 
 User = {
     accessLevel,
@@ -10,3 +11,77 @@ User = {
     ordersIds,
     favoritesIds,
 }
+
+Product = {
+    name,
+    delivery = [
+        deliveryOption: {
+            type,
+            price
+        }, 
+        deliveryOption]
+    reviews = [
+        review = {
+            rating,
+            description,
+        }
+    ],
+    quantity,
+    images,
+    description,
+    categories,
+}
+
+Review = {
+    rating,
+    description,
+}
+
+1.ENDPOINT: /users
+
+postUser - logging in 
+    body: { userId, password}
+
+patchUserOrder - make order
+    body: { userId, productId, purchaseId, productName, productPrice }
+
+patchUserFavorite - add/delete from user's favorites
+    body: { userId, productId, action }
+        action: 'remove' / 'add'
+
+2.ENDPOINT: /products
+
+getProducts - download all products
+
+getProduct - download one product
+    params: { id }
+    endpoint: /:id
+
+getProductReviews - download reviews of a product
+    params: { id }
+    endpoint: /:id
+
+postProduct - add a new product
+    body: { name, price, delivery, quantity, images, description, categories }
+
+postProductReview - add a review for product
+    body: { rating, description, productId }
+    endpoint: /review
+
+putProductBySeller - update product. Only by seller (or admin)
+    body: { productId, newName, newPrice, newDelivery, newDescription, newImages }
+    endpoint: /seller
+
+putProductBySystem - used to update quantity of product. Done by system
+    body: { productId, quantityToDelete }
+    endpoint: /system
+
+deleteProduct - delete product. Done by system when quantity reaches 0
+    params: { id }
+    endpoint: /:id
+
+3.ENDPOINT: /payments
+
+postPayment - send payment
+    body: { amount, purchaseId, purchaseQuantity }
+
