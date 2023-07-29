@@ -1,12 +1,18 @@
 
 class User {
-    constructor(accessLevel, login, password, ordersIds, favoritesIds) {
+    constructor(accessLevel, login, password, orders, favoritesIds, userId) {
         this.accessLevel = accessLevel;
         this.login = login;
         this.password = password;
-        this.ordersIds = ordersIds;
-        this.favoritesIds = favoritesIds;
+        this.orders = orders;
+        this.favorites = favorites;
+        this.userId = usedId;
     }
+
+    becomeSeller() {
+        this.accessLevel = 2
+    }
+
 }
 
 export default User;
