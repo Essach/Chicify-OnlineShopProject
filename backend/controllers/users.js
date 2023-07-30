@@ -1,7 +1,7 @@
-import User from "../Classes/User";
-import payments from "./payments";
+const User = require('../Classes/User.js');
+const { payments } = require('./payments.js');
 
-const {productsData} = require('./products')
+const { productsData } = require('./products.js');
 
 const usersData = [
     new User(

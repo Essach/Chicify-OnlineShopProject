@@ -1,4 +1,4 @@
-const payments = [
+exports.payments = [
 ]
 
 exports.postPayment = (request, response, next) => {
@@ -25,4 +25,3 @@ exports.postPayment = (request, response, next) => {
 const makeTransferFromAccount = function () {
     return;
 }
-exports.payments = payments

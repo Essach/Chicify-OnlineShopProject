@@ -1,18 +1,28 @@
 {
-  "name": "backend-react-project",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Mini backend for course React od podstaw on Udemy",
+  "description": "Temporary mini backend for my app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "author": "Mateusz Doman89 Domański",
+  "author": "Essach",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/node": "^7.22.6",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/preset-env": "^7.22.9",
+    "nodemon": "^3.0.1",
+    "rimraf": "^5.0.1"
   }
 }

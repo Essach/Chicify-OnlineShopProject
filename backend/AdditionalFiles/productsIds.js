@@ -1,3 +1,3 @@
-export default Ids = [
+let ids = []
 
-]
+export default ids

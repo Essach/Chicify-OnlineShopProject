@@ -1,12 +1,12 @@
 
 class User {
-    constructor(accessLevel, login, password, orders, favoritesIds, userId) {
+    constructor(accessLevel, login, password, orders, favorites, userId) {
         this.accessLevel = accessLevel;
         this.login = login;
         this.password = password;
         this.orders = orders;
         this.favorites = favorites;
-        this.userId = usedId;
+        this.userId = userId;
     }
 
     becomeSeller() {
@@ -15,4 +15,4 @@ class User {
 
 }
 
-export default User;
+module.exports = User

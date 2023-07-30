@@ -1,7 +1,5 @@
-import Product from "../Classes/Product"
-import Review from "../Classes/Review";
-
-const { v4: uuid } = require('uuid');
+const Review = require('../Classes/Review.js')
+const Product = require('../Classes/Product.js')
 
 const productsData = [
     new Product(),

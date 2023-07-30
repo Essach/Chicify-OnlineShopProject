@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const productsRoutes = require('./routes/products');
-const usersRoutes = require('./routes/users');
-const paymentsRoutes = require('./routes/payments');
+const productsRoutes = require('./routes/products.js');
+const usersRoutes = require('./routes/users.js');
+const paymentsRoutes = require('./routes/payments.js');
 
 const server = express();
 
