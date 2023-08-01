@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import request from "../helpers/request";
 
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const StoreContext = createContext(null);
 
@@ -32,7 +32,7 @@ const StoreProvider = ({ children }) => {
 }
 
 StoreProvider.propTypes = {
-    children: PropTypes.func
+    children: PropTypes.array
 }
 
 export default StoreProvider
