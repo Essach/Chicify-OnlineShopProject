@@ -5,16 +5,31 @@ import cartIcon from '../../icons/cart.svg';
 import FAQIcon from '../../icons/FAQ.svg';
 import ordersIcon from '../../icons/orders.svg';
 import loginIcon from '../../icons/login.svg';
+import chicifyLogo from '../../icons/logo.svg';
 
 import './Navbar.scss';
 
 import NavButton from './subcomponents/NavButton';
 import SearchHistoryItem from './subcomponents/SearchHistoryItem';
 
-import { useEffect, useRef, useState } from 'react';
+import {  useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { addToSearchHistory, getAutocompleteSaved, removeFromSearchHistory } from '../../helpers/localStorage';
+
+import autocompleteProducts from '../../helpers/autocompleteProducts'
+import SearchPropositionItem from './subcomponents/SearchPropositionsItem';
+
+// import DeviceModeContext from '../../contexts/DeviceModeContext';
+
 const Navbar = () => {
+
+    const navigate = useNavigate();
+
+    const handleOnClickLogo = () => navigate('/home');
+
+    // Navigate buttons
+
     const navButtonsList = [
         {
             id: 'favorites',
@@ -50,79 +65,149 @@ const Navbar = () => {
 
     const navButtons = navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} />)
     
-    // Search bar
-
-    let autocompleteSaved = localStorage.getItem("autocompleteSaved")?JSON.parse(localStorage.getItem("autocompleteSaved")):[];
+    // ================= Search bar ===============
 
     const [searchValue, setSearchValue] = useState('');
 
-    const navigate = useNavigate()
+    const [isSearchLineVisible, setIsSearchLineVisible] = useState(false);
 
-    const handleChangeSearchValue = (e) => setSearchValue(e.target.value);
+    // SEARCH HISTORY
 
-    const handleSearch = () => {
+    let autocompleteSaved = getAutocompleteSaved();
+
+    const searchBar = useRef();
+
+    const [searchHistory, setSearchHistory] = useState([]);
+
+    const searchResults = useRef();
+    const [areSearchResultsVisible, toggleAreSearchResultsVisible] = useState(false);
+
+
+    const handleSearch = (e) => {
+        if (e && e.type === "keydown") {
+            if (e.key !== "Enter") {
+                return;
+            } else {
+                searchBar.current.blur();
+            }
+        }
         if (searchValue !== '') {
             const id = new Date().getTime().toString();
-            addToSearchHistory(id, searchValue, searchValue);
+            addToSearchHistory(id, searchValue, searchValue, autocompleteSaved);
             while (autocompleteSaved.length >= 6) {
                 const id = autocompleteSaved[0].id;
                 removeFromSearchHistory(id);
             }
             navigate(`/search:${searchValue}`);
         }
+
     }
-
-    // =========== Search bar autocomplete ===============
-    const [searchHistory, setSearchHistory] = useState([]);
-    const [searchPropositions, setSearchPropositions] = useState([])
-
-    const searchResults = useRef();
-    const [areSearchResultsVisible, toggleAreSearchResultsVisible] = useState(false);
-
-    const addToSearchHistory = (id,name,link) => {
-        const searchResult = {id,name,link};
-        autocompleteSaved.push(searchResult);
-        localStorage.setItem("autocompleteSaved", JSON.stringify(autocompleteSaved));
-        
-    }
-
-    const removeFromSearchHistory = (id) => {
-        autocompleteSaved = autocompleteSaved.filter(item => item.id !== id);
-        localStorage.setItem('autocompleteSaved', JSON.stringify(autocompleteSaved));
-    }
-
-    // const getLocalStorage = () => {
-    //     return localStorage.getItem("autocompleteSaved")?JSON.parse(localStorage.getItem("autocompleteSaved")):[];
-    // }    
 
     const handleSearchFocus = () => {
         setSearchHistory(autocompleteSaved.map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} itemId={item.id} removeFromSearchHistory={removeFromSearchHistory} />));
-        if (window.innerWidth > 500) {
+        if (window.innerWidth > 1050 && ( autocompleteSaved.length > 0 || searchPropositions.length >0)) {
             toggleAreSearchResultsVisible(true);
+            setIsSearchLineVisible(false);
+            if (autocompleteSaved.length > 0 && searchPropositions.length > 0) {
+                setIsSearchLineVisible(true)
+            }
+
         }
     }
 
-    const handleSearchBlur = () => {
+    const handleSearchBlur = (e) => {
+        e.preventDefault();
         setTimeout(() => {
             toggleAreSearchResultsVisible(false);
         }, 100)
     }
 
-    // useEffect(() => {        
-    //     if (autocompleteSaved.length > 0) {
-    //         setSearchHistory(prev => autocompleteSaved.map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} />))
-    //     }
+    // =========== SEARCH PROPOSITIONS ================
 
-    // }, [])
+    const [searchPropositions, setSearchPropositions] = useState([]);
+
+    const handleChangeSearchValue = (e) => {
+        const searchValueUpdated = e.target.value;
+
+        if (searchValueUpdated.length >= 3) {
+
+            let keywords = autocompleteProducts.filter((keyword) => {
+                return keyword.toLowerCase().includes(searchValueUpdated.toLowerCase());
+            });
+
+            if (keywords.length > 4) {
+                keywords = keywords.slice(0,4);
+            }
+
+            setSearchPropositions(keywords.map(result => <SearchPropositionItem key={result} name={result} />));
+
+            toggleAreSearchResultsVisible(true);
+            
+            if (autocompleteSaved.length > 0 && keywords.length > 0) {
+                setIsSearchLineVisible(true);
+            } else if (keywords.length === 0) {
+                setIsSearchLineVisible(false);
+                if (autocompleteSaved.length === 0) {
+                    toggleAreSearchResultsVisible(false);
+                }
+            }
+        }
+        
+        if (searchValueUpdated.length < 3) {
+            setSearchPropositions([]);
+            setIsSearchLineVisible(false);
+            if (autocompleteSaved.length === 0) {
+                toggleAreSearchResultsVisible(false);
+            }
+        }
+
+        setSearchValue(searchValueUpdated);
+
+    }
+
+    // nav scroll behavior
+
+    const navRef = useRef();
+
+    const [isNavFixed, setIsNavFixed] = useState(false);
+
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth < 1100) {
+                if (window.scrollY > 80) {
+                    setIsNavFixed(true);
+                } else setIsNavFixed(false);
+            } else {
+                if (window.scrollY > 120) {
+                    setIsNavFixed(true);
+                } else setIsNavFixed(false);
+            }
+        }
+        )
+    }, []);
 
     return (
-        <nav>
+        <nav ref={navRef} className={isNavFixed ? 'nav-fixed': null}>
             <nav-container>
-                <search-bar onFocus={handleSearchFocus} onBlur={handleSearchBlur}>
+                <nav-logo onClick={handleOnClickLogo}>
+                    <img src={chicifyLogo} alt='Chicify Logo'/>
+                    <logo-text>
+                        <p id='white'>Chic</p>
+                        <p id='blue'>ify</p>
+                    </logo-text>
+                </nav-logo>
+                <search-bar onFocus={handleSearchFocus} onBlur={handleSearchBlur} onKeyDown={handleSearch}>
                     <search-bar-input>
-                        <input type="text" placeholder='Search...' value={searchValue} onChange={handleChangeSearchValue}/>
+                        <input
+                            ref={searchBar}
+                            type="text"
+                            placeholder='Search...'
+                            value={searchValue}
+                            onChange={handleChangeSearchValue} />
                         <div ref={searchResults} className={`search-results${areSearchResultsVisible ? '' : '-hidden'}`}>
                             {searchHistory}
+                            {isSearchLineVisible ? <div className='search-results-line'></div> : null}
+                            {searchPropositions}
                         </div>
                     </search-bar-input>
                     <search-bar-btn onClick={handleSearch}>

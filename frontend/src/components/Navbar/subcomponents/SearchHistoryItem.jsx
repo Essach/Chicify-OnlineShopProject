@@ -2,14 +2,16 @@ import searchHistory from '../../../icons/searchHistory.svg';
 import trashcan from '../../../icons/trashcan.svg';
 import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
+import { getAutocompleteSaved } from '../../../helpers/localStorage';
 
 const SearchHistoryItem = ({ itemTitle, itemLink, itemId, removeFromSearchHistory }) => {
     const navigate = useNavigate();
 
     const handleOnClick = () => navigate(`/search:${itemLink}`)
 
-    const handleOnClickRemove = () => {
-        removeFromSearchHistory(itemId);
+    const handleOnClickRemove = (e) => {
+        e.preventDefault()
+        removeFromSearchHistory(itemId, getAutocompleteSaved());
     }
 
     return (

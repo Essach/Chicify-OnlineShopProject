@@ -8,12 +8,51 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: static;
+    
+
+    &.nav-fixed {
+        position: fixed;
+        top: 0;
+    }
 
     nav-container {
         width: 75%;
         display: flex;
         align-items: center;
         justify-content: flex-end;
+
+        nav-logo {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            img {
+                height: 3rem;
+                width: 3rem;
+                margin-left: 15px
+            }
+            
+            logo-text {
+                font-size: 2rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                display: flex;
+
+                #white {
+                    color: white
+                }
+
+                #blue {
+                    color: v.$minty-blue
+                }
+            }
+        }
 
         search-bar {
             display: flex;
@@ -27,7 +66,7 @@ nav {
                     height: 2rem;
                     border-radius: 0.24431rem 0rem 0rem 0.24431rem;
                     background-color: v.$light-grey;
-                    padding: 6px 0px 0 12px;
+                    padding: 3px 0px 0 12px;
                     border: none;
                     color: white;
                     font-size: 1.2rem;
@@ -86,29 +125,80 @@ nav {
                                 font-size: 1.1rem;
                                 font-weight: 400;
                             }
+                        }
 
-                            &:hover {
+                        &:hover {
                                 background: v.$autocomplete-result-hover;
                                 cursor: pointer;
-                            }
                         }
 
-                        #trashcan:hover {
-                            cursor: pointer;
+                        #trashcan {
+                            width: 55px;
+                            padding: 5px;
+                            z-index: 5;
                         }
                     }
+
+                    search-propositions-item {
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        height: 3.5rem;
+                        width: 100%;
+                        padding: 5px;
+                        background: v.$autocomplete-result;
+
+                        img {
+                            height: 27px;
+                            padding: 0 6px 0 6px;
+                        }
+
+                        p {
+                                color: v.$white;
+                                font-size: 1.1rem;
+                                font-weight: 400;
+                            }
+                        
+                        &:hover {
+                                background: v.$autocomplete-result-hover;
+                                cursor: pointer;
+                        }
+                    }
+
+                    .search-results-line {
+                        width: 80%;
+                        height: 1px;
+                        background: v.$minty-blue;
+                        padding: 0;
+                    }
                 }
+
             }
-        }
 
             search-bar-btn {
                 width: 2rem;
                 height: 2rem;
+                background-color: v.$minty-blue;
+                border-radius: 0 4px 4px 0;
+                border-left: 1px solid v.$white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    height: 70%;
+                    width: 70%;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
 
                 img {
                     height: 2rem;
                 }
             }
+        }
 
         nav-buttons {
             display: inline-flex;
