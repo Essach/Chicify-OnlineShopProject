@@ -9,12 +9,18 @@
 body {
     font-family: Inter;
     background: v.$light-grey;
+    height: 120vh;
+    position: relative;
 }
 
 .content-wrapper {
     margin-top: 60px;
     min-height: calc(100vh - 60px);
     display: flex;
+}
+
+li {
+    list-style-type: none;
 }
 
 
