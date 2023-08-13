@@ -6,7 +6,10 @@ const NavButton = (props) => {
 
     const navigate = useNavigate();
 
-    const handleOnClick = () => navigate(`/${name}`);
+    const handleOnClick = () => {
+        navigate(`/${name}`);
+        navigate(0);
+    }
 
     return (
         <div onClick={handleOnClick}>

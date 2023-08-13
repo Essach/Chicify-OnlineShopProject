@@ -8,11 +8,11 @@ const productsData = [
 
 exports.getProducts = (request, responsem, next) => {
     try {
-        responsem.status(200).json({
+        response.status(200).json({
             products: productsData,
         });
     } catch (error) {
-        responsem.status(500).json({
+        response.status(500).json({
             error,
             message: "Couldn't receive products"
         });

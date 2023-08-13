@@ -7,7 +7,10 @@ import { getAutocompleteSaved } from '../../../helpers/localStorage';
 const SearchHistoryItem = ({ itemTitle, itemLink, itemId, removeFromSearchHistory }) => {
     const navigate = useNavigate();
 
-    const handleOnClick = () => navigate(`/search:${itemLink}`)
+    const handleOnClick = () => {
+        navigate(`/search:${itemLink}`);
+        navigate(0);
+    }
 
     const handleOnClickRemove = (e) => {
         e.preventDefault()

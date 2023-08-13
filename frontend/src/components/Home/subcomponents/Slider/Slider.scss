@@ -1,0 +1,105 @@
+
+
+home-slider {
+    width: 75%;
+    
+    slider-top {
+        width: 100%;
+        max-height: 31rem;
+        position: relative;
+        display: block;
+    }
+
+    .prevBtn,
+    .nextBtn {
+        cursor: pointer;
+        position: absolute;
+        height: 3rem;
+        width: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #F5F5F5;
+        opacity: 0.5;
+        border: none;
+        border-radius: 3px;
+
+        .sliderBtnArrow {
+            height: 2rem;
+        }
+    }
+
+    .prevBtn {
+        left: 10px;
+        top: calc(50% - 1.5rem);
+        z-index: 10;
+    }
+
+    .nextBtn {
+        right: 10px;
+        top: calc(50% - 1.5rem);
+        z-index: 10;
+    }
+
+    .slider-container {
+        width: 100%;
+        height: 31rem;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .slide img {
+            height: 100%;
+            max-height: 31rem;
+            width: 100%;
+            object-fit: cover;
+            object-position: 50% 50%;
+        }
+
+        .slide h1 {
+            font-size: 5rem;
+        } 
+    }
+
+    slider-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 2rem;
+        width: 100%;
+        background-color: #373737;
+        gap: 7px;
+
+        .sliderNavBtn,
+        .sliderNavBtnActive {
+            display: block;
+            height: 1rem;
+            width: 1rem;
+            border-radius: 50%;
+            outline: 1px solid #64C0D4;
+        }
+
+        .sliderNavBtn {
+            background-color: white;
+
+        &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .sliderNavBtnActive {
+            background-color: #64C0D4;
+        }
+
+    }
+}

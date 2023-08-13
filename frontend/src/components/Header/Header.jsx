@@ -5,9 +5,15 @@ import './Header.scss'
 const Header = () => {
     const navigate = useNavigate()
 
-    const handleOnClickLogo = () => navigate('/home');
+    const handleOnClickLogo = () => {
+        navigate('/home');
+        navigate(0);
+    }
 
-    const handleStartSellingBtn = () => navigate('/selling-sign-in');
+    const handleStartSellingBtn = () => {
+        navigate('/selling-sign-in');
+        navigate(0);
+    }
 
     return (
         <header>

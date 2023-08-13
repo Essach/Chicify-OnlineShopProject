@@ -6,6 +6,8 @@ import FAQIcon from '../../icons/FAQ.svg';
 import ordersIcon from '../../icons/orders.svg';
 import loginIcon from '../../icons/login.svg';
 import chicifyLogo from '../../icons/logo.svg';
+import menuIcon from '../../icons/menu.svg';
+import closeIcon from '../../icons/close.svg';
 
 import './Navbar.scss';
 
@@ -20,13 +22,24 @@ import { addToSearchHistory, getAutocompleteSaved, removeFromSearchHistory } fro
 import autocompleteProducts from '../../helpers/autocompleteProducts'
 import SearchPropositionItem from './subcomponents/SearchPropositionsItem';
 
-// import DeviceModeContext from '../../contexts/DeviceModeContext';
-
 const Navbar = () => {
 
     const navigate = useNavigate();
 
     const handleOnClickLogo = () => navigate('/home');
+
+    // mobile menu
+
+    const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
+
+    const handleToggleMenu = () => {
+        setIsMobileMenuVisible(prev => !prev)
+    }
+
+    const handleCloseMenu = () => {
+        console.log(isMobileMenuVisible)
+        setIsMobileMenuVisible(false);
+    }
 
     // Navigate buttons
 
@@ -63,8 +76,43 @@ const Navbar = () => {
         },
     ]
 
+    const navButtonsListMobile = [
+        {
+            id: 'favorites',
+            icon: favoritesIcon,
+            text: 'Favorites',    
+        },
+        {
+            id: 'notifications',
+            icon: notificationsIcon,
+            text: 'Notifications',    
+        },
+        {
+            id: 'cart',
+            icon: cartIcon,
+            text: 'Cart',    
+        },
+        {
+            id: 'faq',
+            icon: FAQIcon,
+            text: 'Help',    
+        },
+        {
+            id: 'orders',
+            icon: ordersIcon,
+            text: 'Orders',    
+        },
+        {
+            id: 'login',
+            icon: loginIcon,
+            text: 'Log in',    
+        },
+    ]
+
     const navButtons = navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} />)
     
+    const navButtonsMobile = navButtonsListMobile.reverse().map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} />)
+
     // ================= Search bar ===============
 
     const [searchValue, setSearchValue] = useState('');
@@ -187,38 +235,48 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav ref={navRef} className={isNavFixed ? 'nav-fixed': null}>
-            <nav-container>
-                <nav-logo onClick={handleOnClickLogo}>
-                    <img src={chicifyLogo} alt='Chicify Logo'/>
-                    <logo-text>
-                        <p id='white'>Chic</p>
-                        <p id='blue'>ify</p>
-                    </logo-text>
-                </nav-logo>
-                <search-bar onFocus={handleSearchFocus} onBlur={handleSearchBlur} onKeyDown={handleSearch}>
-                    <search-bar-input>
-                        <input
-                            ref={searchBar}
-                            type="text"
-                            placeholder='Search...'
-                            value={searchValue}
-                            onChange={handleChangeSearchValue} />
-                        <div ref={searchResults} className={`search-results${areSearchResultsVisible ? '' : '-hidden'}`}>
-                            {searchHistory}
-                            {isSearchLineVisible ? <div className='search-results-line'></div> : null}
-                            {searchPropositions}
-                        </div>
-                    </search-bar-input>
-                    <search-bar-btn onClick={handleSearch}>
-                        <img src={searchIcon} alt='search button icon'/>
-                    </search-bar-btn>
-                </search-bar>
-                <nav-buttons>
-                    {navButtons}
-                </nav-buttons>
-            </nav-container>
-        </nav>
+        <>
+            <div className={isMobileMenuVisible ? 'show-mobile-menu' : 'hide-mobile-menu'}>
+                <menu-close-btn onClick={handleCloseMenu}><img src={closeIcon} alt='close menu' /></menu-close-btn>
+                <menu-buttons>{navButtonsMobile}</menu-buttons>
+                <div className='menu-pattern'></div>
+            </div>
+            <nav ref={navRef} className={isNavFixed ? 'nav-fixed': null}>
+                <nav-container>
+                    <menu-btn onClick={handleToggleMenu}>
+                        <img src={menuIcon} alt="menu button" />
+                    </menu-btn>
+                    <div onClick={handleOnClickLogo} className={`nav-logo${isNavFixed ? '-shown' : '-hidden'}`}>
+                        <img src={chicifyLogo} alt='Chicify Logo'/>
+                        <logo-text>
+                            <p id='white'>Chic</p>
+                            <p id='blue'>ify</p>
+                        </logo-text>
+                    </div>
+                    <search-bar onFocus={handleSearchFocus} onBlur={handleSearchBlur} onKeyDown={handleSearch}>
+                        <search-bar-input>
+                            <input
+                                ref={searchBar}
+                                type="text"
+                                placeholder='Search...'
+                                value={searchValue}
+                                onChange={handleChangeSearchValue} />
+                            <div ref={searchResults} className={`search-results${areSearchResultsVisible ? '' : '-hidden'}`}>
+                                {searchHistory}
+                                {isSearchLineVisible ? <div className='search-results-line'></div> : null}
+                                {searchPropositions}
+                            </div>
+                        </search-bar-input>
+                        <search-bar-btn onClick={handleSearch}>
+                            <img src={searchIcon} alt='search button icon'/>
+                        </search-bar-btn>
+                    </search-bar>
+                    <nav-buttons>
+                        {navButtons}
+                    </nav-buttons>
+                </nav-container>
+            </nav>
+        </>
     );
 }
 

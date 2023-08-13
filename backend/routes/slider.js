@@ -1,10 +1,9 @@
 const express = require('express');
-const { patchUser, postUser } = require('../controllers/users');
+const { getSliderTitles } = require('../controllers/slider.js');
 
 const router = express.Router();
 
-router.post('/', postUser);
-router.patch('/', patchUser);
+router.get('/', getSliderTitles);
 router.use((request, response) => response.status(404).end());
 
 module.exports = router;
