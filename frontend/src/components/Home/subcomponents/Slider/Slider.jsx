@@ -69,11 +69,25 @@ const Slider = () => {
                 sliderNavBtns = sliderNavBtns.concat(<SliderNavBtn key={index} index={index} activeIndex={counter} onClickHandler={() => {handleOnClickNavBtn(index)}} />)
             }
             setSliderNavBtns(sliderNavBtns);
-
         }
-
         setLoading(false)
-    },[counter])
+
+    }, [counter])
+
+    useEffect(() => {
+            const sliderInterval = setInterval(() => {
+                if (counter >= slider.length - 1) {
+                    setCounter(0);
+                } else {
+                    setCounter(prev => prev + 1);
+                }
+        
+            }, 6000);
+
+        return () => {
+            clearInterval(sliderInterval);
+        }
+    }, [counter, slider.length])
 
     
     return (

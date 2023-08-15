@@ -1,0 +1,24 @@
+@use '../../../../../variables.scss' as v;
+
+products-panel {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    width: 100%;
+    
+    products-panel-title {
+        margin-bottom: 2rem;
+
+        p {
+            color: v.$white;
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+    }
+
+    products-panel-products {
+        display: flex;
+        justify-content: space-between;
+    }
+
+}

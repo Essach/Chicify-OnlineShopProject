@@ -32,7 +32,7 @@ const StoreProvider = ({ children }) => {
 }
 
 StoreProvider.propTypes = {
-    children: PropTypes.array
+    children: PropTypes.object,
 }
 
 export default StoreProvider

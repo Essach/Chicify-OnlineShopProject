@@ -14,6 +14,7 @@ User = {
 
 Product = {
     name,
+    price,
     delivery = [
         deliveryOption: {
             type,
@@ -26,6 +27,21 @@ Product = {
             description,
         }
     ],
+    quantity,
+    images,
+    description,
+    categories,
+}
+
+new Product = {
+    name,
+    price,
+    delivery = [
+        deliveryOption: {
+            type,
+            price
+        }, 
+        deliveryOption]
     quantity,
     images,
     description,

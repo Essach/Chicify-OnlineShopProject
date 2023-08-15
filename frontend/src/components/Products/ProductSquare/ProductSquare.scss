@@ -1,0 +1,91 @@
+@use '../../../variables.scss' as v;
+
+.productSquareBox {
+    width: 19%;
+    height: 13rem;
+    background-color: v.$dark-grey;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.10);
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    product-inner-box {
+        width: 90%;
+        height: 80%;
+        background-color: v.$lighter-grey;
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-top: 5%;
+        padding: 5px;
+
+        product-image {
+            width: 100%;
+            height: 65%;
+            border: 0.5px solid v.$white;
+
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                border-radius: 5px;
+            }
+        }
+
+        product-info {
+            color: v.$darker-grey;
+            display: flex;
+            flex-direction: column;
+
+            info-top {
+                margin-top: 3px;
+
+                product-name {
+                    font-size: 1rem;
+                    font-weight: 500;
+                }
+            }
+
+            info-bottom {
+                margin-top: 4px;
+
+                div {
+                    display: flex;
+                    align-items: center;
+                    
+                    p {
+                        color: v.$darker-grey;
+                        font-weight: 400;
+                        font-size: 0.7rem;
+                    }
+
+                    img {
+                    height: 0.7rem;
+                    margin-right: 3px;
+                    }
+                }
+            }
+        }
+    }
+
+    product-price {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        
+        p {
+            color: v.$white;
+            font-size: 1rem;
+            font-weight: 700;
+            font-style: normal;
+            line-height: normal;
+        }
+    }
+}
