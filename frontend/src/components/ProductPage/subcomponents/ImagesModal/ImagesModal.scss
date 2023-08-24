@@ -1,0 +1,85 @@
+@use '../../../../variables' as v;
+
+images-modal {
+    display: grid;
+    grid-template-rows: 1fr 11fr 3fr;
+    row-gap: 15px;
+    gap: 15px;
+    width: 47rem;
+    height: 50rem;
+    padding: 15px;
+    background: white;
+    border-radius: 5px;
+
+    @media only screen and (max-width: 1100px) {
+        grid-template-rows: 1fr 11fr 3fr;
+        width: 95vw;
+        height: 95vh;
+    }
+
+    close-btn {
+        grid-column: 1/5;
+        display: flex;
+        justify-content: flex-end;
+        
+        img {
+            height: 3rem;
+            width: 3rem;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    main-image {
+        grid-column: 1/5;
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        img {
+            height: 542px;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 5px;
+            border: solid 0.5px rgba(0,0,0, 0.15);
+
+            @media only screen and (max-width: 1100px) {
+                height: 555px;
+            }
+
+            @media only screen and (max-width: 750px) {
+                object-fit: contain;
+                border: none;
+            }
+        }
+    }
+
+    all-images {
+        grid-column: 1/5;
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 15px;
+
+        img {
+            grid-column: 1;
+            height: 148px;
+            width: 100%;
+            border-radius: 5px;
+            object-fit: cover;
+            border: solid 0.5px rgba(0,0,0, 0.15);
+
+            @media only screen and (max-width: 1100px) {
+                height: 151px;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

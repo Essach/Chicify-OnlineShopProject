@@ -1,4 +1,4 @@
-import ProductSquare from "../../../../Products/ProductSquare/ProductSquare";
+import Product from "../../../../Product/Product";
 
 import PropTypes from 'prop-types';
 
@@ -7,7 +7,7 @@ import './ProductsPanel.scss';
 const ProductsPanel = (props) => {
     const { title, productsData } = props;
     const products = productsData.map(product =>
-        <ProductSquare
+        <Product
             key={product.id}
             id={product.id}
             name={product.name}
@@ -17,6 +17,7 @@ const ProductsPanel = (props) => {
             images={product.images}
             categories={product.categories}
             reviews={product.reviews}
+            type={'squareHomePage'}
         />)
 
     return (

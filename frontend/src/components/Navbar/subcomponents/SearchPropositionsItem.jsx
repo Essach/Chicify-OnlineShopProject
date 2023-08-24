@@ -11,6 +11,7 @@ const SearchPropositionItem = (props) => {
 
     const handleOnClick = () => {
         navigate(`/search:${name}`)
+        window.scrollTo(0, 0);
     }
 
     return (

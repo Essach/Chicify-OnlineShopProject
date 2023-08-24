@@ -10,10 +10,11 @@ const SearchHistoryItem = ({ itemTitle, itemLink, itemId, removeFromSearchHistor
     const handleOnClick = () => {
         navigate(`/search:${itemLink}`);
         navigate(0);
+        window.scrollTo(0, 0);
     }
 
     const handleOnClickRemove = (e) => {
-        e.preventDefault()
+        e.stopPropagation();
         removeFromSearchHistory(itemId, getAutocompleteSaved());
     }
 

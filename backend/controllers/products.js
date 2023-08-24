@@ -10,7 +10,7 @@ const productsData = [
             { type: "Express", price: 20 }
         ],
         10,
-        ['https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80'],
+        ['https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80', 'https://gfx.senetic.com/i/gallery/91316560_3902104393.jpg'],
         "Experience seamless multitasking and powerful computing with our cutting-edge laptop.",
         ["Electronics", "Computers"]
     ),
@@ -224,6 +224,7 @@ exports.getProducts = (request, response, next) => {
 exports.getProduct = (request, response, next) => {
     try {
         const { id } = request.params;
+        console.log(id)
         const productToSend = productsData.find(product => product.id === id);
 
         if (!productToSend) {

@@ -1,0 +1,27 @@
+@use '../../../../variables.scss' as v;
+
+product-description {
+    width: 100%;
+    min-height: 10rem;
+    background-color: v.$lighter-grey;
+    padding: 20px;
+    border-radius: 5px;
+
+    @media only screen and (max-width: 1100px) {
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    .description-title {
+        color: v.$darker-grey;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .description-text {
+        font-size: 0.8rem;
+        color: v.$darker-grey;
+        line-height: 120%;
+    }
+}

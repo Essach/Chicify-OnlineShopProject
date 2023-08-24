@@ -1,0 +1,209 @@
+@use '../../../../variables.scss' as v;
+
+product-buy-form {
+    width: 100%;
+    padding: 20px;
+    background-color: v.$lighter-grey;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    @media only screen and (max-width: 1100px) {
+        border-radius: 0 0 10px 10px;
+        padding: 0 20px 20px 20px;
+    }
+
+    product-name {
+        display: block;
+        margin-bottom: 5px;
+
+        p {
+            color: v.$darker-grey;
+            font-family: Inter;
+            font-size: 2.1875rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 3rem;
+            }
+        }
+    }
+
+    product-reviews {
+
+    }
+
+    delivery-info {
+        display: block;
+        margin-bottom: 10px;
+        
+        @media only screen and (max-width: 1100px) {
+            margin-bottom: 20px;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+
+            p {
+                color: v.$darker-grey;
+                font-size: 0.7rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+
+                @media only screen and (max-width: 1100px) {
+                    font-size: 1rem;
+                }
+            }
+
+            img {
+                height: 0.7rem;
+                margin-right: 5px;
+
+                @media only screen and (max-width: 1100px) {
+                    height: 1rem;
+                }
+            }
+        }
+    }
+
+    product-price {
+        display: block;
+        margin-bottom: 10px;
+        
+        p {
+            color: v.$darker-grey;
+            font-size: 1.375rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 2rem;
+            }
+        }
+    }
+
+    quantity-button {
+        display: flex;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
+        flex-grow: 0;
+
+        div {
+            height: 1.6rem;
+            width: 1.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            @media only screen and (max-width: 1100px) {
+                height: 2rem;
+                width: 2rem;
+            }
+
+            &.side {
+                background-color: v.$minty-blue;
+                border: 1px solid v.$minty-blue-darker;
+                transition: all 0.1s ease-in-out;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: v.$minty-blue-darker;
+                }
+            }
+
+            &.center {
+                background-color: v.$white;
+
+                input {
+                    color: v.$minty-blue-darker;
+                    font-size: 1rem;
+                    font-weight: 700;
+                    height: 100%;
+                    width: 100%;
+                    border: none;
+                    text-align: center;
+                    outline: none;
+
+                    @media only screen and (max-width: 1100px) {
+                        font-size: 1.3rem;
+                    }
+                    
+                    &::-webkit-outer-spin-button,
+                    &::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    buy-form-buttons {
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+
+        @media only screen and (max-width: 1100px) {
+            flex-direction: row;
+            margin-top: 25px;
+            gap: 20px;
+        }
+
+        div {
+            width: 100%;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2rem;
+            box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
+            transition: all 0.2s ease-in-out;
+
+            @media only screen and (max-width: 1100px) {
+                width: 50%;
+                height: 2.5rem;
+            }
+
+            &.add-to-cart-button {
+                background-color: v.$minty-blue;
+                border: 0.7px solid v.$blue-3;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: v.$minty-blue-darker;
+                }
+            }
+
+            &.buy-now-button {
+                border: 0.7px solid #506064;
+                background: #5D8790;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #506064;
+                }
+            }
+
+            p {
+                color: v.$white;
+                font-size: 0.75rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+
+                @media only screen and (max-width: 1100px) {
+                    font-size: 1.1rem;
+                }
+            }
+
+        }
+    }
+}

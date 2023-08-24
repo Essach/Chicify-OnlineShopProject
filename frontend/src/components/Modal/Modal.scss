@@ -1,0 +1,26 @@
+@use '../../variables' as v;
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    // max-height: 80%;
+    // max-width: 65%;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    padding: 0;
+    background: v.$white;
+
+    @media only screen and (max-width: 1100px) {
+        max-width: 95%;
+        max-height: 95%;
+    }
+
+    
+    &::backdrop {
+        // backdrop-filter: blur(2px);
+    }
+}

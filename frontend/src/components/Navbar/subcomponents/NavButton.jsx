@@ -9,6 +9,7 @@ const NavButton = (props) => {
     const handleOnClick = () => {
         navigate(`/${name}`);
         navigate(0);
+        window.scrollTo(0, 0);
     }
 
     return (

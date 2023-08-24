@@ -26,7 +26,11 @@ const Navbar = () => {
 
     const navigate = useNavigate();
 
-    const handleOnClickLogo = () => navigate('/home');
+    const handleOnClickLogo = () => {
+        navigate('/home');
+        navigate(0);
+        window.scrollTo(0, 0);
+    }
 
     // mobile menu
 
@@ -37,7 +41,6 @@ const Navbar = () => {
     }
 
     const handleCloseMenu = () => {
-        console.log(isMobileMenuVisible)
         setIsMobileMenuVisible(false);
     }
 
@@ -147,6 +150,8 @@ const Navbar = () => {
                 removeFromSearchHistory(id);
             }
             navigate(`/search:${searchValue}`);
+            navigate(0);
+            window.scrollTo(0, 0);
         }
 
     }

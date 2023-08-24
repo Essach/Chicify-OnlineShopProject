@@ -1,11 +1,109 @@
-import { useParams } from "react-router";
+import PropTypes from 'prop-types';
 
-const Product = () => {
-    const { id } = useParams();
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import star from '../../icons/star.svg';
+import halfStar from '../../icons/halfStar.svg';
+import deliveryIcon from '../../icons/deliveryIcon.svg';
+import productArrowRight from '../../icons/productArrowRight.svg';
+
+import './Product.scss';
+
+const ProductSquare = (props) => {
+    const { id, name, price, delivery, images, reviews, type } = props;
+
+    const [productRating, setProductRating] = useState(0);
+    const [starRating, setStarRating] = useState(null);
+
+    useEffect(() => {
+        let rating = 0;
+        reviews.forEach(review => {
+            rating += review.rating;
+        })
+        rating = (rating / reviews.length).toFixed(1);
+
+        let stars = []
+        for (let i = 0; i < Math.floor(rating); i++) {
+            stars.concat(star)
+        }
+        if (Math.round(rating) === rating + 1) {
+            star.concat(halfStar)
+        }
+
+        setStarRating(stars);
+        setProductRating(rating);
+    }, [reviews])
+
+    let productReviews = null;
+    if (reviews.length > 0) {
+        productReviews = (
+            <product-reviews>
+                <div>`(${reviews.length})`</div>
+                <div>{starRating}</div>
+                <div>{productRating}</div>
+            </product-reviews>
+        )
+    }
+
+    const deliveryPrices = delivery.map(option => option.price);
+    const cheapestDeliveryPrice = Math.min(...deliveryPrices);
+
+
+    const navigate = useNavigate();
+
+    const handleOnClickProduct = () => {
+        navigate(`/product/${id}`);
+        navigate(0)
+        window.scrollTo(0, 0);
+    }
 
     return (
-        <div>{id}</div>
+        <div onClick={handleOnClickProduct} className={type}>
+            <product-inner-box>
+                <product-image>
+                    <img src={images[0]} />
+                </product-image>
+                <product-info>
+                    <info-top>
+                        <product-name>{name}</product-name>
+                        <product-reviews>
+                            {productReviews}
+                        </product-reviews>
+                    </info-top>
+                    <info-bottom>
+                        <div>
+                            <img src={deliveryIcon} alt='delivery truck'/>
+                            <p>Delivery by ...</p>
+                        </div>
+                        <div>
+                            <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
+                        </div>
+                    </info-bottom>
+                </product-info>
+            </product-inner-box>
+            <product-price>
+                <p>
+                    {`US$ ${price}`}
+                </p>
+            </product-price>
+            <product-arrow-right>
+                <img src={productArrowRight} alt='' />
+            </product-arrow-right>
+        </div>
     );
 }
 
-export default Product;
+ProductSquare.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    price: PropTypes.number,
+    delivery: PropTypes.array,
+    quantity: PropTypes.number,
+    images: PropTypes.array,
+    categories: PropTypes.array,
+    reviews: PropTypes.array,
+    type: PropTypes.string,
+}
+
+export default ProductSquare;
