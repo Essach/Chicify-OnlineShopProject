@@ -94,7 +94,7 @@ const Slider = () => {
         <home-slider>
             <slider-top>
                 <button type="button" className="prevBtn" onClick={handleBtnLeft}>
-                    <img src={sliderBtnLeft} className="sliderBtnArrow"/>
+                    <img src={sliderBtnRight} className="sliderBtnArrow"/>
                 </button>
                 <div className="slider-container">
                     {loading ? 
