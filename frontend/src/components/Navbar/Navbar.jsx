@@ -14,13 +14,14 @@ import './Navbar.scss';
 import NavButton from './subcomponents/NavButton';
 import SearchHistoryItem from './subcomponents/SearchHistoryItem';
 
-import {  useEffect, useRef, useState } from 'react';
+import {  useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { addToSearchHistory, getAutocompleteSaved, removeFromSearchHistory } from '../../helpers/localStorage';
 
 import autocompleteProducts from '../../helpers/autocompleteProducts'
 import SearchPropositionItem from './subcomponents/SearchPropositionsItem';
+import { StoreContext } from '../../store/StoreProvider';
 
 const Navbar = () => {
 
@@ -46,36 +47,79 @@ const Navbar = () => {
 
     // Navigate buttons
 
+    const { user, setUser } = useContext(StoreContext);
+
+    const navigateFunction = (url) => {
+        navigate(`/${url}`);
+        navigate(0);
+        window.scrollTo(0, 0);
+    }
+
+    // const handleOnClickFavorites = () => {
+    //     navigateFunction('favorites');
+    // }
+
+    const handleOnClickNotifications = () => {
+        navigateFunction('home');
+    }
+
+    // const handleOnClickCart = () => {
+    //     navigateFunction('cart');
+    // }
+
+    // const handleOnClickFaq = () => {
+    //     navigateFunction('faq');
+    // }
+
+    // const handleOnClickOrders = () => {
+    //     navigateFunction('orders');
+    // }
+
+    // const handleOnClickLogin = () => {
+    //     navigateFunction('login');
+    // }
+
+    const handleOnClickLogout = () => {
+        setUser(undefined);
+        navigateFunction('home');
+    }
+
     const navButtonsList = [
         {
             id: 'favorites',
             icon: favoritesIcon,
-            text: '',    
+            text: '',
+            handleOnClick: () => navigateFunction('favorites'),
         },
         {
             id: 'notifications',
             icon: notificationsIcon,
-            text: '',    
+            text: '',   
+            handleOnClick: handleOnClickNotifications
         },
         {
             id: 'cart',
             icon: cartIcon,
-            text: '',    
+            text: '',
+            handleOnClick: () => navigateFunction('cart'),
         },
         {
             id: 'faq',
             icon: FAQIcon,
-            text: 'Help',    
+            text: 'Help',
+            handleOnClick: () => navigateFunction('faq'),
         },
         {
             id: 'orders',
             icon: ordersIcon,
-            text: 'Orders',    
+            text: 'Orders',
+            handleOnClick: () => navigateFunction('orders'),
         },
         {
             id: 'login',
             icon: loginIcon,
-            text: 'Log in',    
+            text: `${user !== undefined ? 'Log in' : 'Log out'}`,
+            handleOnClick: user !== undefined ? () => navigateFunction('login') : handleOnClickLogout,
         },
     ]
 
@@ -84,37 +128,43 @@ const Navbar = () => {
             id: 'favorites',
             icon: favoritesIcon,
             text: 'Favorites',    
+            handleOnClick: () => navigateFunction('favorites'),
         },
         {
             id: 'notifications',
             icon: notificationsIcon,
-            text: 'Notifications',    
+            text: 'Notifications', 
+            handleOnClick: handleOnClickNotifications
         },
         {
             id: 'cart',
             icon: cartIcon,
             text: 'Cart',    
+            handleOnClick: () => navigateFunction('cart'),
         },
         {
             id: 'faq',
             icon: FAQIcon,
             text: 'Help',    
+            handleOnClick: () => navigateFunction('faq'),
         },
         {
             id: 'orders',
             icon: ordersIcon,
-            text: 'Orders',    
+            text: 'Orders',   
+            handleOnClick: () => navigateFunction('orders'),
         },
         {
             id: 'login',
             icon: loginIcon,
-            text: 'Log in',    
+            text: `${user !== undefined ? 'Log in' : 'Log out'}`,    
+            handleOnClick: user !== undefined ? () => navigateFunction('login') : handleOnClickLogout,
         },
     ]
 
-    const navButtons = navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} />)
+    const navButtons = navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />)
     
-    const navButtonsMobile = navButtonsListMobile.reverse().map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} />)
+    const navButtonsMobile = navButtonsListMobile.reverse().map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />)
 
     // ================= Search bar ===============
 

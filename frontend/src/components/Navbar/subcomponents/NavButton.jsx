@@ -1,16 +1,7 @@
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router';
 
 const NavButton = (props) => {
-    const {name, icon, text} = props
-
-    const navigate = useNavigate();
-
-    const handleOnClick = () => {
-        navigate(`/${name}`);
-        navigate(0);
-        window.scrollTo(0, 0);
-    }
+    const {name, icon, text, handleOnClick} = props
 
     return (
         <div onClick={handleOnClick}>
@@ -23,7 +14,8 @@ const NavButton = (props) => {
 NavButton.propTypes = {
     name: PropTypes.string,
     icon: PropTypes.any,
-    text: PropTypes.string
+    text: PropTypes.string,
+    handleOnClick: PropTypes.func,
 }
 
 export default NavButton;
