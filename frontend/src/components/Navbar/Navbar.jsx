@@ -21,7 +21,10 @@ import { addToSearchHistory, getAutocompleteSaved, removeFromSearchHistory } fro
 
 import autocompleteProducts from '../../helpers/autocompleteProducts'
 import SearchPropositionItem from './subcomponents/SearchPropositionsItem';
+
 import { StoreContext } from '../../store/StoreProvider';
+
+import Login from '../Login/Login';
 
 const Navbar = () => {
 
@@ -49,39 +52,26 @@ const Navbar = () => {
 
     const { user, setUser } = useContext(StoreContext);
 
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
     const navigateFunction = (url) => {
         navigate(`/${url}`);
         navigate(0);
         window.scrollTo(0, 0);
     }
 
-    // const handleOnClickFavorites = () => {
-    //     navigateFunction('favorites');
-    // }
-
     const handleOnClickNotifications = () => {
         navigateFunction('home');
     }
 
-    // const handleOnClickCart = () => {
-    //     navigateFunction('cart');
-    // }
-
-    // const handleOnClickFaq = () => {
-    //     navigateFunction('faq');
-    // }
-
-    // const handleOnClickOrders = () => {
-    //     navigateFunction('orders');
-    // }
-
-    // const handleOnClickLogin = () => {
-    //     navigateFunction('login');
-    // }
-
-    const handleOnClickLogout = () => {
-        setUser(undefined);
-        navigateFunction('home');
+    const handleOnCloseLogin = () => setIsModalOpen(false)
+    const handleOnClickLogin = () => {
+        if (user) {
+            setUser(undefined);
+            navigateFunction('home');
+        } else {
+            setIsModalOpen(true);
+        }
     }
 
     const navButtonsList = [
@@ -118,8 +108,8 @@ const Navbar = () => {
         {
             id: 'login',
             icon: loginIcon,
-            text: `${user !== undefined ? 'Log in' : 'Log out'}`,
-            handleOnClick: user !== undefined ? () => navigateFunction('login') : handleOnClickLogout,
+            text: user ? 'Log out' : 'Log in',
+            handleOnClick: handleOnClickLogin,
         },
     ]
 
@@ -158,7 +148,7 @@ const Navbar = () => {
             id: 'login',
             icon: loginIcon,
             text: `${user !== undefined ? 'Log in' : 'Log out'}`,    
-            handleOnClick: user !== undefined ? () => navigateFunction('login') : handleOnClickLogout,
+            handleOnClick: handleOnClickLogin,
         },
     ]
 
@@ -329,6 +319,7 @@ const Navbar = () => {
                     <nav-buttons>
                         {navButtons}
                     </nav-buttons>
+                    <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen}/>
                 </nav-container>
             </nav>
         </>
