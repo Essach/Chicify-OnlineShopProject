@@ -7,6 +7,8 @@ const usersData = [
     new User(
         1,
         'User',
+        '123456789',
+        '',
         '123',
         [],
         [],
@@ -14,6 +16,8 @@ const usersData = [
     new User(
         3,
         'Essach',
+        '',
+        'mymail@gmail.com',
         '***',
         [],
         [],
@@ -23,12 +27,18 @@ const usersData = [
 
 exports.postUser = (request, response, next) => {
     try {
-        const { userId, password } = request.body;
+        const { loginType, login ,password } = request.body;
 
-        const user = usersData.find(u => u.userId === userId);
+        let user;
+        if (loginType === 'phoneNumber') {
+            user = usersData.find(u => u.phoneNumber === login);
+        } else if (loginType === 'emailAddress') {
+            user = usersData.find(u => u.emailAddress === login);
+        }
+
         if (!user) {
             response.status(404).json({
-                message: 'Invalid login or password',
+                message: 'Couldnt find requested user',
             });
 
             return;
@@ -36,7 +46,7 @@ exports.postUser = (request, response, next) => {
 
         const isPasswordCorrect = user.password === password;
         if (!isPasswordCorrect) {
-            response.status(404).json({
+            response.status(405).json({
                 message: 'Invalid login or password',
             })
 

@@ -1,8 +1,10 @@
 
 class User {
-    constructor(accessLevel, login, password, orders, favorites, userId) {
+    constructor(accessLevel, username, phoneNumber = '', emailAddress = '', password, orders, favorites, userId) {
         this.accessLevel = accessLevel;
-        this.login = login;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
         this.password = password;
         this.orders = orders;
         this.favorites = favorites;
