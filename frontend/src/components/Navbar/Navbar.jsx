@@ -56,12 +56,31 @@ const Navbar = () => {
 
     const navigateFunction = (url) => {
         navigate(`/${url}`);
-        navigate(0);
         window.scrollTo(0, 0);
+    }
+
+    const handleOnClickFavorites = () => {
+        navigateFunction('favorites');
+        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
     }
 
     const handleOnClickNotifications = () => {
         navigateFunction('home');
+    }
+
+    const handleOnClickCart = () => {
+        navigateFunction('cart');
+        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+    }
+
+    const handleOnClickHelp = () => {
+        navigateFunction('faq');
+        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+    }
+
+    const handleOnClickOrders = () => {
+        navigateFunction('orders');
+        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
     }
 
     const handleOnCloseLogin = () => setIsModalOpen(false)
@@ -69,8 +88,10 @@ const Navbar = () => {
         if (user) {
             setUser(undefined);
             navigateFunction('home');
+            navigate(0);
         } else {
             setIsModalOpen(true);
+            if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
         }
     }
 
@@ -79,7 +100,7 @@ const Navbar = () => {
             id: 'favorites',
             icon: favoritesIcon,
             text: '',
-            handleOnClick: () => navigateFunction('favorites'),
+            handleOnClick: handleOnClickFavorites,
         },
         {
             id: 'notifications',
@@ -91,19 +112,19 @@ const Navbar = () => {
             id: 'cart',
             icon: cartIcon,
             text: '',
-            handleOnClick: () => navigateFunction('cart'),
+            handleOnClick: handleOnClickCart,
         },
         {
             id: 'faq',
             icon: FAQIcon,
             text: 'Help',
-            handleOnClick: () => navigateFunction('faq'),
+            handleOnClick: handleOnClickHelp,
         },
         {
             id: 'orders',
             icon: ordersIcon,
             text: 'Orders',
-            handleOnClick: () => navigateFunction('orders'),
+            handleOnClick: handleOnClickOrders,
         },
         {
             id: 'login',
@@ -118,7 +139,7 @@ const Navbar = () => {
             id: 'favorites',
             icon: favoritesIcon,
             text: 'Favorites',    
-            handleOnClick: () => navigateFunction('favorites'),
+            handleOnClick: handleOnClickFavorites,
         },
         {
             id: 'notifications',
@@ -130,24 +151,24 @@ const Navbar = () => {
             id: 'cart',
             icon: cartIcon,
             text: 'Cart',    
-            handleOnClick: () => navigateFunction('cart'),
+            handleOnClick: handleOnClickCart,
         },
         {
             id: 'faq',
             icon: FAQIcon,
             text: 'Help',    
-            handleOnClick: () => navigateFunction('faq'),
+            handleOnClick: handleOnClickHelp,
         },
         {
             id: 'orders',
             icon: ordersIcon,
             text: 'Orders',   
-            handleOnClick: () => navigateFunction('orders'),
+            handleOnClick: handleOnClickOrders,
         },
         {
             id: 'login',
             icon: loginIcon,
-            text: `${user !== undefined ? 'Log in' : 'Log out'}`,    
+            text: user ? 'Log out' : 'Log in',   
             handleOnClick: handleOnClickLogin,
         },
     ]

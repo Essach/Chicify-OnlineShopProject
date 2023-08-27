@@ -7,13 +7,11 @@ const Header = () => {
 
     const handleOnClickLogo = () => {
         navigate('/home');
-        navigate(0);
         window.scrollTo(0, 0);
     }
 
     const handleStartSellingBtn = () => {
         navigate('/selling-sign-in');
-        navigate(0);
         window.scrollTo(0, 0);
     }
 

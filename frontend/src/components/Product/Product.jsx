@@ -54,7 +54,6 @@ const ProductSquare = (props) => {
 
     const handleOnClickProduct = () => {
         navigate(`/product/${id}`);
-        navigate(0)
         window.scrollTo(0, 0);
     }
 
