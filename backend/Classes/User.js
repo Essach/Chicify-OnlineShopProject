@@ -1,6 +1,6 @@
-
+const { v4: uuidv4 } = require('uuid');
 class User {
-    constructor(accessLevel, username, phoneNumber = '', emailAddress = '', password, orders, favorites, userId) {
+    constructor(accessLevel, username, phoneNumber = '', emailAddress = '', password, orders, favorites) {
         this.accessLevel = accessLevel;
         this.username = username;
         this.phoneNumber = phoneNumber;
@@ -8,7 +8,7 @@ class User {
         this.password = password;
         this.orders = orders;
         this.favorites = favorites;
-        this.userId = userId;
+        this.userId = uuidv4();
     }
 
     becomeSeller() {

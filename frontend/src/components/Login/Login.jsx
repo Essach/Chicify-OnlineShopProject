@@ -73,8 +73,6 @@ const Login = ({handleOnClose, isModalOpen}) => {
             setIsFormValidated(false);
             return false
         } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/\d/.test(emailOrPhoneNumberValue))) {
-            console.log(!/\d/.test(emailOrPhoneNumberValue))
-            console.log(!/@/.test(emailOrPhoneNumberValue))
             setErrorText('*Please insert an email or phone number');
             setIsFormValidated(false);
             return false;
@@ -97,7 +95,7 @@ const Login = ({handleOnClose, isModalOpen}) => {
             }
 
             const { data, status } = await request.post(
-                '/users',
+                '/users/login',
                 { loginType: loginType, login: emailOrPhoneNumberValue, password: passwordValue },
             );
 

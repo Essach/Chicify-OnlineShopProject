@@ -25,7 +25,28 @@ const usersData = [
 
 ]
 
-exports.postUser = (request, response, next) => {
+exports.postUserCreate = (request, response, next) => {
+    try {
+        const { username, phoneNumber, emailAddress, password } = request.body;
+
+        const newUser = new User(1, username, phoneNumber, emailAddress, password, [], []);
+        usersData.push(newUser);
+
+        console.log(newUser)
+
+        response.status(200).json({
+            message: 'account created'
+        })
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Internal server error'
+        })
+    }
+
+}
+
+exports.postUserLogin = (request, response, next) => {
     try {
         const { loginType, login ,password } = request.body;
 
@@ -53,6 +74,8 @@ exports.postUser = (request, response, next) => {
             return;
         }
 
+
+        console.log('login')
         response.status(200).json({
             user,
         });
@@ -180,6 +203,23 @@ exports.patchUserFavorite = (request, response, next) => {
         response.status(500).json({
             error,
             message: 'Problem changing favorites'
+        })
+    }
+}
+
+exports.getUsers = (request, response, next) => {
+    try {
+        const userEmails = usersData.map(user => user.emailAddress).filter(email => email !== '');
+        const userPhoneNumbers = usersData.map(user => user.phoneNumber).filter(phoneNumber => phoneNumber !== '');
+
+        response.status(200).json({
+            userEmails: userEmails,
+            userPhoneNumbers: userPhoneNumbers,
+        })
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Internal server error!!!'
         })
     }
 }
