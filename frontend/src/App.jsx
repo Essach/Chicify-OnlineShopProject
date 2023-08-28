@@ -10,7 +10,8 @@ import StoreProvider from './store/StoreProvider';
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import CartProvider from './context/CartContext';
-import Login from './components/Login/Login';
+import SignIn from './components/SignIn/SignIn';
+import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 
 const App = () => {
 
@@ -25,7 +26,8 @@ const App = () => {
                             <Route path='/' Component={Home} />
                             <Route path='/home' Component={Home} />
                             <Route path='/product/:id' Component={ProductPage} />
-                            <Route path='/login' Component={Login} />
+                            <Route path='/signin' Component={SignIn} />
+                            <Route path='/terms-and-conditions' Component={TermsAndConditions} />
                         </Routes>
                     </content-wrapper>
                 </CartProvider>
