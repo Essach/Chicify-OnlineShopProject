@@ -12,6 +12,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import CartProvider from './context/CartContext';
 import SignIn from './components/SignIn/SignIn';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
+import PasswordRecovery from './components/PasswordRecovery/PasswordRecovery';
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
                             <Route path='/product/:id' Component={ProductPage} />
                             <Route path='/signin' Component={SignIn} />
                             <Route path='/terms-and-conditions' Component={TermsAndConditions} />
+                            <Route path='password-recovery' Component={PasswordRecovery} />
                         </Routes>
                     </content-wrapper>
                 </CartProvider>

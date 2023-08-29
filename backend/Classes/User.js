@@ -12,7 +12,11 @@ class User {
     }
 
     becomeSeller() {
-        this.accessLevel = 2
+        this.accessLevel = 2;
+    }
+
+    changePassword(newPassword) {
+        this.password = newPassword;
     }
 
 }

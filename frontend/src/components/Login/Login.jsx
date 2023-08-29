@@ -62,7 +62,7 @@ const Login = ({handleOnClose, isModalOpen}) => {
     }
 
     const handleForgotPasswordBtn = () => {
-        navigate('/passwordRecovery');
+        navigate('/password-recovery');
         navigate(0);
         window.scrollTo(0, 0);
     }

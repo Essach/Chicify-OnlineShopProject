@@ -134,40 +134,6 @@ exports.patchUserOrder = (request, response, next) => {
     }
 }
 
-exports.putUser = (request, response, next) => {
-    try {
-        const { id } = request.params;
-        const userToUpdate = usersData.find(user => user.userId === id);
-        
-        if (!user) {
-            response.status(404).json({
-                message: "Couldn't find the user with given id",
-            });
-
-            return;
-        } else if (user.accessLevel !== 1) {
-            response.status(405).json({
-                message: 'Tried to make non user access level user a seller',
-            });
-
-            return;
-        }
-
-        userToUpdate.becomeSeller()
-
-        response.status(200).json({
-            user: userToUpdate,
-        })
-
-    } catch (error) {
-        response.status(500).json({
-            error,
-            message: 'Error with making user a seller'
-        })
-    }
-}
-
-
 const ADDFAVORITE = 'add';
 const REMOVEFAVORITE = 'remove';
 
@@ -203,6 +169,72 @@ exports.patchUserFavorite = (request, response, next) => {
         response.status(500).json({
             error,
             message: 'Problem changing favorites'
+        })
+    }
+}
+
+exports.patchUserSeller = (request, response, next) => {
+    try {
+        const { id } = request.params;
+        const userToUpdate = usersData.find(user => user.userId === id);
+        
+        if (!userToUpdate) {
+            response.status(404).json({
+                message: "Couldn't find the user with given id",
+            });
+
+            return;
+        } else if (user.accessLevel !== 1) {
+            response.status(405).json({
+                message: 'Tried to make non user access level user a seller',
+            });
+
+            return;
+        }
+
+        userToUpdate.becomeSeller()
+
+        response.status(200).json({
+            user: userToUpdate,
+        })
+
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Error with making user a seller'
+        })
+    }
+}
+
+exports.patchUserPassword = (request, response, next) => {
+    try {
+        const { loginType, login, newPassword } = request.body;
+        
+        let user;
+        if (loginType === 'phoneNumber') {
+            user = usersData.find(u => u.phoneNumber === login);
+        } else if (loginType === 'emailAddress') {
+            user = usersData.find(u => u.emailAddress === login);
+        }
+
+        if (!user) {
+            response.status(404).json({
+                message: "Couldn't find requested user",
+            });
+
+            return;
+        }
+
+        user.changePassword(newPassword);
+
+        response.status(200).json({
+            message: 'password updated'
+        });
+
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Internal server error',
         })
     }
 }

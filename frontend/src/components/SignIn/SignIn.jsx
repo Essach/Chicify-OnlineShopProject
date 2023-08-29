@@ -30,12 +30,17 @@ const SignIn = () => {
     const [ agreementValue, setAgreementValue ] = useState(false)
 
     const handleUsernameChange = (e) => setUsernameValue(e.target.value);
-    const handleEmailOrPasswordChange = (e) => setEmailOrPhoneNumberValue(e.target.value);
+    const handleEmailOrPhoneNumberChange = (e) => setEmailOrPhoneNumberValue(e.target.value);
     const handlePasswordChange = (e) => setPasswordValue(e.target.value);
     const handleRepeatPasswordChange = (e) => setRepeatPasswordValue(e.target.value);
     const handleAgreementChange = () => setAgreementValue(prev => !prev)
 
     const handlePasswordShow = () => setIsPasswordHidden(prev => !prev)
+
+    const handleClose = () => {
+        navigate('/home');
+        window.scrollTo(0,0)
+    }
 
     const validateSignInForm = () => {
         if (usernameValue === '' || emailOrPhoneNumberValue === '' || passwordValue === '' || repeatPasswordValue === '') {
@@ -139,7 +144,7 @@ const SignIn = () => {
         <sign-in-dialog>
             <title-and-close>
                 <p>Create a new account</p>
-                <img src={close} alt='close sign in form'/>
+                <img src={close} alt='close sign in form' onClick={handleClose}/>
             </title-and-close>
             <sign-in-image>
                 <img src='http://localhost:8000/images/Login/signin.png' alt='sign in image'/>
@@ -165,7 +170,7 @@ const SignIn = () => {
                             type="text"
                             placeholder='Email or phone number'
                             value={emailOrPhoneNumberValue}
-                            onChange={handleEmailOrPasswordChange}
+                            onChange={handleEmailOrPhoneNumberChange}
                         />
                     </input-container>
                 </form-section>
