@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router';
 const ProductBuyForm = (props) => {
     const { name, price, quantity, reviews, cheapestDeliveryPrice, id} = props
 
-    const { dispatch } = useContext(CartContext);
+    const { state, dispatch } = useContext(CartContext);
 
     const navigate = useNavigate()
 
@@ -45,14 +45,28 @@ const ProductBuyForm = (props) => {
     }
 
     const addToCart = () => {
-        dispatch({
-            type: 'ADD',
-            payload: {
-                id: id,
-                quantity: currentQuantity
+        if (state !== undefined) {
+            const prod = state.cart.find(item => item.id === id)
+            if (prod !== undefined) {
+                dispatch({
+                    type: 'EDIT',
+                    payload: {
+                        id: id,
+                        quantity: prod.quantity + currentQuantity,
+                    }
+                })
+            } else {
+                dispatch({
+                    type: 'ADD',
+                    payload: {
+                        id: id,
+                        quantity: currentQuantity
+                    }
+                })
             }
-        })
+        }       
     }
+    
     const handleAddToCartBtn = () => {
         if (currentQuantity !== '') {
             addToCart();
@@ -62,7 +76,6 @@ const ProductBuyForm = (props) => {
         if (currentQuantity !== '') {
             addToCart();
             navigate('/cart');
-            navigate(0);
             window.scrollTo(0, 0);
         }
     }
