@@ -33,7 +33,6 @@ const ProductBuyForm = (props) => {
     }
     const handleChangeQuantity = (e) => {
         if (parseInt(e.target.value) > quantity) {
-            console.log(e.target.value)
             setCurrentQuantity(quantity)
         } else if (parseInt(e.target.value) < 1) {
             setCurrentQuantity(1)

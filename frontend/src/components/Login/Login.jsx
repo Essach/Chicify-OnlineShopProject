@@ -72,10 +72,14 @@ const Login = ({handleOnClose, isModalOpen}) => {
             setErrorText('*Please fill in both fields');
             setIsFormValidated(false);
             return false
-        } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/\d/.test(emailOrPhoneNumberValue))) {
+        } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/^[0-9]*$/.test(emailOrPhoneNumberValue))) {
             setErrorText('*Please insert an email or phone number');
             setIsFormValidated(false);
             return false;
+        } else if (/^[0-9]*$/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.length !== 9) {
+            setErrorText('*Please insert an email or phone number');
+            setIsFormValidated(false);
+            return false
         }
         return true
     }

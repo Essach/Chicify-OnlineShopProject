@@ -4,8 +4,6 @@ import './PasswordRecovery.scss';
 import PasswordRecoveryVerification from './PasswordRecoveryVerification/PasswordRecoveryVerification';
 import PasswordRecoveryReset from './PasswordRecoveryReset/PasswordRecoveryReset';
 
-
-
 const PasswordRecovery = () => {
     const [emailOrPhoneNumberValue, setEmailOrPhoneNumberValue] = useState('');
     const [isCodeVerified, setIsCodeVerified] = useState(false);

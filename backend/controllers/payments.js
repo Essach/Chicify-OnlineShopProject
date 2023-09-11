@@ -1,16 +1,19 @@
-exports.payments = [
+const Payment = require('../Classes/Payment.js')
+
+paymentsData = [
 ]
 
 exports.postPayment = (request, response, next) => {
     try {
-        makeTransferFromAccount()
+        const { products, price, address, cardInfo } = request.body;
 
-        const { amount, purchaseId, purchaseQuantity } = request.body;
+        console.log(products, price, address, cardInfo)
 
-        payments.push({
-            amount,
-            purchaseId,
-            purchaseQuantity
+        const newPayment = new Payment(products, price, address, cardInfo);
+        paymentsData.push(newPayment);
+
+        response.status(200).json({
+            message: 'Payment sent'
         })
 
         return;

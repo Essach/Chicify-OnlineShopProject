@@ -25,7 +25,7 @@ const PasswordRecoveryVerification = (props) => {
     }
 
     const handleOnChangeVerificationCode = (e) => {
-        if (/\d/.test(e.target.value.at(-1)) || e.target.value.at(-1) === undefined) {
+        if (/^[0-9]*$/.test(e.target.value) || e.target.value.at(-1) === undefined) {
             setVerifyCodeValue(e.target.value)
         }
     }

@@ -1,0 +1,328 @@
+@use '../../../variables' as v;
+
+cart-form-component {
+    max-width: 100%;
+    height: 100%;
+    background-color: v.$dark-grey;
+    padding: 15px;
+
+    form-message {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: v.$white;
+            text-align: center;
+        }
+    }
+
+    .cart-box {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        gap: 0.8rem;
+
+        cart-form-options {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            
+            cart-form-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                width: 50%;
+
+                cart-form-title {
+                    color: v.$white;
+                    margin-bottom: 5px;
+                    font-size: 1.3rem;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    white-space: nowrap;
+                }
+
+                div {
+                    display: flex;
+                    gap: 3px;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 7px;
+                    height: 55px;
+                    border: 1px solid v.$light-grey;
+                    border-radius: 5px;
+                    width: 100%;
+                    gap: 5px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    &.option-active {
+                        background-color: rgba(v.$light-grey, 0.20);
+                    }
+
+                    &.option-inactive {
+                        background-color: rgba(v.$white, 0);
+                    }
+
+                    img {
+                        max-height: 30px;
+                    }
+
+                    p {
+                        color: v.$white;
+                        font-size: 0.8rem;
+                        font-style: normal;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+
+        .cart-payment-form-visible,
+        .address-form-visible {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 80%;
+            margin-left: 0.5rem;
+            display: flex;
+
+            form-label {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                p {
+                    color: v.$white;
+                    font-size: 0.9rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    text-transform: uppercase;
+                }
+
+                input {
+                    border-radius: 0.2rem;
+                    border: 1px solid v.$light-grey;
+                    background-color: rgba(v.$light-grey, 0.05);
+                    color: v.$white;
+                    font-size: 0.8rem;
+                    padding: 4px;
+
+                    &[type='month'] {
+                        width: 10rem;
+                        background: rgba(v.$light-grey, 0.05) url('http://localhost:8000/images/calendarIcon.png');
+                        background-size: 16px;
+                        background-repeat: no-repeat;
+                        background-position: 95%;
+                        font-family: Inter;
+
+                        &::-webkit-calendar-picker-indicator {
+                            opacity: 0;
+                        }
+                    }
+
+                    &.num {
+                        width: 100%;
+                    }
+
+                    &:focus-visible {
+                        outline: 1px solid v.$light-grey;
+                    }
+                }
+
+                select-container {
+                    display: flex;
+                    position: relative;
+                    
+                    select {
+                        border-radius: 0.2rem;
+                        border: 1px solid v.$light-grey;
+                        background-color: rgba(v.$light-grey, 0.05);
+                        color: v.$white;
+                        font-size: 0.8rem;
+                        font-family: Inter;
+                        padding: 5px;
+                        appearance: none;
+                        width: 100%;
+                        z-index: 2;
+
+                        &::-webkit-scrollbar {
+                            width: 20px;
+                            // border-left: 3px solid v.$darker-grey;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background: v.$lighter-grey;
+                            // border-left: 1px solid v.$darker-grey;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            background: v.$darker-grey;
+                            // width: 0.5rem;
+                            background-clip: padding-box;
+                            border-right: 4px solid v.$lighter-grey;
+                            border-left: 4px solid v.$lighter-grey;
+                            border-top: 5px solid v.$lighter-grey;
+                            border-bottom: 5px solid v.$lighter-grey;
+
+                            &:hover {
+                                background-color: v.$dark-grey;
+                            }
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+
+                        &:focus-visible {
+                            outline: 1px solid v.$light-grey;
+                        }
+
+                        option {
+                            background-color: v.$lighter-grey;
+                            color: v.$darker-grey;
+                            font-size: 0.9rem;
+                            width: 10%;
+                        }
+                    }
+                
+                    .icon-container {
+                        position: absolute;
+                        right: 5px;
+                        transform: scale(0.9);
+                        z-index: 1;
+                    }
+                }
+            }
+
+            go-back-btn {
+                font-size: 1rem;
+                color: v.$minty-blue;
+                margin-bottom: 5px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .cart-payment-form-hidden,
+        .address-form-hidden {
+            display: none;
+        }
+
+        price-and-button {
+            width: 100%;
+            max-height: 10rem;
+            flex-grow: 1;
+            border: 1px solid v.$light-grey;
+            display: flex;
+            flex-direction: column;
+            border-radius: 2px;
+            padding: 5px;
+
+            price-info {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                
+                p {
+                    color: v.$minty-blue-darker;
+                    font-style: normal;
+                    line-height: normal;
+
+                    &.small {
+                        font-size: 0.9rem;
+                        font-weight: 400;
+                    }
+
+                    &.big {
+                        font-size: 1.3rem;
+                        font-weight: 600;
+                    }
+                }
+            }
+
+            pay-and-order-btn {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+
+                p {
+                    color: v.$white;
+                    font-size: 1.3rem;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    padding: 5px 20px;
+                    border-radius: 1rem;
+                    border: 3px solid v.$minty-blue-darker;
+                    background-color: v.$minty-blue;
+                    box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.10);
+                    transition: all 0.1s ease-in;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: v.$minty-blue-darker;
+                    }
+                }
+            }
+        }
+
+        proceed-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+
+            p {
+                font-size: 1.3rem;
+                padding: 10px 20px;
+                background-color: v.$minty-blue;
+                border: 3px solid v.$minty-blue-darker;
+                color: v.$white;
+                font-weight: 500;
+                border-radius: 1.5rem;
+                transition: all 0.1s ease-in;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: v.$minty-blue-darker;
+                }
+            }
+        }
+
+        select-message {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            p {
+                font-size: 1.3rem;
+                color: v.$white;
+                text-align: center;
+            }
+        }
+
+        validation-message {
+            font-size: 0.9rem;
+            color: v.$error-red;
+            margin-left: 10px;
+        }
+
+    }
+}

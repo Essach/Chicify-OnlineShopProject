@@ -13,6 +13,7 @@ import CartProvider from './context/CartContext';
 import SignIn from './components/SignIn/SignIn';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 import PasswordRecovery from './components/PasswordRecovery/PasswordRecovery';
+import Cart from './components/Cart/Cart';
 
 const App = () => {
 
@@ -29,7 +30,8 @@ const App = () => {
                             <Route path='/product/:id' Component={ProductPage} />
                             <Route path='/signin' Component={SignIn} />
                             <Route path='/terms-and-conditions' Component={TermsAndConditions} />
-                            <Route path='password-recovery' Component={PasswordRecovery} />
+                            <Route path='/password-recovery' Component={PasswordRecovery} />
+                            <Route path='/cart' Component={Cart} />
                         </Routes>
                     </content-wrapper>
                 </CartProvider>

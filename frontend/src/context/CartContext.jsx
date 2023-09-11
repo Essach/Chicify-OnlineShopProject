@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 export const CartContext = createContext([]);
 
 const CartProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(cartReducer, {cart: []})
+    const [state, dispatch] = useReducer(cartReducer, {
+        cart: []})
 
     return (
         <CartContext.Provider value={{ state, dispatch }}>

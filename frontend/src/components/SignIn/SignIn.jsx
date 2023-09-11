@@ -51,11 +51,11 @@ const SignIn = () => {
             setErrorText('*You have to agree to terms & conditions to proceed');
             setIsFormValidated(false);
             return false
-        } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/\d/.test(emailOrPhoneNumberValue))) {
+        } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/^[0-9]*$/.test(emailOrPhoneNumberValue))) {
             setErrorText('*Please insert an email or phone number');
             setIsFormValidated(false);
             return false
-        } else if (/\d/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.length !== 9) {
+        } else if (/^[0-9]*$/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.length !== 9) {
             setErrorText('*Please insert an email or phone number');
             setIsFormValidated(false);
             return false

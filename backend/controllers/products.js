@@ -224,7 +224,6 @@ exports.getProducts = (request, response, next) => {
 exports.getProduct = (request, response, next) => {
     try {
         const { id } = request.params;
-        console.log(id)
         const productToSend = productsData.find(product => product.id === id);
 
         if (!productToSend) {

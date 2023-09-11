@@ -1,6 +1,4 @@
 const User = require('../Classes/User.js');
-const { payments } = require('./payments.js');
-
 const { productsData } = require('./products.js');
 
 const usersData = [
@@ -89,18 +87,13 @@ exports.postUserLogin = (request, response, next) => {
 
 exports.patchUserOrder = (request, response, next) => {
     try {
-        const { userId, productId, purchaseId, purchaseQuantity} = request.body;
+        const { products, price, userId } = request.body;
 
-        const product = productsData.find(product => product.id === productId);
         const user = usersData.find(user => user.userId === userId);
 
-        if (!product) {
-            response.status(404).json({
-                message: "Couldn't find product with given id",
-            });
+        console.log(userId)
 
-            return;
-        } else if (!user) {
+        if (!user) {
             response.status(404).json({
                 message: "Couldn't find the user with given id"
             });
@@ -108,23 +101,21 @@ exports.patchUserOrder = (request, response, next) => {
             return;
         }
 
-        const payment = payments.find(payment => payment.id === purchaseId);
-        const hasUserPayed = payment && payment.value === productPrice;
-        if (!hasUserPayed) {
-            response.status(403).json({
-                message: 'Payment not completed'
-            })
+        const order = { products: products, price: price };
+        user.orders.push(order);
+        
+        for (let i = 0; i < products.length; i++) {
+            const productToUpdate = productsData.find(product => product.id = products[i].id);
+            if (!productToUpdate) {
+                throw new Error("Couldn't update products quantity");
+            } else {
+                productToUpdate.quantity -= products[i].quantity;
+            }
         }
 
-        const order = product;
-        order.purchaseId = purchaseId
-        
-        const userUpdated = user.orders.concat(order)
-        
-        product.quantity -= purchaseQuantity
 
         response.status(200).json({
-            userUpdated
+            user
         })
     } catch (error) {
         response.status(500).json({
