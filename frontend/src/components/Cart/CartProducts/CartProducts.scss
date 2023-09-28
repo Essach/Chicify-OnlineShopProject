@@ -1,10 +1,11 @@
 @use '../../../variables' as v;
 
-cart-products {
+.cart-products-shown {
     max-width: 100%;
     min-width: 500px;
     max-height: 100%;
     background-color: v.$dark-grey;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -13,6 +14,11 @@ cart-products {
     -webkit-box-shadow: inset 0px -10px 0px 0px v.$dark-grey;
     -moz-box-shadow: inset 0px -10px 0px 0px v.$dark-grey;
     box-shadow: inset 0px -10px 0px 0px v.$dark-grey;
+
+    @media only screen and (max-width: 1100px) {
+        overflow-y: visible;
+        padding: 15px 10px;
+    }
 
     &::-webkit-scrollbar {
         width: 25px;
@@ -32,6 +38,47 @@ cart-products {
 
         &:hover {
             background-color: v.$lighter-grey;
+        }
+    }
+}
+
+.cart-products-hidden {
+    display: none;
+
+    @media only screen and (min-width: 1101px) {
+        max-width: 100%;
+        min-width: 500px;
+        max-height: 100%;
+        background-color: v.$dark-grey;
+        overflow-y: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        overflow-y: scroll;
+        padding: 10px 0px 10px 10px;
+        -webkit-box-shadow: inset 0px -10px 0px 0px v.$dark-grey;
+        -moz-box-shadow: inset 0px -10px 0px 0px v.$dark-grey;
+        box-shadow: inset 0px -10px 0px 0px v.$dark-grey;
+
+        &::-webkit-scrollbar {
+            width: 25px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: v.$dark-grey;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: v.$white;
+            background-clip: padding-box;
+            border-right: 8px solid v.$dark-grey;
+            border-left: 8px solid v.$dark-grey;
+            border-top: 10px solid v.$dark-grey;
+            border-bottom: 10px solid v.$dark-grey;
+
+            &:hover {
+                background-color: v.$lighter-grey;
+            }
         }
     }
 }
