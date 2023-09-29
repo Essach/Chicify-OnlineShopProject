@@ -5,14 +5,20 @@ import cartIcon from '../../icons/cartBig.svg';
 import CartProducts from './CartProducts/CartProducts';
 import CartForm from './CartForm/CartForm';
 
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { CartContext } from '../../context/CartContext';
+import { useCallback, useEffect, useState } from 'react';
 
 import request from '../../helpers/request';
 
+import { getCartSaved } from '../../helpers/localStorage';
+
 const Cart = () => {
 
-    const { state } = useContext(CartContext);
+
+    // const { state } = useContext(CartContext);
+
+    // console.log(getCartSaved(), state);
+
+    const cartSaved = getCartSaved();
 
     const [products, setProducts] = useState([]);
     const [price, setPrice] = useState(0);
@@ -22,18 +28,22 @@ const Cart = () => {
     });
 
     const fetchData = useCallback(async () => {
-        let arr = []
+        if (cartSaved.cart.length > 0) {
+            let arr = []
 
-        for (let i = 0; i < state.cart.length; i++) {
-            const { data, status } = await (request.get(`/products/${state.cart[i].id}`));
-            if (status === 200) {
-                let newProduct = data.product;
-                newProduct.currentQuantity = state.cart[i].quantity;
-                arr.push(newProduct);
+            for (let i = 0; i < cartSaved.cart.length; i++) {
+                const { data, status } = await (request.get(`/products/${cartSaved.cart[i].id}`));
+                if (status === 200) {
+                    let newProduct = data.product;
+                    newProduct.currentQuantity = cartSaved.cart[i].quantity;
+                    arr.push(newProduct);
+                }
             }
+            setProducts(arr);
+        } else if (cartSaved.cart.length === 0 && products.length !== 0){
+            setProducts([])
         }
-        setProducts(arr);
-    }, [state.cart])
+    }, [cartSaved.cart, products])
 
     useEffect(() => {
         fetchData()
