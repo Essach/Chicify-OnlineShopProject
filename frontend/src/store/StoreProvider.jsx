@@ -3,6 +3,9 @@ import request from "../helpers/request";
 
 import PropTypes from 'prop-types';
 
+import { getUserInfo } from "../helpers/localStorage";
+
+
 export const StoreContext = createContext(null);
 
 const StoreProvider = ({ children }) => {
@@ -17,6 +20,11 @@ const StoreProvider = ({ children }) => {
 
     useEffect(() => {
         fetchData()
+        
+        if (getUserInfo().length === undefined) {
+            setUser(getUserInfo());
+        }
+        
     }, []);
 
     return (

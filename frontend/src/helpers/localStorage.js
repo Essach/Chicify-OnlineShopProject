@@ -17,3 +17,13 @@ export const getCartSaved = () => localStorage.getItem('cartSaved') ? JSON.parse
 export const changeCart = (newCart) => {
     localStorage.setItem('cartSaved', JSON.stringify(newCart));
 }
+
+export const getUserInfo = () => localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : [];
+
+export const loginUser = (userInfo) => {
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+}
+
+export const logoutUser = () => {
+    localStorage.setItem('userInfo', JSON.stringify([]));
+}

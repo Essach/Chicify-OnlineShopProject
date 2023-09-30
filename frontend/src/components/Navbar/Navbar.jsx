@@ -26,6 +26,8 @@ import { StoreContext } from '../../store/StoreProvider';
 
 import Login from '../Login/Login';
 
+import { logoutUser } from '../../helpers/localStorage';
+
 const Navbar = () => {
 
     const navigate = useNavigate();
@@ -87,6 +89,7 @@ const Navbar = () => {
     const handleOnClickLogin = () => {
         if (user) {
             setUser(undefined);
+            logoutUser();
             navigateFunction('home');
             navigate(0);
         } else {
