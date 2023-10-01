@@ -1,0 +1,172 @@
+@use '../../../../variables.scss' as v;
+
+search-mobile {
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+    background-color: v.$white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    close-btn {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: 1rem;
+
+        img {
+            transform: scale(1.3);
+        }
+    }
+
+    search-bar-mobile {
+    display: flex;
+    width: 100%;
+    padding: 0 1rem;
+
+        search-bar-input {
+            position: relative;
+            flex-grow: 1;
+
+            input {
+                height: 3rem;
+                border-radius: 0.5rem 0rem 0rem 0.5rem;
+                background-color: v.$white;
+                padding: 0 0 0 12px;
+                border: 2px solid v.$minty-blue;
+                color: v.$blue-3;
+                font-size: 1.4rem;
+                font-style: normal;
+                font-weight: 400;
+                width: 100%;
+
+                &::placeholder {
+                    color: v.$blue-3;
+                    font-size: 1.2rem;
+                    font-style: normal;
+                    font-weight: 400;
+                }
+
+                &:focus {
+                    outline: none
+                }
+            }
+
+        }
+
+        search-bar-btn {
+            width: 3rem;
+            height: 3rem;
+            background-color: v.$minty-blue;
+            border-radius: 0 0.4rem 0.4rem 0;
+            border: 3px solid v.$minty-blue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                height: 70%;
+                width: 70%;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            img {
+                height: 2rem;
+            }
+        }
+    }
+
+    search-results {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        top: 103%;
+        height: auto;
+        width: 99%;
+        padding: 1rem;
+        border-radius: 5px;
+        background: v.$white;
+        z-index: 10;
+        margin-top: 1rem;
+
+        search-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 3.5rem;
+            width: 100%;
+            padding: 5px;
+            background: v.$autocomplete-result;
+            border-radius: 0.3rem;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+
+                p {
+                    color: v.$white;
+                    font-size: 1.1rem;
+                    font-weight: 400;
+                }
+            }
+
+            &:hover {
+                    background: v.$autocomplete-result-hover;
+                    cursor: pointer;
+            }
+
+            #trashcan {
+                width: 55px;
+                padding: 5px;
+                z-index: 5;
+            }
+        }
+
+        search-propositions-item {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            height: 3.5rem;
+            width: 100%;
+            padding: 5px;
+            background: v.$autocomplete-result;
+            border-radius: 0.3rem;
+
+            img {
+                height: 27px;
+                padding: 0 6px 0 6px;
+            }
+
+            p {
+                    color: v.$white;
+                    font-size: 1.1rem;
+                    font-weight: 400;
+                }
+            
+            &:hover {
+                    background: v.$autocomplete-result-hover;
+                    cursor: pointer;
+            }
+        }
+
+        .search-results-line {
+            width: 80%;
+            height: 1px;
+            background: v.$minty-blue;
+            padding: 0;
+        }
+    
+
+    }
+    
+}

@@ -13,6 +13,8 @@ import './Navbar.scss';
 
 import NavButton from './subcomponents/NavButton';
 import SearchHistoryItem from './subcomponents/SearchHistoryItem';
+import SearchMobile from './subcomponents/SearchMobile/SearchMobile';
+
 
 import {  useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -27,6 +29,7 @@ import { StoreContext } from '../../store/StoreProvider';
 import Login from '../Login/Login';
 
 import { logoutUser } from '../../helpers/localStorage';
+
 
 const Navbar = () => {
 
@@ -186,6 +189,10 @@ const Navbar = () => {
 
     const [isSearchLineVisible, setIsSearchLineVisible] = useState(false);
 
+    const [isSearchMobileVisible, setIsSearchMobileVisible] = useState(false);
+
+    const handleCloseSearchMobile = () => setIsSearchMobileVisible(false);
+
     // SEARCH HISTORY
 
     let autocompleteSaved = getAutocompleteSaved();
@@ -221,14 +228,16 @@ const Navbar = () => {
     }
 
     const handleSearchFocus = () => {
-        setSearchHistory(autocompleteSaved.map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} itemId={item.id} removeFromSearchHistory={removeFromSearchHistory} />));
-        if (window.innerWidth > 1050 && ( autocompleteSaved.length > 0 || searchPropositions.length >0)) {
+        setSearchHistory(autocompleteSaved.map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} itemId={item.id} removeFromSearchHistory={removeFromSearchHistory} handleCloseSearchMobile={handleCloseSearchMobile}/>));
+        if (window.innerWidth > 1100 && ( autocompleteSaved.length > 0 || searchPropositions.length >0)) {
             toggleAreSearchResultsVisible(true);
             setIsSearchLineVisible(false);
             if (autocompleteSaved.length > 0 && searchPropositions.length > 0) {
                 setIsSearchLineVisible(true)
             }
-
+        }
+        else if (window.innerWidth <= 1100) {
+            setIsSearchMobileVisible(true)
         }
     }
 
@@ -256,7 +265,7 @@ const Navbar = () => {
                 keywords = keywords.slice(0,4);
             }
 
-            setSearchPropositions(keywords.map(result => <SearchPropositionItem key={result} name={result} />));
+            setSearchPropositions(keywords.map(result => <SearchPropositionItem key={result} name={result} handleCloseSearchMobile={handleCloseSearchMobile}/>));
 
             toggleAreSearchResultsVisible(true);
             
@@ -291,7 +300,7 @@ const Navbar = () => {
     useEffect(() => {
         window.addEventListener('scroll', () => {
             if (window.innerWidth < 1100) {
-                if (window.scrollY > 80) {
+                if (window.scrollY > 80 && isSearchMobileVisible === false) {
                     setIsNavFixed(true);
                 } else setIsNavFixed(false);
             } else {
@@ -301,7 +310,7 @@ const Navbar = () => {
             }
         }
         )
-    }, []);
+    }, [isSearchMobileVisible]);
 
     return (
         <>
@@ -340,10 +349,20 @@ const Navbar = () => {
                             <img src={searchIcon} alt='search button icon'/>
                         </search-bar-btn>
                     </search-bar>
+                    {isSearchMobileVisible && <SearchMobile
+                        searchValue={searchValue}
+                        handleChangeSearchValue={handleChangeSearchValue}
+                        handleSearch={handleSearch}
+                        searchHistory={searchHistory}
+                        isSearchLineVisible={isSearchLineVisible}
+                        searchPropositions={searchPropositions}
+                        handleCloseSearchMobile={handleCloseSearchMobile}
+                    />
+                    }
                     <nav-buttons>
                         {navButtons}
                     </nav-buttons>
-                    <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen}/>
+                    <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen} />
                 </nav-container>
             </nav>
         </>

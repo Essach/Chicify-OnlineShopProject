@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 import { getAutocompleteSaved } from '../../../helpers/localStorage';
 
-const SearchHistoryItem = ({ itemTitle, itemLink, itemId, removeFromSearchHistory }) => {
+const SearchHistoryItem = ({ itemTitle, itemLink, itemId, removeFromSearchHistory, handleCloseSearchMobile}) => {
     const navigate = useNavigate();
 
     const handleOnClick = () => {
         navigate(`/search:${itemLink}`);
-        navigate(0);
         window.scrollTo(0, 0);
+        if (window.innerWidth < 1100) {
+            handleCloseSearchMobile();
+        } 
     }
 
     const handleOnClickRemove = (e) => {
@@ -34,6 +36,7 @@ SearchHistoryItem.propTypes = {
     itemLink: PropTypes.string,
     itemId: PropTypes.string,
     removeFromSearchHistory: PropTypes.func,
+    handleCloseSearchMobile: PropTypes.func,
 }
 
 export default SearchHistoryItem;
