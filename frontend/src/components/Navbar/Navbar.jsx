@@ -221,7 +221,6 @@ const Navbar = () => {
                 removeFromSearchHistory(id);
             }
             navigate(`/search:${searchValue}`);
-            navigate(0);
             window.scrollTo(0, 0);
         }
 
