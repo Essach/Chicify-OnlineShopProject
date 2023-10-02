@@ -14,6 +14,7 @@ import SignIn from './components/SignIn/SignIn';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 import PasswordRecovery from './components/PasswordRecovery/PasswordRecovery';
 import Cart from './components/Cart/Cart';
+import Orders from './components/Orders/Orders';
 
 const App = () => {
 
@@ -32,6 +33,7 @@ const App = () => {
                             <Route path='/terms-and-conditions' Component={TermsAndConditions} />
                             <Route path='/password-recovery' Component={PasswordRecovery} />
                             <Route path='/cart' Component={Cart} />
+                            <Route path='/orders' Component={Orders} />
                         </Routes>
                     </content-wrapper>
                 </CartProvider>
