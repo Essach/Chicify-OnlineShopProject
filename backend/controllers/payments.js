@@ -7,8 +7,6 @@ exports.postPayment = (request, response, next) => {
     try {
         const { products, price, address, cardInfo } = request.body;
 
-        console.log(products, price, address, cardInfo)
-
         const newPayment = new Payment(products, price, address, cardInfo);
         paymentsData.push(newPayment);
 

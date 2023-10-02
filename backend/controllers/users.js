@@ -91,8 +91,6 @@ exports.patchUserOrder = (request, response, next) => {
 
         const user = usersData.find(user => user.userId === userId);
 
-        console.log(userId)
-
         if (!user) {
             response.status(404).json({
                 message: "Couldn't find the user with given id"
