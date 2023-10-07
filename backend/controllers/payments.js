@@ -11,14 +11,42 @@ exports.postPayment = (request, response, next) => {
         paymentsData.push(newPayment);
 
         response.status(200).json({
-            message: 'Payment sent'
+            paymentId: newPayment.id,
+            message: 'Payment sent',
         })
 
         return;
     } catch (error) {
-        response.status(404).json({
+        response.status(500).json({
             error,
             message: 'Code error'
+        })
+    }
+}
+
+exports.getPaymentInfo = (request, response, next) => {
+    try {
+        const { id } = request.body;
+
+        const payment = paymentsData.find(payment => payment.id = id);
+        if (!payment) {
+            response.status(404).json({
+                message: `Couldn't find payment with given id`,
+            });
+
+            return
+        }
+
+        response.status(200).json({
+            address: payment.address,
+            cardInfo: payment.cardInfo,
+        })
+
+        return;
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Code error',
         })
     }
 }

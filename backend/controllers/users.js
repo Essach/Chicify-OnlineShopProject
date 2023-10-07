@@ -87,7 +87,7 @@ exports.postUserLogin = (request, response, next) => {
 
 exports.patchUserOrder = (request, response, next) => {
     try {
-        const { products, price, userId } = request.body;
+        const { products, price, userId, paymentId } = request.body;
 
         const user = usersData.find(user => user.userId === userId);
 
@@ -99,7 +99,7 @@ exports.patchUserOrder = (request, response, next) => {
             return;
         }
 
-        const order = { products: products, price: price };
+        const order = { products: products, price: price, paymentId: paymentId };
         user.orders.push(order);
         
         for (let i = 0; i < products.length; i++) {

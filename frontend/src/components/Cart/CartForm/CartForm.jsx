@@ -154,7 +154,7 @@ const CartForm = (props) => {
 
             if (paymentStatus === 200) {
                 const products = state.cart.map(item => ({...item, status: 'inDelivery'}))
-                const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: user.userId });
+                const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: user.userId, paymentId: paymentData.paymentId });
                 if (userStatus === 200) {
                     setUser(userData.user);
                 } else {

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 
-const Order = ({id, status}) => {
+const Order = ({id, status, getMoreDetails}) => {
     const [productInfo, setProductInfo] = useState({
         id: '',
         name: '',
@@ -81,6 +81,7 @@ const Order = ({id, status}) => {
 Order.propTypes = {
     id: PropTypes.string,
     status: PropTypes.string,
+    getMoreDetails: PropTypes.func,
 }
 
 export default Order;
