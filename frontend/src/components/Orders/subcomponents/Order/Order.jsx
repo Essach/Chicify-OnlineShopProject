@@ -1,13 +1,26 @@
 import './Order.scss';
 
 import truckIcon from '../../../../icons/orderTruck.svg';
-import boxIcon from '../../../../icons/orderBpx.svg';
+import boxIcon from '../../../../icons/orderBox.svg';
 
 import request from '../../../../helpers/request';
+
 import { useEffect, useState } from 'react';
 
+import PropTypes from 'prop-types';
+
 const Order = ({id, status}) => {
-    const [productInfo, setProductInfo] = useState();
+    const [productInfo, setProductInfo] = useState({
+        id: '',
+        name: '',
+        price: 0,
+        delivery: [],
+        quantity: 0,
+        images: [],
+        description: '',
+        categories: [],
+        reviews: [],
+    });
 
     let orderHeader;
     if (status === 'inDelivery') {
@@ -26,14 +39,14 @@ const Order = ({id, status}) => {
         )
     }
 
-    const fetchData = async () => {
-        const { product } = await request.get(`/products/:${id}`);
-        setProductInfo(product);
+    const fetchData = async (id) => {
+        const { data } = await request.get(`/products/${id}`);
+        setProductInfo(data.product);
     }
 
     useEffect(() => {
-        fetchData();
-    })
+        fetchData(id);
+    }, [id])
 
     return (
         <order-item>
@@ -43,11 +56,11 @@ const Order = ({id, status}) => {
             <order-content>
                 <inner-box>
                     <order-image>
-
+                        <img src={productInfo.images[0]} alt={productInfo.name}/>
                     </order-image>
                     <order-info>
                         <product-name>
-
+                            {productInfo.name}
                         </product-name>
                         <product-reviews>
                             
@@ -55,11 +68,19 @@ const Order = ({id, status}) => {
                     </order-info>
                 </inner-box>
                 <product-price>
-
+                    {`US$ ${productInfo.price}`}
                 </product-price>
             </order-content>
+            <order-footer>
+                See more details
+            </order-footer>
         </order-item>
     );
+}
+
+Order.propTypes = {
+    id: PropTypes.string,
+    status: PropTypes.string,
 }
 
 export default Order;

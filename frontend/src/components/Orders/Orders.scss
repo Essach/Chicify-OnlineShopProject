@@ -1,0 +1,38 @@
+@use '../../variables' as v;
+
+orders-page {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    gap: 1.5rem;
+    padding-bottom: 3rem;
+
+    orders-title {
+        display: flex;
+
+        p {
+            font-size: 2.5rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            color: v.$white;
+        }
+    }
+
+    orders-items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    no-orders {
+        width: 100%;
+        height: 10rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.7rem;
+        color: v.$white;
+    }
+}

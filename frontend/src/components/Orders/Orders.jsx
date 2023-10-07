@@ -5,6 +5,7 @@ import { StoreContext } from '../../store/StoreProvider';
 import { useContext, useEffect, useState } from 'react';
 
 import ordersIcon from '../../icons/ordersPage.svg';
+import Order from './subcomponents/Order/Order';
 
 const Orders = () => {
     const { user } = useContext(StoreContext)
@@ -13,7 +14,8 @@ const Orders = () => {
 
     useEffect(() => {
         if (user !== null && user !== undefined) {
-            console.log(user.orders)
+            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} />));
+            setOrders(orders)
         }
     },[user])
 
@@ -29,7 +31,14 @@ const Orders = () => {
                     <img src={ordersIcon} alt='orders icon' />
                     <p>Your orders:</p>
                 </orders-title>
-
+                    {user.orders.length > 0 ?
+                        <orders-items>
+                            {orders}
+                        </orders-items> : 
+                        <no-orders>
+                            {`You don't have any orders`}
+                        </no-orders>
+                        }
             </orders-page>
             }
         </>
