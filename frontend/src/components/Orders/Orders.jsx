@@ -5,7 +5,9 @@ import { StoreContext } from '../../store/StoreProvider';
 import { useContext, useEffect, useState } from 'react';
 
 import ordersIcon from '../../icons/ordersPage.svg';
+
 import Order from './subcomponents/Order/Order';
+import OrderPage from './subcomponents/OrderPage/OrderPage';
 
 import request from '../../helpers/request';
 
@@ -14,10 +16,14 @@ const Orders = () => {
 
     const [orders, setOrders] = useState([]);
 
-    const getMoreDetails = async (paymentId) => {
-        const { status, data } = request.get('/payments', { id: paymentId });
+    const [isDetailsPageOpen, setIsDetailsPageOpen] = useState(false);
+    
+    const [orderPageDetails, setOrderPageDetails] = useState([])
+
+    const setMoreDetails = async (paymentId) => {
+        const { status, data } = await request.get('/payments', { id: paymentId });
         if (status === 200) {
-            return data;
+            setOrderPageDetails(data);
         } else if (status === 500) {
             throw new Error(data.error);
         } else {
@@ -25,9 +31,15 @@ const Orders = () => {
         }
     }
 
+    const openOrderPage = () => setIsDetailsPageOpen(true);
+    const closeOrderPage = () => {
+        setIsDetailsPageOpen(false);
+        setOrderPageDetails([])
+    }
+
     useEffect(() => {
         if (user !== null && user !== undefined) {
-            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} getMoreDetails={()=>{getMoreDetails(item.paymentId)}} />));
+            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setMoreDetails={() => { setMoreDetails(item.paymentId) }} openOrderPage={openOrderPage} />));
             setOrders(orders)
         }
     },[user])
@@ -39,6 +51,8 @@ const Orders = () => {
                 <p>Please login to see your orders</p>
                 <login-btn>Login</login-btn>
             </login-request> :
+            <>
+            {isDetailsPageOpen ? <OrderPage details={orderPageDetails} closeOrderPage={closeOrderPage} /> :
             <orders-page>
                 <orders-title>
                     <img src={ordersIcon} alt='orders icon' />
@@ -53,6 +67,8 @@ const Orders = () => {
                         </no-orders>
                         }
             </orders-page>
+            }
+            </>
             }
         </>
     );

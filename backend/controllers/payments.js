@@ -1,14 +1,16 @@
 const Payment = require('../Classes/Payment.js')
 
-paymentsData = [
+const paymentsData = [
 ]
 
 exports.postPayment = (request, response, next) => {
     try {
         const { products, price, address, cardInfo } = request.body;
 
-        const newPayment = new Payment(products, price, address, cardInfo);
+        const newPayment = new Payment(paymentsData.length + 1, products, price, address, cardInfo);
+        console.log(newPayment)
         paymentsData.push(newPayment);
+        console.log(paymentsData)
 
         response.status(200).json({
             paymentId: newPayment.id,
@@ -29,6 +31,8 @@ exports.getPaymentInfo = (request, response, next) => {
         const { id } = request.body;
 
         const payment = paymentsData.find(payment => payment.id = id);
+        // console.log(paymentsData)
+        
         if (!payment) {
             response.status(404).json({
                 message: `Couldn't find payment with given id`,

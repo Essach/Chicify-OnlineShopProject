@@ -20,7 +20,6 @@ const usersData = [
         [],
         [],
     ),
-
 ]
 
 exports.postUserCreate = (request, response, next) => {
