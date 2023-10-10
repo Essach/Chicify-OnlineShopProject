@@ -8,9 +8,7 @@ exports.postPayment = (request, response, next) => {
         const { products, price, address, cardInfo } = request.body;
 
         const newPayment = new Payment(paymentsData.length + 1, products, price, address, cardInfo);
-        console.log(newPayment)
         paymentsData.push(newPayment);
-        console.log(paymentsData)
 
         response.status(200).json({
             paymentId: newPayment.id,
@@ -28,11 +26,16 @@ exports.postPayment = (request, response, next) => {
 
 exports.getPaymentInfo = (request, response, next) => {
     try {
-        const { id } = request.body;
+        const { id } = request.params;
+        console.log(request.body)
+        console.log(request.params)
 
-        const payment = paymentsData.find(payment => payment.id = id);
-        // console.log(paymentsData)
-        
+        const payment = paymentsData.find(payment => payment.id === id);
+        console.log(id)
+        console.log(paymentsData.find(payment => payment.id === id))
+        console.log(payment)
+        console.log(paymentsData)
+
         if (!payment) {
             response.status(404).json({
                 message: `Couldn't find payment with given id`,

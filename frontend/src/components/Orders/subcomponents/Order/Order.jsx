@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 
-const Order = ({id, status, setMoreDetails, openOrderPage}) => {
+const Order = ({id, status, setOrderId, openOrderPage}) => {
     const [productInfo, setProductInfo] = useState({
         id: '',
         name: '',
@@ -45,7 +45,7 @@ const Order = ({id, status, setMoreDetails, openOrderPage}) => {
     }
 
     const handleSeeMoreDetails = () => {
-        setMoreDetails()
+        setOrderId()
         openOrderPage()
     }
 
@@ -86,7 +86,7 @@ const Order = ({id, status, setMoreDetails, openOrderPage}) => {
 Order.propTypes = {
     id: PropTypes.string,
     status: PropTypes.string,
-    setMoreDetails: PropTypes.func,
+    setOrderId: PropTypes.func,
     openOrderPage: PropTypes.func,
 }
 

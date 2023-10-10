@@ -18,18 +18,18 @@ const Orders = () => {
 
     const [isDetailsPageOpen, setIsDetailsPageOpen] = useState(false);
     
-    const [orderPageDetails, setOrderPageDetails] = useState([])
+    const [orderId, setOrderId] = useState(undefined);
 
-    const setMoreDetails = async (paymentId) => {
-        const { status, data } = await request.get('/payments', { id: paymentId });
-        if (status === 200) {
-            setOrderPageDetails(data);
-        } else if (status === 500) {
-            throw new Error(data.error);
-        } else {
-            throw new Error(data.message);
-        }
-    }
+    // const setMoreDetails = async (paymentId) => {
+    //     const { status, data } = await (request.get(`/payments/${paymentId}`));
+    //     if (status === 200) {
+    //         setOrderPageDetails(data);
+    //     } else if (status === 500) {
+    //         throw new Error(data.error);
+    //     } else {
+    //         throw new Error(data.message);
+    //     }
+    // }
 
     const openOrderPage = () => setIsDetailsPageOpen(true);
     const closeOrderPage = () => {
@@ -39,7 +39,7 @@ const Orders = () => {
 
     useEffect(() => {
         if (user !== null && user !== undefined) {
-            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setMoreDetails={() => { setMoreDetails(item.paymentId) }} openOrderPage={openOrderPage} />));
+            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setOrderId={() => { setOrderId(item.paymentId) }} openOrderPage={openOrderPage} />));
             setOrders(orders)
         }
     },[user])
@@ -52,7 +52,7 @@ const Orders = () => {
                 <login-btn>Login</login-btn>
             </login-request> :
             <>
-            {isDetailsPageOpen ? <OrderPage details={orderPageDetails} closeOrderPage={closeOrderPage} /> :
+                    {isDetailsPageOpen ? <OrderPage id={orderId} closeOrderPage={closeOrderPage} /> :
             <orders-page>
                 <orders-title>
                     <img src={ordersIcon} alt='orders icon' />
