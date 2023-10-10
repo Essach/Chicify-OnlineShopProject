@@ -27,14 +27,10 @@ exports.postPayment = (request, response, next) => {
 exports.getPaymentInfo = (request, response, next) => {
     try {
         const { id } = request.params;
-        console.log(request.body)
-        console.log(request.params)
 
-        const payment = paymentsData.find(payment => payment.id === id);
-        console.log(id)
-        console.log(paymentsData.find(payment => payment.id === id))
-        console.log(payment)
-        console.log(paymentsData)
+        const payment = paymentsData.find(item => item.id === parseInt(id));
+        
+
 
         if (!payment) {
             response.status(404).json({
