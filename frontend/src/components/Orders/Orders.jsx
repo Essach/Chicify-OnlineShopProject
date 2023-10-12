@@ -9,8 +9,6 @@ import ordersIcon from '../../icons/ordersPage.svg';
 import Order from './subcomponents/Order/Order';
 import OrderPage from './subcomponents/OrderPage/OrderPage';
 
-import request from '../../helpers/request';
-
 const Orders = () => {
     const { user } = useContext(StoreContext)
 
@@ -19,27 +17,24 @@ const Orders = () => {
     const [isDetailsPageOpen, setIsDetailsPageOpen] = useState(false);
     
     const [orderId, setOrderId] = useState(undefined);
+    const [productId, setProductId] = useState(undefined);
 
-    // const setMoreDetails = async (paymentId) => {
-    //     const { status, data } = await (request.get(`/payments/${paymentId}`));
-    //     if (status === 200) {
-    //         setOrderPageDetails(data);
-    //     } else if (status === 500) {
-    //         throw new Error(data.error);
-    //     } else {
-    //         throw new Error(data.message);
-    //     }
-    // }
+    const setIds = (paymentId, productId) => {
+        setOrderId(paymentId);
+        setProductId(productId)
+    }
+
 
     const openOrderPage = () => setIsDetailsPageOpen(true);
     const closeOrderPage = () => {
         setIsDetailsPageOpen(false);
-        setOrderPageDetails([])
+        setProductId()
+        setOrderId()
     }
 
     useEffect(() => {
         if (user !== null && user !== undefined) {
-            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setOrderId={() => { setOrderId(item.paymentId) }} openOrderPage={openOrderPage} />));
+            const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setOrderId={()=>{setIds(item.paymentId, order.id)}} openOrderPage={openOrderPage} />));
             setOrders(orders)
         }
     },[user])
@@ -52,7 +47,7 @@ const Orders = () => {
                 <login-btn>Login</login-btn>
             </login-request> :
             <>
-                    {isDetailsPageOpen ? <OrderPage id={orderId} closeOrderPage={closeOrderPage} /> :
+                    {isDetailsPageOpen ? <OrderPage productId={productId} paymentId={orderId} closeOrderPage={closeOrderPage} /> :
             <orders-page>
                 <orders-title>
                     <img src={ordersIcon} alt='orders icon' />

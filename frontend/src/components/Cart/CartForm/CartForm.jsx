@@ -15,6 +15,8 @@ import AddressForm from './AddressForm/AddressForm.scss/AddressForm';
 
 import request from '../../../helpers/request';
 
+import { updateUser } from '../../../helpers/localStorage';
+
 const CartForm = (props) => {
     const { price, delivery } = props;
 
@@ -157,6 +159,7 @@ const CartForm = (props) => {
                 const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: user.userId, paymentId: paymentData.paymentId });
                 if (userStatus === 200) {
                     setUser(userData.user);
+                    updateUser(userData.user);
                 } else {
                     throw new Error(userData.message);
                 }

@@ -43,6 +43,7 @@ exports.getPaymentInfo = (request, response, next) => {
         response.status(200).json({
             address: payment.address,
             cardInfo: payment.cardInfo,
+            price: payment.price,
         })
 
         return;

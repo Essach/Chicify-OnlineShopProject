@@ -17,7 +17,7 @@ import Modal from '../Modal/Modal';
 
 import PropTypes from 'prop-types';
 
-import { loginUser } from '../../helpers/localStorage';
+import { updateUser } from '../../helpers/localStorage';
 
 
 const Login = ({handleOnClose, isModalOpen}) => {
@@ -111,7 +111,7 @@ const Login = ({handleOnClose, isModalOpen}) => {
                 resetStateOfInputs();
                 handleOnClose();
                 
-                loginUser(data.user)
+                updateUser(data.user)
             } else {
                 setErrorText('*Invalid login or password');
                 setIsFormValidated(false);

@@ -20,7 +20,7 @@ export const changeCart = (newCart) => {
 
 export const getUserInfo = () => localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : [];
 
-export const loginUser = (userInfo) => {
+export const updateUser = (userInfo) => {
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
 }
 
