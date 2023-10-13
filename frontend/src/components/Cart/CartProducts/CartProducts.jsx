@@ -8,8 +8,8 @@ const CartProducts = ({ products }) => {
     return (
         <div className={`cart-products-${products.length > 0 ? 'shown' : 'hidden'}`}>
                 {products.map(product => <CartProduct
-                    key={product.id}
-                    id={product.id}
+                    key={product.ID}
+                    id={product.ID}
                     image={product.images[0]}
                     name={product.name}
                     reviews={product.reviews}

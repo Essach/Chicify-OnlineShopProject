@@ -12,8 +12,8 @@ const ProductsPanel = (props) => {
 
     const products = productsData.map(product =>
         <Product
-            key={product.id}
-            id={product.id}
+            key={product.ID}
+            id={product.ID}
             name={product.name}
             price={product.price}
             delivery={product.delivery}

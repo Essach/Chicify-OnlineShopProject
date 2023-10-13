@@ -1,3 +1,1 @@
-let ids = []
-
-export default ids
+exports.ids = []

@@ -224,7 +224,7 @@ exports.getProducts = (request, response, next) => {
 exports.getProduct = (request, response, next) => {
     try {
         const { id } = request.params;
-        const productToSend = productsData.find(product => product.id === id);
+        const productToSend = productsData.find(product => product.ID === id);
 
         if (!productToSend) {
             response.status(404).json({
@@ -248,7 +248,7 @@ exports.getProduct = (request, response, next) => {
 exports.getProductReviews = (request, response, next) => {
     try {
         const { id } = request.params;
-        const product = productsData.find(product => product.id === id);
+        const product = productsData.find(product => product.ID === id);
         const reviewsToSend = product.reviews;
 
         if (!productToSend) {
@@ -298,7 +298,7 @@ exports.postProduct = (request, response, next) => {
 exports.postProductReview = (request, response, next) => {
     try {
         const { rating, description, productId } = request.body;
-        const product = productsData.find(product => product.id = productId)
+        const product = productsData.find(product => product.ID === productId)
 
         if (!rating) {
             response.status(404).json({
@@ -332,7 +332,7 @@ exports.putProductBySeller = (request, response, next) => {
     try {
         let { productId, newName, newPrice, newDelivery, newDescription, newImages } = request.body;
 
-        const product = productsData.find(product => product.id = productId);
+        const product = productsData.find(product => product.ID === productId);
 
         if (!product) {
             response.status(404).json({
@@ -363,7 +363,7 @@ exports.putProductBySystem = (request, response, next) => {
     try {
         const { productId, quantityToDelete } = request.body;
 
-        const product = productsData.find(product => product.id = productId);
+        const product = productsData.find(product => product.ID === productId);
 
         if (!product) {
             response.status(404).json({
@@ -398,7 +398,7 @@ exports.deleteProduct = (request, response, next) => {
     try {
         const { id } = request.params;
 
-        const indexProductToDelete = coursesData.findIndex(course => course.id === id);
+        const indexProductToDelete = coursesData.findIndex(course => course.ID === id);
 
         if (indexProductToDelete === -1) {
         response.status(404).json({
