@@ -25,7 +25,6 @@ class Product {
     }
 
     addId(id) {
-        console.log(this.ID)
         ids.push(id)
     }
 }
