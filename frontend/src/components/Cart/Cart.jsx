@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './Cart.scss';
 
 import cartIcon from '../../icons/cartBig.svg';
@@ -5,20 +6,19 @@ import cartIcon from '../../icons/cartBig.svg';
 import CartProducts from './CartProducts/CartProducts';
 import CartForm from './CartForm/CartForm';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import request from '../../helpers/request';
 
 import { getCartSaved } from '../../helpers/localStorage';
 
+import { CartContext } from '../../context/CartContext';
+
 const Cart = () => {
 
-
-    // const { state } = useContext(CartContext);
-
-    // console.log(getCartSaved(), state);
-
     const cartSaved = getCartSaved();
+
+    const { state } = useContext(CartContext)
 
     const [products, setProducts] = useState([]);
     const [price, setPrice] = useState(0);
@@ -27,7 +27,7 @@ const Cart = () => {
         expressPrice: 0,
     });
 
-    const fetchData = useCallback(async () => {
+    const fetchData = async () => {
         if (cartSaved.cart.length > 0) {
             let arr = []
 
@@ -43,11 +43,11 @@ const Cart = () => {
         } else if (cartSaved.cart.length === 0 && products.length !== 0){
             setProducts([])
         }
-    }, [cartSaved.cart, products])
+    }
 
     useEffect(() => {
         fetchData()
-    }, [fetchData])
+    }, [state.cart])
 
     useEffect(() => {
         if (products.length > 0) {

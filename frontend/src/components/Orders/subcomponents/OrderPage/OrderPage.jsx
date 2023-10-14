@@ -26,10 +26,12 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
             expiration: '',
             number: '',
             postal: '',
-        }
+        },
+        price: 0,
+        products: [],
     })
     const [productInfo, setProductInfo] = useState({
-        id: '',
+        ID: '',
         name: '',
         price: 0,
         delivery: [],
@@ -40,19 +42,31 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
         reviews: [],
     });
 
+    // console.log(productInfo)
+    // console.log(details.products)
+
     let status;
     if (user.orders.find(payment => payment.paymentId === paymentId).products.find(prod => prod.id === productId).status === 'inDelivery') {
         status = (
             <>
-                <p className='status'>In delivery...</p>
+                <span className='status'>In delivery...</span>
             </>
         )
     } else if (user.orders.find(payment => payment.paymentId === paymentId).products.find(prod => prod.id === productId).status === 'delivered') {
         status = (
             <>
-                <p className='status'>Your order is ready to collect</p>
+                <span className='status'>Your order is ready to collect</span>
             </>
         )
+    }
+
+    let q;
+    let allQ = 0;
+    for (let i = 0; i < details.products.length; i++){
+        if (details.products[i].id === productInfo.ID) {
+            q = details.products[i].quantity
+        }
+        allQ = allQ + details.products[i].quantity
     }
 
 
@@ -81,7 +95,6 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
         fetchProductData(productId)   
     },[productId])
 
-    console.log(details)
 
     return (
         <order-page>
@@ -106,6 +119,10 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
                     </order-info>
                 </product-item>
                 <order-details>
+                    <info-quantity>
+                        <p>Product quantity: {q}</p>
+                        <p>All products quantity: {allQ}</p>
+                    </info-quantity>
                     <info-price>
                         <p>Product price: {productInfo.price}</p>
                         <p>Total order price: {details.price}</p>

@@ -33,6 +33,7 @@ const Orders = () => {
     }
 
     useEffect(() => {
+        
         if (user !== null && user !== undefined) {
             const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setOrderId={()=>{setIds(item.paymentId, order.id)}} openOrderPage={openOrderPage} />));
             setOrders(orders)

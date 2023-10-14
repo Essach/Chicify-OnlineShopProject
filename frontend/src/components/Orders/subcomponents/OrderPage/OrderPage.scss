@@ -86,7 +86,8 @@ order-page {
 
             info-price,
             info-delivery,
-            info-address {
+            info-address,
+            info-quantity {
                 display: flex;
                 flex-direction: column;
                 position: relative;
@@ -101,7 +102,7 @@ order-page {
                     margin-bottom: 3px;
                     text-wrap: nowrap;
 
-                    &.status {
+                    span {
                         margin-left: 7px;
                     }
                 }
@@ -133,7 +134,8 @@ order-page {
             }
 
             info-price::after,
-            info-address::after {
+            info-address::after,
+            info-quantity::after {
                 content: '';
                 height: 2px;
                 width: 100%;

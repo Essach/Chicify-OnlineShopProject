@@ -19,6 +19,7 @@ import { updateUser } from '../../../helpers/localStorage';
 
 const CartForm = (props) => {
     const { price, delivery } = props;
+    // console.log(price, delivery)
 
     const { state, dispatch } = useContext(CartContext)
 
@@ -257,23 +258,22 @@ const CartForm = (props) => {
                     }
                     {isValidationMessageVisible ? <validation-message>{validationMessage}</validation-message> : null}
                     {(areFormsVisiblePayment && areFormsVisibleDelivery) ? <>
-                        {isAddressFormValidated ?
-                        <price-and-button>
-                            <price-info>
-                                <p className='small'>{`Products cost: US$ ${price}`}</p>
-                                <p className='small'>{`Delivery cost: US$ ${deliveryPrice}`}</p>
-                                <p className='big'>{`Total cost: US$ ${price + deliveryPrice}`}</p>
-                            </price-info>
-                            <pay-and-order-btn>
-                                <p onClick={handlePayBtn}>
-                                    Pay and Order
-                                </p>
-                            </pay-and-order-btn>
-                        </price-and-button> :
-                        <proceed-button>
-                            <p onClick={handleProceedBtnClick}>Proceed to payment</p>
-                        </proceed-button>
-                        }
+                            <price-and-button>
+                                <price-info>
+                                    <p className='small'>{`Products cost: US$ ${price}`}</p>
+                                    <p className='small'>{`Delivery cost: US$ ${deliveryPrice}`}</p>
+                                    <p className='big'>{`Total cost: US$ ${price + deliveryPrice}`}</p>
+                                </price-info>
+                                    {isAddressFormValidated ?
+                                        <pay-and-order-btn>
+                                            <p onClick={handlePayBtn}>
+                                                Pay and Order
+                                            </p>
+                                        </pay-and-order-btn> :
+                                        <proceed-button>
+                                            <p onClick={handleProceedBtnClick}>Proceed to payment</p>
+                                        </proceed-button>}
+                            </price-and-button>
                         </>
                         : <select-message><p>Please select a payment and a delivery method</p></select-message>
                     }

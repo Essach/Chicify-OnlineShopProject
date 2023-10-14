@@ -41,6 +41,7 @@ exports.getPaymentInfo = (request, response, next) => {
         }
 
         response.status(200).json({
+            products: payment.products,
             address: payment.address,
             cardInfo: payment.cardInfo,
             price: payment.price,
