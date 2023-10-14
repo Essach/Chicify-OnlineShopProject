@@ -15,12 +15,24 @@ order-item {
         gap: 15px;
         align-items: center;
 
+        @media only screen and (max-width: 1100px) {
+            height: 3.5rem;
+
+            img {
+                transform: scale(0.8);
+            }
+        }
+
         p {
             color: v.$blue-3;
             font-size: 2rem;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 1.7rem;
+            }
         }
     }
 
@@ -34,6 +46,10 @@ order-item {
         justify-content: space-between;
         gap: 1rem;
         border-bottom: 1px solid v.$darker-grey;
+
+        @media only screen and (max-width: 1100px) {
+            padding: 15px 20px;
+        }
 
         inner-box {
             background-color: v.$lighter-grey;
@@ -50,6 +66,11 @@ order-item {
                 height: 6.5rem;
                 border-radius: 5px;
                 border: 1px solid v.$medium-grey;
+
+                @media only screen and (max-width: 1100px) {
+                    height: 5rem;
+                    width: 5rem;
+                }
 
                 img {
                     object-fit: cover;
@@ -81,6 +102,10 @@ order-item {
             line-height: normal;
             flex-grow: 1;
             text-align: center;
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 1.3rem;
+            }
         }
     }
 
@@ -97,6 +122,10 @@ order-item {
         font-weight: 600;
         line-height: normal;
         transition: all 0.1s ease-in;
+
+        @media only screen and (max-width: 1100px) {
+            font-size: 1.2rem;
+        }
 
         &:hover {
             cursor: pointer;

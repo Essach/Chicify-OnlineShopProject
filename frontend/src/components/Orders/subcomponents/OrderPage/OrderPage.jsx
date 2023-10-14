@@ -8,11 +8,14 @@ import request from '../../../../helpers/request';
 import close from '../../../../icons/arrowLeftWhite.svg';
 
 import { StoreContext } from '../../../../store/StoreProvider';  
+import { useNavigate } from 'react-router';
 
 
 const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
 
     const { user } = useContext(StoreContext);
+
+    const navigate = useNavigate();
 
     const [details, setDetails] = useState({
         address: {
@@ -42,8 +45,6 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
         reviews: [],
     });
 
-    // console.log(productInfo)
-    // console.log(details.products)
 
     let status;
     if (user.orders.find(payment => payment.paymentId === paymentId).products.find(prod => prod.id === productId).status === 'inDelivery') {
@@ -87,6 +88,10 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
         setProductInfo(data.product);
     }
 
+    const handleClickProductItem = () => {
+        navigate(`/product/${productId}`)
+    }
+
     useEffect(() => {
         setMoreDetails(paymentId)
     }, [paymentId]);
@@ -105,7 +110,7 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
                 <box-title>
                     More order details
                 </box-title>
-                <product-item>
+                <product-item onClick={handleClickProductItem}>
                     <order-image>
                         <img src={productInfo.images[0]} alt={`${productInfo.name} image`} />
                     </order-image>
