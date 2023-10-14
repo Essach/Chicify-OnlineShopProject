@@ -1,0 +1,41 @@
+@use '../../variables' as v;
+
+faq-page {
+    width: 40%;
+    margin: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    faq-title {
+        display: flex;
+        gap: 20px;
+        margin-left: 10px;
+
+        p {
+            color: v.$white;
+            font-size: 2.25rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+
+        img {
+            transform: scale(2);
+        }
+    }
+
+    faq-questions {
+        width: 100%;
+        background-color: v.$medium-grey;
+        border-radius: 0.3rem;
+        box-shadow: -12px 0px 24px rgba(0, 0, 0, 0.10);
+        padding: 20px 30px;
+
+        inner-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+    }
+}
