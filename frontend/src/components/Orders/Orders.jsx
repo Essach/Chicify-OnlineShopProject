@@ -8,6 +8,7 @@ import ordersIcon from '../../icons/ordersPage.svg';
 
 import Order from './subcomponents/Order/Order';
 import OrderPage from './subcomponents/OrderPage/OrderPage';
+import Login from '../Login/Login';
 
 const Orders = () => {
     const { user } = useContext(StoreContext)
@@ -24,7 +25,6 @@ const Orders = () => {
         setProductId(productId)
     }
 
-
     const openOrderPage = () => setIsDetailsPageOpen(true);
     const closeOrderPage = () => {
         setIsDetailsPageOpen(false);
@@ -38,14 +38,20 @@ const Orders = () => {
             const orders = user.orders.map(item => item.products.map(order => <Order key={order.id} id={order.id} status={order.status} setOrderId={()=>{setIds(item.paymentId, order.id)}} openOrderPage={openOrderPage} />));
             setOrders(orders)
         }
-    },[user])
+    }, [user])
+    
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenLogin = () => setIsModalOpen(true);
+    const handleOnCloseLogin = () => setIsModalOpen(false);
 
     return (
         <>
             {user === null || user === undefined ?
             <login-request>
                 <p>Please login to see your orders</p>
-                <login-btn>Login</login-btn>
+                <login-btn onClick={handleOpenLogin}>Login</login-btn>
+                <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen} />
             </login-request> :
             <>
                     {isDetailsPageOpen ? <OrderPage productId={productId} paymentId={orderId} closeOrderPage={closeOrderPage} /> :
