@@ -122,6 +122,43 @@ exports.patchUserOrder = (request, response, next) => {
     }
 }
 
+exports.patchSendMessage = (request, response, next) => {
+    try {
+        const { senderId, recipientId, content } = request.body;
+
+        const sender = usersData.find(user => user.userId === senderId);
+        const recipient = usersData.find(user => user.userId === recipientId);
+
+
+        if (sender === undefined) {
+            response.status(404).json({
+                message: "Couldn't find the sender's account"
+            })
+
+            return;
+        }
+        sender.sendMessage(recipientId, content)
+        if (recipient !== undefined) {
+            recipient.receiveMessage(senderId, content)
+        } else {
+            response.status(405).json({
+                message: "Couldn't find the recipient's account"
+            })
+
+            return;
+        }
+
+        response.status(200);
+        return;
+
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: "Internal code error"
+        })
+    }
+}
+
 const ADDFAVORITE = 'add';
 const REMOVEFAVORITE = 'remove';
 
