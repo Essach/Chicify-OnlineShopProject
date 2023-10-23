@@ -10,7 +10,7 @@ export const StoreContext = createContext(null);
 
 const StoreProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState();
 
     const fetchData = async () => {
         const { data } = await request.get('/products');
@@ -20,7 +20,6 @@ const StoreProvider = ({ children }) => {
 
     useEffect(() => {
         fetchData()
-        
         if (getUserInfo().length === undefined) {
             setUser(getUserInfo());
         }

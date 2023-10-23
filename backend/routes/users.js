@@ -1,5 +1,5 @@
 const express = require('express');
-const { postUserCreate, postUserLogin, patchUserOrder, patchUserFavorite, patchUserSeller, patchUserPassword, getUsers } = require('../controllers/users.js');
+const { postUserCreate, postUserLogin, patchUserOrder, patchUserFavorite, patchUserSeller, patchUserPassword, getUserName, getUsers } = require('../controllers/users.js');
 
 const router = express.Router();
 
@@ -10,6 +10,7 @@ router.patch('/favorites', patchUserFavorite);
 router.patch('/seller', patchUserSeller);
 router.patch('/password', patchUserPassword);
 router.get('/all', getUsers);
+router.get('/:id', getUserName);
 router.use((request, response) => response.status(404).end());
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const User = require('../Classes/User.js');
+const { use } = require('../routes/users.js');
 const { productsData } = require('./products.js');
 
 const usersData = [
@@ -20,6 +21,26 @@ const usersData = [
         [],
         [],
     ),
+    new User(
+        3,
+        'Chicify',
+        '123123123',
+        '',
+        '123',
+        [],
+        [],
+    ),
+    {
+    "accessLevel": 1,
+    "username": "Test User",
+    "phoneNumber": "111111111",
+    "emailAddress": "",
+    "password": "111",
+    "orders": [],
+    "favorites": [],
+    "conversations": [],
+    "userId": "1"
+}
 ]
 
 exports.postUserCreate = (request, response, next) => {
@@ -72,7 +93,7 @@ exports.postUserLogin = (request, response, next) => {
         }
 
 
-        console.log('login')
+        console.log(user)
         response.status(200).json({
             user,
         });
@@ -256,6 +277,34 @@ exports.patchUserPassword = (request, response, next) => {
             message: 'password updated'
         });
 
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Internal server error',
+        })
+    }
+}
+
+exports.getUserName = (request, response, next) => {
+    try {
+        const { id } = request.params;
+
+        const user = usersData.find(user => user.userId === id)
+        console.log(usersData.find(user => user.userId === "1"))
+        console.log(typeof id)
+        console.log(user)
+
+        if (user === undefined || (user !== undefined && user.username === '')) {
+            response.status(404).json({
+                message: "Couldn't find user or user doesn't have an username",
+            })
+
+            return;
+        };
+
+        response.status(200).json({
+            username: user.username,
+        })
     } catch (error) {
         response.status(500).json({
             error,

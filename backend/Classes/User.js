@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 class User {
-    constructor(accessLevel, username, phoneNumber = '', emailAddress = '', password, orders, favorites) {
+    constructor(accessLevel, username = '', phoneNumber = '', emailAddress = '', password, orders, favorites) {
         this.accessLevel = accessLevel;
         this.username = username;
         this.phoneNumber = phoneNumber;
@@ -8,7 +8,20 @@ class User {
         this.password = password;
         this.orders = orders;
         this.favorites = favorites;
-        this.conversations = []
+        this.conversations = [{
+            recipientId: 1,
+            messages: [
+                {
+                    type: 'sent',
+                    content: 'lalala'
+                },
+                {
+                    type: 'received',
+                    content: 'what'
+                },
+            ]
+        }
+        ];
         this.userId = uuidv4();
     }
 
@@ -36,7 +49,10 @@ class User {
             conversation.messages.push({
                 type: 'sent',
                 content: toString(content)
-            })
+            });
+            const i = this.conversations.indexOf(conversation);
+            this.conversations.splice(i, 1);
+            this.conversations.push(conversation);
         }
     }
 
@@ -56,7 +72,10 @@ class User {
             conversation.messages.push({
                 type: 'received',
                 content: toString(content)
-            })
+            });
+            const i = this.conversations.indexOf(conversation);
+            this.conversations.splice(i, 1);
+            this.conversations.push(conversation);
         }
     }
 

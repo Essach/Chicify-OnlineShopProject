@@ -107,11 +107,10 @@ const Login = ({handleOnClose, isModalOpen}) => {
             );
 
             if (status === 200) {
-                setUser(data.user)
+                updateUser(data.user);
+                setUser(data.user);
                 resetStateOfInputs();
                 handleOnClose();
-                
-                updateUser(data.user)
             } else {
                 setErrorText('*Invalid login or password');
                 setIsFormValidated(false);

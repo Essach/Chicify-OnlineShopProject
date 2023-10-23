@@ -29,6 +29,7 @@ import { StoreContext } from '../../store/StoreProvider';
 import Login from '../Login/Login';
 
 import { logoutUser } from '../../helpers/localStorage';
+import NotificationWindow from './subcomponents/Notification/NotificationWindow/NotificationWindow';
 
 
 const Navbar = () => {
@@ -109,12 +110,6 @@ const Navbar = () => {
             handleOnClick: handleOnClickFavorites,
         },
         {
-            id: 'notifications',
-            icon: notificationsIcon,
-            text: '',   
-            handleOnClick: handleOnClickNotifications
-        },
-        {
             id: 'cart',
             icon: cartIcon,
             text: '',
@@ -139,6 +134,13 @@ const Navbar = () => {
             handleOnClick: handleOnClickLogin,
         },
     ]
+
+    // {
+    //     id: 'notifications',
+    //     icon: notificationsIcon,
+    //     text: '',   
+    //     handleOnClick: handleOnClickNotifications
+    // },
 
     const navButtonsListMobile = [
         {
@@ -359,6 +361,7 @@ const Navbar = () => {
                     />
                     }
                     <nav-buttons>
+                        <NotificationWindow />
                         {navButtons}
                     </nav-buttons>
                     <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen} />
