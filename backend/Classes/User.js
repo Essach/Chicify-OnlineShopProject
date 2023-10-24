@@ -12,12 +12,8 @@ class User {
             recipientId: 1,
             messages: [
                 {
-                    type: 'sent',
-                    content: 'lalala'
-                },
-                {
                     type: 'received',
-                    content: 'what'
+                    content: 'Welcome to Chicify. Feel free to look around'
                 },
             ]
         }

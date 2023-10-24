@@ -12,7 +12,6 @@ const NotificationWindow = () => {
     const handleOnClickButton = () => setIsPopupOpen(prev=>!prev)
 
     const [notificationItems, setNotificationItems] = useState([])
-    const [notificationNames, setNotificationNames] = useState([])
 
     const fetchNotificationNames = async () => {
         let names = []
@@ -23,16 +22,17 @@ const NotificationWindow = () => {
                 if (status === 200) {
                     names.push(data.username)
                 } else {
-                    // console.log(status)
+                    return
                 }
             }
             return names
         }
     }
 
-    useEffect(() => {
-        if (user) {
-            fetchNotificationNames();
+    const createNotificationItems = async () => {
+        const names = await fetchNotificationNames();
+        console.log(names)
+        if (names) {
             const copiedUserConversations = [...user.conversations];
             setNotificationItems(copiedUserConversations.reverse().splice(0, 2).map((item, index) => (
                 <notification-item key={item.recipientId}>
@@ -40,23 +40,17 @@ const NotificationWindow = () => {
                         {item.messages[item.messages.length - 1].content}
                     </notification-message>
                     <notification-user>
-                        {notificationNames[index]}
+                        {names[index]}
                     </notification-user>
                 </notification-item>
             )))
-            // const copiedUserConversations = [...user.conversations];
-            // setNotificationItems(copiedUserConversations.reverse().splice(0, 2).map((item, index) => (
-            //     <notification-item key={item.recipientId}>
-            //         <notification-message>
-            //             {item.messages[item.messages.length - 1].content}
-            //         </notification-message>
-            //         <notification-user>
-            //             {notificationNames[index]}
-            //         </notification-user>
-            //     </notification-item>
-            // )))
         }
+    }
 
+    useEffect(() => {
+        if (user) {
+            createNotificationItems()
+        }
     },[user])
 
     return (
