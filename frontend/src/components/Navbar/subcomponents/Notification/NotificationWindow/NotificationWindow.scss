@@ -41,6 +41,7 @@ notification-window {
                 color: v.$darkest-blue;
                 white-space: nowrap;
                 overflow: hidden;
+                position: relative;
             }
 
             notification-user {

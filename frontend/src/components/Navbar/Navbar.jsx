@@ -135,13 +135,6 @@ const Navbar = () => {
         },
     ]
 
-    // {
-    //     id: 'notifications',
-    //     icon: notificationsIcon,
-    //     text: '',   
-    //     handleOnClick: handleOnClickNotifications
-    // },
-
     const navButtonsListMobile = [
         {
             id: 'favorites',
