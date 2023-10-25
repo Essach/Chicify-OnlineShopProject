@@ -1,0 +1,109 @@
+@use '../../variables' as v;
+
+notifications-page-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+
+    notifications-page {
+        width: 45vw;
+        height: 37rem;
+        background-color: v.$white;
+        padding: 0.5rem;
+        display: grid;
+        grid-template-columns: 2fr 4fr;
+        
+        messages-section {
+            background-color: v.$minty-blue;
+            height: 100%;
+            padding: 0.7rem;
+            border-right: 2px solid v.$darkest-blue;
+
+            page-title {
+                display: flex;
+                gap: 13px;
+                margin-bottom: 1rem;
+
+                img {
+                    transform: scale(1.4);
+                }
+
+                p {
+                    color: v.$white;
+                    font-family: Inter;
+                    font-size: 1.875rem;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+            }
+
+            messages-selection {
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+                overflow-y: scroll;
+
+                notification-item {
+                    border-left: solid 2px v.$blue-3;
+                    padding: 10px 5px 10px 10px;
+                    overflow: hidden;
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    notification-message {
+                        font-size: 1rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 150%;
+                        color: v.$darkest-blue; 
+                        max-height: 24px;
+                        overflow: hidden;
+                        position: relative;
+                    }
+
+                    notification-user {
+                        font-size: 0.7rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 150%;
+                        color: v.$darkest-blue;
+                        margin-left: 10px;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                &::-webkit-scrollbar {
+                    width: 20px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: v.$minty-blue;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: v.$white;
+                    background-clip: padding-box;
+                    border-right: 4px solid v.$minty-blue;
+                    border-left: 4px solid v.$minty-blue;
+                    border-top: 5px solid v.$minty-blue;
+                    border-bottom: 5px solid v.$minty-blue;
+
+                    &:hover {
+                        background-color: v.$lighter-grey;
+                    }
+                }
+            }
+        }
+
+        conversation-section {
+            background-color: v.$medium-grey;
+        }
+    }
+}

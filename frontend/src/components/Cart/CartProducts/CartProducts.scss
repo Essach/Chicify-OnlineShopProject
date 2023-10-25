@@ -3,9 +3,8 @@
 .cart-products-shown {
     max-width: 100%;
     min-width: 500px;
-    max-height: 100%;
+    max-height: 36.5rem;
     background-color: v.$dark-grey;
-    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

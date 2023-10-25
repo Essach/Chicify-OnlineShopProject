@@ -16,6 +16,7 @@ import PasswordRecovery from './components/PasswordRecovery/PasswordRecovery';
 import Cart from './components/Cart/Cart';
 import Orders from './components/Orders/Orders';
 import Faq from './components/Faq/Faq';
+import Notifications from './components/Notifications/Notifications';
 
 const App = () => {
 
@@ -36,6 +37,7 @@ const App = () => {
                             <Route path='/cart' Component={Cart} />
                             <Route path='/orders' Component={Orders} />
                             <Route path='/faq' Component={Faq} />
+                            <Route path='/notifications/:id' Component={Notifications}/>
                         </Routes>
                     </content-wrapper>
                 </CartProvider>
