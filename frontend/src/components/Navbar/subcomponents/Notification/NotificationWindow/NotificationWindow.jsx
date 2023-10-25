@@ -3,6 +3,7 @@ import notificationsIcon from '../../../../../icons/notifications.svg';
 import { StoreContext } from '../../../../../store/StoreProvider';
 import './NotificationWindow.scss';
 import request from '../../../../../helpers/request';
+import { useNavigate } from 'react-router';
 
 const NotificationWindow = () => {
     const { user } = useContext(StoreContext)
@@ -12,32 +13,38 @@ const NotificationWindow = () => {
     const popupRef = useRef();
     const btnRef = useRef();
 
+    const navigate = useNavigate();
+
     const handleOnClickButton = () => setIsPopupOpen(prev=>!prev)
 
     const [notificationItems, setNotificationItems] = useState([])
 
     const fetchNotificationNames = async () => {
         let names = []
-        const copiedUserConversations = [...user.conversations];
+        const copiedUserConversations = [...user.conversations].filter(conv => conv.messages[conv.messages.length - 1].type === 'received');
         for (let i = 0; i < 2; i++) {
             if (copiedUserConversations.reverse()[i] !== undefined) {
                 let { status, data } = await request.get(`/users/${copiedUserConversations.reverse()[i].recipientId}`);
                 if (status === 200) {
                     names.push(data.username)
-                } else {
-                    return
                 }
             }
-            return names
         }
+
+        names.reverse();
+        return names
     }
 
     const createNotificationItems = async () => {
         const names = await fetchNotificationNames();
         if (names) {
-            const copiedUserConversations = [...user.conversations];
+            const copiedUserConversations = [...user.conversations].filter(conv => conv.messages[conv.messages.length - 1].type === 'received');
+
             setNotificationItems(copiedUserConversations.reverse().splice(0, 2).map((item, index) => (
-                <notification-item key={item.recipientId}>
+                <notification-item key={item.recipientId} onClick={() => {
+                    navigate(`/notifications/${item.recipientId}`);
+                    setIsPopupOpen(false);
+                }}>
                     <notification-message>
                         {item.messages[item.messages.length - 1].content}
                     </notification-message>
