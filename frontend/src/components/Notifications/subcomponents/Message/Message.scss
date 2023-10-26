@@ -1,0 +1,41 @@
+@use '../../../../variables' as v;
+
+message-box {
+
+    .message-received,
+    .message-sent {
+        max-width: 50%;
+        height: auto;
+        border-radius: 1.5rem;
+        padding: 10px 15px;
+        
+        p {
+            font-family: Inter;
+            font-size: 0.9rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 150%;
+        }
+    }
+
+    .message-received {
+        background-color: v.$blue-3;
+        float: left;
+        margin-left: 1rem;
+
+        p {
+            color: v.$white
+        }
+    }
+
+
+    .message-sent {
+        background-color: v.$white;
+        float: right;
+        margin-right: 1rem;
+
+        p {
+            color: v.$blue-3;
+        }
+    }
+}

@@ -42,7 +42,18 @@ const usersData = [
     "favorites": [],
     "conversations": [],
     "userId": "2"
-    }
+    },
+    {
+    "accessLevel": 1,
+    "username": "TestUser2",
+    "phoneNumber": "123123122",
+    "emailAddress": "",
+    "password": "111",
+    "orders": [],
+    "favorites": [],
+    "conversations": [],
+    "userId": "3"
+    },
 ]
 
 exports.postUserCreate = (request, response, next) => {

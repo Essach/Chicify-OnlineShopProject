@@ -16,6 +16,30 @@ class User {
                     content: 'Welcome to Chicify. Feel free to look around'
                 },
             ]
+        },{
+            recipientId: 2,
+            messages: [
+                {
+                    type: 'received',
+                    content: 'Siema'
+                },
+                {
+                    type: 'sent',
+                    content: 'No elo'
+                },
+            ]
+        },{
+            recipientId: 3,
+            messages: [
+                {
+                    type: 'sent',
+                    content: 'halo'
+                },
+                {
+                    type: 'received',
+                    content: 'Estonia jest republiką parlamentarną. Szefem rządu jest premier, którego powołuje prezydent i zatwierdza parlament. Głównym organem wykonawczym polityki państwa jest rząd. Głową państwa jest prezydent wybierany przez parlament lub kolegium wyborcze na okres pięciu lat. W parlamencie zasiada 101 posłów wybieranych na czteroletnią kadencję. Estonia dzieli się na 15 prowincji i 79 gmin.'
+                },
+            ]
         }
         ];
         this.userId = uuidv4();
