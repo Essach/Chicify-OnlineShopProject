@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import request from '../../../helpers/request';
 import Message from './Message/Message';
@@ -11,6 +11,8 @@ const NotificationsConversation = (props) => {
 
     const [messages, setMessages] = useState([])
 
+    const messagesRef = useRef();
+
     const fetchRecipientName = async () => {
         const { status, data } = await request.get(`/users/${recipientId}`);
         if (status === 200) {
@@ -19,23 +21,26 @@ const NotificationsConversation = (props) => {
     }
 
     useEffect(() => {
-        fetchRecipientName();
-        const conversation = user.conversations.find(conversation => conversation.recipientId === Number(recipientId));
-        const messages = conversation.messages.map((message,index) => <Message key={index} content={message.content} type={message.type} />);
-        setMessages(messages);
-        // console.log(Math.round(Math.random()*100000))
+        if (recipientId !== undefined) {
+            fetchRecipientName();
+            const conversation = user.conversations.find(conversation => conversation.recipientId === recipientId);
+            const messages = conversation.messages.slice().reverse().map((message, index) => <Message key={index} content={message.content} type={message.type} />);
+            setMessages(messages);
+        }
 
-    },[recipientId])
+    },[recipientId, user.conversations])
 
     return (
         <conversation-section>
-            <user-info>
-                {recipientName}
-            </user-info>
-            <conversation-messages>
-                {messages}
-            </conversation-messages>
-            <NewMessage />
+            {recipientId !== undefined && <>
+                <user-info>
+                    {recipientName}
+                </user-info>
+                <conversation-messages ref={messagesRef}>
+                    {messages}
+                </conversation-messages>
+                <NewMessage recipientId={recipientId} userId={user.userId} />
+            </>}
         </conversation-section>
     );
 }

@@ -38,6 +38,7 @@ const App = () => {
                             <Route path='/orders' Component={Orders} />
                             <Route path='/faq' Component={Faq} />
                             <Route path='/notifications/:id' Component={Notifications}/>
+                            <Route path='/notifications' Component={Notifications}/>
                         </Routes>
                     </content-wrapper>
                 </CartProvider>

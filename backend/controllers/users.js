@@ -63,8 +63,6 @@ exports.postUserCreate = (request, response, next) => {
         const newUser = new User(1, username, phoneNumber, emailAddress, password, [], []);
         usersData.push(newUser);
 
-        console.log(newUser)
-
         response.status(200).json({
             message: 'account created'
         })
@@ -106,7 +104,6 @@ exports.postUserLogin = (request, response, next) => {
         }
 
 
-        console.log(user)
         response.status(200).json({
             user,
         });
@@ -160,9 +157,16 @@ exports.patchSendMessage = (request, response, next) => {
     try {
         const { senderId, recipientId, content } = request.body;
 
-        const sender = usersData.find(user => user.userId === senderId);
-        const recipient = usersData.find(user => user.userId === recipientId);
+        // console.log(senderId)
+        // console.log(usersData)
+        // console.log(content)
+        // console.log("Here 1")
 
+        const sender = usersData.find(user => user.userId === senderId);
+        // console.log("Here 2")
+
+        const recipient = usersData.find(user => user.userId === recipientId);
+        // console.log("Here 3")
 
         if (sender === undefined) {
             response.status(404).json({
@@ -171,9 +175,14 @@ exports.patchSendMessage = (request, response, next) => {
 
             return;
         }
+        // console.log("Here 4")
+
         sender.sendMessage(recipientId, content)
+        // console.log("Here 5")
         if (recipient !== undefined) {
+            // console.log("Here 5.5")
             recipient.receiveMessage(senderId, content)
+            // console.log("Here 6")
         } else {
             response.status(405).json({
                 message: "Couldn't find the recipient's account"
@@ -181,8 +190,13 @@ exports.patchSendMessage = (request, response, next) => {
 
             return;
         }
+        // console.log("Here 7")
 
-        response.status(200);
+        response.status(200).json({
+            user: sender
+        })
+        // console.log("Here 8")
+        
         return;
 
     } catch (error) {
@@ -303,9 +317,6 @@ exports.getUserName = (request, response, next) => {
         const { id } = request.params;
 
         const user = usersData.find(user => user.userId === id)
-        console.log(usersData.find(user => user.userId === "1"))
-        console.log(typeof id)
-        console.log(user)
 
         if (user === undefined || (user !== undefined && user.username === '')) {
             response.status(404).json({

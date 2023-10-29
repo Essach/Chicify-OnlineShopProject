@@ -8,7 +8,6 @@ notifications-page-container {
 
     notifications-page {
         width: 55vw;
-        height: 40rem;
         background-color: v.$white;
         padding: 0.5rem;
         display: grid;
@@ -16,40 +15,45 @@ notifications-page-container {
         
         messages-section {
             background-color: v.$minty-blue;
-            height: 100%;
-            padding: 0.7rem;
+            height: 40rem;
+            padding: 0.9rem 0.5rem 0.9rem 0.9rem;
             border-right: 2px solid v.$darkest-blue;
 
             page-title {
+                height: 2.5rem;
                 display: flex;
-                gap: 13px;
+                align-items: center;
+                gap: 15px;
                 margin-bottom: 1rem;
+                margin-left: 5px;
 
                 img {
-                    transform: scale(1.4);
+                    transform: scale(1.5);
                 }
 
                 p {
                     color: v.$white;
                     font-family: Inter;
-                    font-size: 1.875rem;
+                    font-size: 1.9rem;
                     font-style: normal;
                     font-weight: 700;
-                    line-height: normal;
+                    text-align: center;
                 }
             }
 
             messages-selection {
                 display: flex;
                 flex-direction: column;
+                height: 35rem;
                 gap: 7px;
-                overflow-y: scroll;
+                overflow-y: scroll  ;
 
                 notification-item {
                     border-left: solid 2px v.$blue-3;
                     padding: 10px 5px 10px 10px;
                     overflow: hidden;
                     width: 100%;
+                    min-height: 3rem;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -80,7 +84,7 @@ notifications-page-container {
                 }
 
                 &::-webkit-scrollbar {
-                    width: 20px;
+                    width: 10px;
                 }
 
                 &::-webkit-scrollbar-track {
@@ -90,10 +94,7 @@ notifications-page-container {
                 &::-webkit-scrollbar-thumb {
                     background: v.$white;
                     background-clip: padding-box;
-                    border-right: 4px solid v.$minty-blue;
-                    border-left: 4px solid v.$minty-blue;
-                    border-top: 5px solid v.$minty-blue;
-                    border-bottom: 5px solid v.$minty-blue;
+                    border-left: 6px solid v.$minty-blue;
 
                     &:hover {
                         background-color: v.$lighter-grey;
@@ -103,9 +104,11 @@ notifications-page-container {
         }
 
         conversation-section {
-            background-color: v.$medium-grey;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
+            height: 40rem;
+            background-color: v.$medium-grey;
 
             user-info {
                 display: flex;
@@ -117,18 +120,38 @@ notifications-page-container {
                 height: 4rem;
                 color: v.$white;
                 font-family: Inter;
-                font-size: 1.5625rem;
+                font-size: 1.5rem;
                 font-style: normal;
                 font-weight: 500;
+                border-bottom: 2px solid v.$darkest-blue;
             }
 
             conversation-messages {
                 flex-grow: 1;
                 display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
+                flex-direction: column-reverse;
                 gap: 10px;
-                padding-bottom: 1rem;
+                padding: 1rem 0;
+                height: 32.5rem;
+                overflow-y:scroll;
+                background-color: v.$medium-grey;
+
+                &::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: v.$medium-grey;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: v.$white;
+                    background-clip: padding-box;
+                    border-right: 2px solid v.$medium-grey;
+                    border-left: 2px solid v.$medium-grey;
+                    border-top: 4px solid v.$medium-grey;
+                    border-bottom: 4px solid v.$medium-grey;
+                }
             }
 
             new-message-section {
@@ -167,20 +190,16 @@ notifications-page-container {
                     }
 
                     &::-webkit-scrollbar-track {
-                        background: v.$medium-grey;
+                        background: v.$white;
                     }
 
                     &::-webkit-scrollbar-thumb {
-                        background: v.$white;
+                        background: v.$medium-grey;
                         background-clip: padding-box;
-                        border-right: 2px solid v.$medium-grey;
-                        border-left: 2px solid v.$medium-grey;
-                        border-top: 4px solid v.$medium-grey;
-                        border-bottom: 4px solid v.$medium-grey;
-
-                        &:hover {
-                            background-color: v.$lighter-grey;
-                        }
+                        border-right: 2px solid v.$white;
+                        border-left: 2px solid v.$white;
+                        border-top: 4px solid v.$white;
+                        border-bottom: 4px solid v.$white;
                     }
                 }
 

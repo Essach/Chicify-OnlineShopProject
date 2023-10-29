@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import './Notifications.scss';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { StoreContext } from '../../store/StoreProvider';
 import NotificationsMessages from './subcomponents/NotificationsMessages';
 import NotificationsConversation from './subcomponents/NotificationsConversation';
@@ -8,14 +8,22 @@ import NotificationsConversation from './subcomponents/NotificationsConversation
 const Notifications = () => {
     const { id: recipientId } = useParams();
 
+    // const [userRealTime, setUserRealTime] = useState()
+
     const { user } = useContext(StoreContext);
 
 
     return (
         <notifications-page-container>
             <notifications-page>
-                <NotificationsMessages user={user} />
-                <NotificationsConversation recipientId={recipientId} user={user} />
+                {user !== undefined && <>
+                    <NotificationsMessages user={user} />
+                    {recipientId !== undefined ?
+                        <NotificationsConversation recipientId={recipientId} user={user} /> :
+                        <NotificationsConversation user={user} />
+                    }
+                </>
+                }
             </notifications-page>
         </notifications-page-container>
     );

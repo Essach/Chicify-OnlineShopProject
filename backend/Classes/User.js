@@ -9,7 +9,7 @@ class User {
         this.orders = orders;
         this.favorites = favorites;
         this.conversations = [{
-            recipientId: 1,
+            recipientId: "1",
             messages: [
                 {
                     type: 'received',
@@ -17,7 +17,7 @@ class User {
                 },
             ]
         },{
-            recipientId: 2,
+            recipientId: "2",
             messages: [
                 {
                     type: 'received',
@@ -29,7 +29,7 @@ class User {
                 },
             ]
         },{
-            recipientId: 3,
+            recipientId: "3",
             messages: [
                 {
                     type: 'sent',
@@ -54,6 +54,7 @@ class User {
     }
 
     sendMessage(recipientId, content) {
+        // console.log(content)
         const conversation = this.conversations.find(conversation => conversation.recipientId === recipientId);
         if (conversation === undefined) {
             this.conversations.push({
@@ -61,19 +62,20 @@ class User {
                 messages: [
                     {
                         type: 'sent',
-                        content: toString(content)
+                        content: content
                     }
                 ]
             })
         } else {
             conversation.messages.push({
                 type: 'sent',
-                content: toString(content)
+                content: content
             });
             const i = this.conversations.indexOf(conversation);
             this.conversations.splice(i, 1);
             this.conversations.push(conversation);
         }
+        // console.log(this.conversations)
     }
 
     receiveMessage(senderId, content) {
@@ -84,14 +86,14 @@ class User {
                 messages: [
                     {
                         type: 'received',
-                        content: toString(content)
+                        content: content
                     }
                 ]
             })
         } else {
             conversation.messages.push({
                 type: 'received',
-                content: toString(content)
+                content: content
             });
             const i = this.conversations.indexOf(conversation);
             this.conversations.splice(i, 1);
