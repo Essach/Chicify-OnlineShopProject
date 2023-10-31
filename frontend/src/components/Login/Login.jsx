@@ -23,7 +23,7 @@ import { updateUser } from '../../helpers/localStorage';
 const Login = ({handleOnClose, isModalOpen}) => {
     const navigate = useNavigate();
 
-    const { setUser } = useContext(StoreContext)
+    const { setUser, userInterval } = useContext(StoreContext)
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -111,12 +111,27 @@ const Login = ({handleOnClose, isModalOpen}) => {
                 setUser(data.user);
                 resetStateOfInputs();
                 handleOnClose();
+                userInterval.current = setInterval(() => {
+                    updateUserData(loginType, emailOrPhoneNumberValue, passwordValue);
+                },10000) 
             } else {
                 setErrorText('*Invalid login or password');
                 setIsFormValidated(false);
             }
         }
     }
+
+    const updateUserData = async (loginType, emailOrPhoneNumberValue, passwordValue) => {
+        const { data, status } = await request.post(
+            '/users/login',
+            { loginType: loginType, login: emailOrPhoneNumberValue, password: passwordValue },
+        );
+
+        if (status === 200) {
+            updateUser(data.user);
+            setUser(data.user);
+        }
+    } 
 
     useEffect(() => {
         if (isModalOpen) {

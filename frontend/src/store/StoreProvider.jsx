@@ -1,9 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import request from "../helpers/request";
 
 import PropTypes from 'prop-types';
 
-import { getUserInfo } from "../helpers/localStorage";
+import { getUserInfo, updateUser } from "../helpers/localStorage";
 
 
 export const StoreContext = createContext(null);
@@ -12,16 +12,47 @@ const StoreProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [user, setUser] = useState();
 
+    const userInterval = useRef();
+
     const fetchData = async () => {
         const { data } = await request.get('/products');
         
         setProducts(data.products);
     };
 
+    const updateUserData = async (loginType, emailOrPhoneNumberValue, passwordValue) => {
+        const { data, status } = await request.post(
+            '/users/login',
+            { loginType: loginType, login: emailOrPhoneNumberValue, password: passwordValue },
+        );
+
+        if (status === 200) {
+            updateUser(data.user);
+            setUser(data.user);
+            console.log(data.user)
+        }
+    }
+
     useEffect(() => {
         fetchData()
         if (getUserInfo().length === undefined) {
-            setUser(getUserInfo());
+            const currUser = getUserInfo();
+            setUser(currUser);
+
+            let loginType;
+            let emailOrPhoneNumberValue;
+            if (currUser.emailAddress !== "") {
+                loginType = "emailAddress";
+                emailOrPhoneNumberValue = currUser.emailAddress
+            } else if (currUser.phoneNumber !== "") {
+                loginType = "phoneNumber";
+                emailOrPhoneNumberValue = currUser.phoneNumber;
+            }
+            userInterval.current = setInterval(()=>{updateUserData(loginType, emailOrPhoneNumberValue, currUser.password)},10000)
+        }
+        
+        return () => {
+            clearInterval(userInterval.current)
         }
         
     }, []);
@@ -32,6 +63,7 @@ const StoreProvider = ({ children }) => {
             setProducts,
             user,
             setUser,
+            userInterval,
         }}>
             {children}
         </StoreContext.Provider>

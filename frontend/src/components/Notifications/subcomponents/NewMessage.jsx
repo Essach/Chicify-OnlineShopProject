@@ -32,7 +32,7 @@ const NewMessage = (props) => {
     }
 
     const handleSendMessage = async () => {
-        const { data, status } = await request.patch('/users/message', { senderId: userId, recipientId: "912e2088-0f0e-4e25-b844-3695ac238609", content: content });
+        const { data, status } = await request.patch('/users/message', { senderId: userId, recipientId: recipientId, content: content });
         if (status === 200) {
             setIsShiftClicked(false);
             setContent('');

@@ -56,7 +56,7 @@ const Navbar = () => {
 
     // Navigate buttons
 
-    const { user, setUser } = useContext(StoreContext);
+    const { user, setUser, userInterval } = useContext(StoreContext);
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -96,6 +96,7 @@ const Navbar = () => {
             logoutUser();
             navigateFunction('home');
             navigate(0);
+            clearInterval(userInterval.current)
         } else {
             setIsModalOpen(true);
             if (window.innerWidth < 1100) setIsMobileMenuVisible(false);

@@ -15,7 +15,7 @@ const NotificationsMessages = ({user}) => {
         const copiedUserConversations = [...user.conversations]
         for (let i = 0; i < copiedUserConversations.length; i++) {
             if (copiedUserConversations.slice().reverse()[i] !== undefined) {
-                let { status, data } = await request.get(`/users/${copiedUserConversations.slice().reverse()[i].recipientId}`);
+                let { status, data } = await request.get(`/users/${copiedUserConversations[i].recipientId}`);
                 if (status === 200) {
                     names.push(data.username)
                 }
@@ -30,7 +30,6 @@ const NotificationsMessages = ({user}) => {
         const names = await fetchNotificationNames();
         if (names) {
             const copiedUserConversations = [...user.conversations]
-
             setNotificationItems(copiedUserConversations.slice().reverse().map((item, index) => (
                 <notification-item key={item.recipientId} onClick={() => {
                     navigate(`/notifications/${item.recipientId}`);

@@ -51,6 +51,8 @@ notification-window {
                 line-height: 150%;
                 color: v.$darkest-blue;
                 margin-left: 10px;
+                white-space: nowrap;
+                overflow: hidden;
             }
 
             &:hover {

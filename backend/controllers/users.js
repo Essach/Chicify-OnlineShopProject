@@ -1,5 +1,5 @@
 const User = require('../Classes/User.js');
-const { use } = require('../routes/users.js');
+const BotUser = require('../Classes/BotUser.js');
 const { productsData } = require('./products.js');
 
 const usersData = [
@@ -21,39 +21,8 @@ const usersData = [
         [],
         [],
     ),
-    {
-    "accessLevel": 3,
-    "username": "Chicify",
-    "phoneNumber": "111111111",
-    "emailAddress": "",
-    "password": "111",
-    "orders": [],
-    "favorites": [],
-    "conversations": [],
-    "userId": "1"
-    },
-    {
-    "accessLevel": 1,
-    "username": "TestUser",
-    "phoneNumber": "123123123",
-    "emailAddress": "",
-    "password": "111",
-    "orders": [],
-    "favorites": [],
-    "conversations": [],
-    "userId": "2"
-    },
-    {
-    "accessLevel": 1,
-    "username": "TestUser2",
-    "phoneNumber": "123123122",
-    "emailAddress": "",
-    "password": "111",
-    "orders": [],
-    "favorites": [],
-    "conversations": [],
-    "userId": "3"
-    },
+    new BotUser("1", "Chicify Online Shop", "111111111", ""),
+    new BotUser("2", "Test User", "123123123", ""),
 ]
 
 exports.postUserCreate = (request, response, next) => {
@@ -157,16 +126,8 @@ exports.patchSendMessage = (request, response, next) => {
     try {
         const { senderId, recipientId, content } = request.body;
 
-        // console.log(senderId)
-        // console.log(usersData)
-        // console.log(content)
-        // console.log("Here 1")
-
         const sender = usersData.find(user => user.userId === senderId);
-        // console.log("Here 2")
-
         const recipient = usersData.find(user => user.userId === recipientId);
-        // console.log("Here 3")
 
         if (sender === undefined) {
             response.status(404).json({
@@ -175,14 +136,14 @@ exports.patchSendMessage = (request, response, next) => {
 
             return;
         }
-        // console.log("Here 4")
 
         sender.sendMessage(recipientId, content)
-        // console.log("Here 5")
         if (recipient !== undefined) {
-            // console.log("Here 5.5")
-            recipient.receiveMessage(senderId, content)
-            // console.log("Here 6")
+            if (recipientId === "1" || recipientId === "2") {
+                sender.receiveMessage(recipientId, "This is an automatically generated response");
+            } else {
+                recipient.receiveMessage(senderId, content);
+            }
         } else {
             response.status(405).json({
                 message: "Couldn't find the recipient's account"
@@ -190,12 +151,10 @@ exports.patchSendMessage = (request, response, next) => {
 
             return;
         }
-        // console.log("Here 7")
 
         response.status(200).json({
             user: sender
         })
-        // console.log("Here 8")
         
         return;
 
