@@ -9,27 +9,40 @@ notifications-dialog {
     padding: 1rem;
     gap: 1.5rem;
 
-    n-title {
+    n-top {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 15px;
-        height: 3rem;
-        margin-left: 10px;
 
-        img {
-            transform: scale(1.8);
+        n-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            height: 3rem;
+            margin-left: 10px;
+
+            img {
+                transform: scale(1.7);
+            }
+
+            p {
+                color: v.$white;
+                font-family: Inter;
+                font-size: 1.875rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
         }
 
-        p {
-            color: v.$white;
-            font-family: Inter;
-            font-size: 1.875rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
+        n-close {
+            display: block;
+
+            img {
+                transform: scale(1.3);
+            }
         }
     }
-
     n-messages {
         display: flex;
         flex-direction: column;

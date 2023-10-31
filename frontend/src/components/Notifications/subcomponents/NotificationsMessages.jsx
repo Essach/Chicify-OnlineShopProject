@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import notificationsIcon from '../../../icons/notifications.svg';
+import closeIcon from '../../../icons/close.svg';
 import request from "../../../helpers/request";
 import PropTypes from 'prop-types';
 
-const NotificationsMessages = ({user}) => {
+
+const NotificationsMessages = ({user, isOpenMobile, handleToggleMessagesMobile}) => {
 
     const [notificationItems, setNotificationItems] = useState([])
 
@@ -33,6 +35,7 @@ const NotificationsMessages = ({user}) => {
             setNotificationItems(copiedUserConversations.slice().reverse().map((item, index) => (
                 <notification-item key={item.recipientId} onClick={() => {
                     navigate(`/notifications/${item.recipientId}`);
+                    handleToggleMessagesMobile();
                 }}>
                     <notification-message>
                         {item.messages[item.messages.length - 1].content}
@@ -52,20 +55,27 @@ const NotificationsMessages = ({user}) => {
     }, [user])
 
     return (
-        <messages-section>
-            <page-title>
-                <img src={notificationsIcon} alt="notifications icon" />
-                <p>Notifications</p>
-            </page-title>
+        <div className={`messages-section-${isOpenMobile ? 'open' : 'hidden'}`}>
+            <page-top>
+                <page-title>
+                    <img src={notificationsIcon} alt="notifications icon" />
+                    <p>Notifications</p>
+                </page-title>
+                <close-btn onClick={handleToggleMessagesMobile}>
+                    <img src={closeIcon} alt="go back to conversation" />
+                </close-btn>
+            </page-top>
             <messages-selection>
                 {notificationItems}
             </messages-selection>
-        </messages-section>
+        </div>
     );
 }
 
 NotificationsMessages.propTypes = {
     user: PropTypes.object,
+    isOpenMobile: PropTypes.bool,
+    handleToggleMessagesMobile: PropTypes.func,
 }
 
 export default NotificationsMessages;

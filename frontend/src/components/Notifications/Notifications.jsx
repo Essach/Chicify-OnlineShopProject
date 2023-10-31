@@ -8,19 +8,22 @@ import NotificationsConversation from './subcomponents/NotificationsConversation
 const Notifications = () => {
     const { id: recipientId } = useParams();
 
-    // const [userRealTime, setUserRealTime] = useState()
-
     const { user } = useContext(StoreContext);
 
+    const [isMessagesOpenMobile, setIsMessagesOpenMobile] = useState(false);
+
+    const handleToggleMessagesMobile = () => {
+        setIsMessagesOpenMobile(prev => !prev);
+    }
 
     return (
         <notifications-page-container>
             <notifications-page>
                 {user !== undefined && <>
-                    <NotificationsMessages user={user} />
+                    <NotificationsMessages user={user} isOpenMobile={isMessagesOpenMobile} handleToggleMessagesMobile={handleToggleMessagesMobile} />
                     {recipientId !== undefined ?
-                        <NotificationsConversation recipientId={recipientId} user={user} /> :
-                        <NotificationsConversation user={user} />
+                        <NotificationsConversation recipientId={recipientId} user={user} handleToggleMessagesMobile={handleToggleMessagesMobile} /> :
+                        <NotificationsConversation user={user} handleToggleMessagesMobile={handleToggleMessagesMobile}/>
                     }
                 </>
                 }

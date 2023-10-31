@@ -2,6 +2,7 @@ import './NotificationModal.scss';
 import Modal from '../../../../Modal/Modal';
 import PropTypes from 'prop-types';
 import notificationsIcon from '../../../../../icons/notifications.svg';
+import closeIcon from '../../../../../icons/close.svg';
 import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../../../../store/StoreProvider';
 import { useNavigate } from 'react-router';
@@ -72,10 +73,15 @@ const NotificationModal = ({ handleOnClose, isModalOpen }) => {
     return (
         <Modal handleOnClose={handleOnClose} isOpen={isModalOpen} shouldBeClosedOnOutsideClick={true}>
             <notifications-dialog>
-                <n-title>
-                    <img src={notificationsIcon} alt='notifications icon' />
-                    <p>Notifications</p>
-                </n-title>
+                <n-top>
+                    <n-title>
+                        <img src={notificationsIcon} alt='notifications icon' />
+                        <p>Notifications</p>
+                    </n-title>
+                    <n-close>
+                        <img src={closeIcon} alt='close notifications' onClick={handleOnClose}/>
+                    </n-close>
+                </n-top>
                 <n-messages>
                     {notificationItems}
                 </n-messages>

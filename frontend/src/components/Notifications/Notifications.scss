@@ -6,38 +6,197 @@ notifications-page-container {
     align-items: center;
     flex-grow: 1;
 
+    @media only screen and (max-width: 1100px) {
+        width: 100vw;
+        flex-direction: column;
+    }
+
     notifications-page {
         width: 55vw;
         background-color: v.$white;
         padding: 0.5rem;
         display: grid;
         grid-template-columns: 2fr 4fr;
+
+        @media only screen and (max-width: 1100px) {
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            grid-template-columns: none;
+            flex-grow: 1;
+        }
         
-        messages-section {
+        .messages-section-open {
             background-color: v.$minty-blue;
             height: 40rem;
             padding: 0.9rem 0.5rem 0.9rem 0.9rem;
             border-right: 2px solid v.$darkest-blue;
 
-            page-title {
-                height: 2.5rem;
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                margin-bottom: 1rem;
-                margin-left: 5px;
+            @media only screen and (max-width: 1100px) {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 60;
+                overflow: auto;
+                transition: all 0.2s ease-in-out;
+                transform: translate(0);
+            }
 
-                img {
-                    transform: scale(1.5);
+            page-top {
+                display: flex;
+                justify-content: space-between;
+
+                page-title {
+                    height: 2.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    margin-bottom: 1rem;
+                    margin-left: 5px;
+
+                    img {
+                        transform: scale(1.5);
+                    }
+
+                    p {
+                        color: v.$white;
+                        font-family: Inter;
+                        font-size: 1.9rem;
+                        font-style: normal;
+                        font-weight: 700;
+                        text-align: center;
+                    }
                 }
 
-                p {
-                    color: v.$white;
-                    font-family: Inter;
-                    font-size: 1.9rem;
-                    font-style: normal;
-                    font-weight: 700;
-                    text-align: center;
+                close-btn {
+                    display: none;
+
+                    @media only screen and (max-width: 1100px) {
+                        display: block;
+                        transform: scale(1.2);
+                    }
+                }
+            }
+
+            messages-selection {
+                display: flex;
+                flex-direction: column;
+                height: 35rem;
+                gap: 7px;
+                overflow-y: scroll  ;
+
+                notification-item {
+                    border-left: solid 2px v.$blue-3;
+                    padding: 10px 5px 10px 10px;
+                    overflow: hidden;
+                    width: 100%;
+                    min-height: 3rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    notification-message {
+                        font-size: 1rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 150%;
+                        color: v.$darkest-blue; 
+                        max-height: 24px;
+                        overflow: hidden;
+                        position: relative;
+                    }
+
+                    notification-user {
+                        font-size: 0.7rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 150%;
+                        color: v.$darkest-blue;
+                        margin-left: 10px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                &::-webkit-scrollbar {
+                    width: 10px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: v.$minty-blue;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: v.$white;
+                    background-clip: padding-box;
+                    border-left: 6px solid v.$minty-blue;
+
+                    &:hover {
+                        background-color: v.$lighter-grey;
+                    }
+                }
+            }
+        }
+        
+        .messages-section-hidden {
+            background-color: v.$minty-blue;
+            height: 40rem;
+            padding: 0.9rem 0.5rem 0.9rem 0.9rem;
+            border-right: 2px solid v.$darkest-blue;
+
+            @media only screen and (max-width: 1100px) {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 10;
+                overflow: auto;
+                transition: all 0.2s ease-in-out;
+                transform: translate(-100%);
+            }
+
+            page-top {
+                display: flex;
+                justify-content: space-between;
+
+                page-title {
+                    height: 2.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    margin-bottom: 1rem;
+                    margin-left: 5px;
+
+                    img {
+                        transform: scale(1.5);
+                    }
+
+                    p {
+                        color: v.$white;
+                        font-family: Inter;
+                        font-size: 1.9rem;
+                        font-style: normal;
+                        font-weight: 700;
+                        text-align: center;
+                    }
+                }
+
+                close-btn {
+                    display: none;
+
+                    @media only screen and (max-width: 1100px) {
+                        display: block;
+                        transform: scale(1.2);
+                    }
                 }
             }
 
@@ -112,6 +271,10 @@ notifications-page-container {
             height: 40rem;
             background-color: v.$medium-grey;
 
+            @media only screen and (max-width: 1100px) {
+                height: 100%;
+            }
+
             user-info {
                 display: flex;
                 justify-content: flex-start;
@@ -126,6 +289,23 @@ notifications-page-container {
                 font-style: normal;
                 font-weight: 500;
                 border-bottom: 2px solid v.$darkest-blue;
+
+                .menu {
+                    display: none;
+                }
+
+                @media only screen and (max-width: 1100px) {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    text-align: center;
+                    padding: 0;
+                    white-space: nowrap;
+
+                    .menu {
+                        display: block;
+                        transform: scale(0.8);
+                    }
+                }
             }
 
             conversation-messages {
