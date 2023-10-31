@@ -29,7 +29,6 @@ const StoreProvider = ({ children }) => {
         if (status === 200) {
             updateUser(data.user);
             setUser(data.user);
-            console.log(data.user)
         }
     }
 
