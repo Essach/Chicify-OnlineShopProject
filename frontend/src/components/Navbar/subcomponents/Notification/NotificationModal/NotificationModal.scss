@@ -1,0 +1,79 @@
+@use '../../../../../variables' as v;
+
+notifications-dialog {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    height: 85vh;
+    background-color: v.$minty-blue;
+    padding: 1rem;
+    gap: 1.5rem;
+
+    n-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        height: 3rem;
+        margin-left: 10px;
+
+        img {
+            transform: scale(1.8);
+        }
+
+        p {
+            color: v.$white;
+            font-family: Inter;
+            font-size: 1.875rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+    }
+
+    n-messages {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+
+        &:hover {
+            cursor: default;
+        }
+
+        notification-item {
+            border-left: solid 2px v.$blue-3;
+            padding: 10px 5px 10px 10px;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            notification-message {
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 150%;
+                color: v.$darkest-blue;
+                white-space: nowrap;
+                overflow: hidden;
+                position: relative;
+            }
+
+            notification-user {
+                font-size: 0.7rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 150%;
+                color: v.$darkest-blue;
+                margin-left: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

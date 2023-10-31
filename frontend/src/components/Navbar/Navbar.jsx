@@ -30,6 +30,7 @@ import Login from '../Login/Login';
 
 import { logoutUser } from '../../helpers/localStorage';
 import NotificationWindow from './subcomponents/Notification/NotificationWindow/NotificationWindow';
+import NotificationModal from './subcomponents/Notification/NotificationModal/NotificationModal';
 
 
 const Navbar = () => {
@@ -58,7 +59,9 @@ const Navbar = () => {
 
     const { user, setUser, userInterval } = useContext(StoreContext);
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpenLogin, setIsModalOpenLogin] = useState(false)
+
+    const [isModalOpenNotifications, setIsModalOpenNotifications] = useState(false)
 
     const navigateFunction = (url) => {
         navigate(`/${url}`);
@@ -70,9 +73,16 @@ const Navbar = () => {
         if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
     }
 
-    const handleOnClickNotifications = () => {
-        navigateFunction('home');
+    const handleOnClickNotificationsMobile = () => {
+        if (user) {
+            setIsModalOpenNotifications(true);
+        } else {
+            setIsModalOpenLogin(true);
+        }
+        setIsMobileMenuVisible(false);
     }
+    const handleOnCloseNotificationsMobile = () => setIsModalOpenNotifications(false);
+
 
     const handleOnClickCart = () => {
         navigateFunction('cart');
@@ -89,7 +99,7 @@ const Navbar = () => {
         if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
     }
 
-    const handleOnCloseLogin = () => setIsModalOpen(false)
+    const handleOnCloseLogin = () => setIsModalOpenLogin(false);
     const handleOnClickLogin = () => {
         if (user) {
             setUser(undefined);
@@ -98,7 +108,7 @@ const Navbar = () => {
             navigate(0);
             clearInterval(userInterval.current)
         } else {
-            setIsModalOpen(true);
+            setIsModalOpenLogin(true);
             if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
         }
     }
@@ -138,16 +148,16 @@ const Navbar = () => {
 
     const navButtonsListMobile = [
         {
+            id: 'notifications',
+            icon: notificationsIcon,
+            text: 'Notifications', 
+            handleOnClick: handleOnClickNotificationsMobile
+        },
+        {
             id: 'favorites',
             icon: favoritesIcon,
             text: 'Favorites',    
             handleOnClick: handleOnClickFavorites,
-        },
-        {
-            id: 'notifications',
-            icon: notificationsIcon,
-            text: 'Notifications', 
-            handleOnClick: handleOnClickNotifications
         },
         {
             id: 'cart',
@@ -358,7 +368,8 @@ const Navbar = () => {
                         <NotificationWindow />
                         {navButtons}
                     </nav-buttons>
-                    <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen} />
+                    <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />
+                    <NotificationModal handleOnClose={handleOnCloseNotificationsMobile} isModalOpen={isModalOpenNotifications} />
                 </nav-container>
             </nav>
         </>
