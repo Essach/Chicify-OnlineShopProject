@@ -186,7 +186,7 @@ const Navbar = () => {
     ]
 
     const navButtons = navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />)
-    
+
     const navButtonsMobile = navButtonsListMobile.reverse().map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />)
 
     // ================= Search bar ===============
@@ -365,7 +365,7 @@ const Navbar = () => {
                     />
                     }
                     <nav-buttons>
-                        <NotificationWindow />
+                        <NotificationWindow openLoginModal={setIsModalOpenLogin} />
                         {navButtons}
                     </nav-buttons>
                     <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />

@@ -4,8 +4,9 @@ import { StoreContext } from '../../../../../store/StoreProvider';
 import './NotificationWindow.scss';
 import request from '../../../../../helpers/request';
 import { useNavigate } from 'react-router';
+import { PropTypes } from 'prop-types';
 
-const NotificationWindow = () => {
+const NotificationWindow = ({openLoginModal}) => {
     const { user } = useContext(StoreContext)
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -15,7 +16,13 @@ const NotificationWindow = () => {
 
     const navigate = useNavigate();
 
-    const handleOnClickButton = () => setIsPopupOpen(prev=>!prev)
+    const handleOnClickButton = () => {
+        if (user) {
+            setIsPopupOpen(prev => !prev)
+        } else {
+            openLoginModal(true)
+        }
+    }
 
     const [notificationItems, setNotificationItems] = useState([])
 
@@ -61,14 +68,6 @@ const NotificationWindow = () => {
             createNotificationItems()
         }
     }, [user])
-
-    useEffect(() => {
-        window.addEventListener('resize', ()=>setIsPopupOpen(false));
-
-        return () => {
-            window.removeEventListener('resize', ()=>setIsPopupOpen(false));
-        }
-    },[])
     
     useEffect(() => {
         const clickFunc = (e) => {
@@ -84,21 +83,27 @@ const NotificationWindow = () => {
         }
 
         window.addEventListener('click', clickFunc);
-
+        window.addEventListener('resize', () => setIsPopupOpen(false));
+        
         return () => {
             window.removeEventListener('click', clickFunc);
+            window.removeEventListener('resize', ()=>setIsPopupOpen(false));
         }
 
-    },[])
+    }, [])
 
     return (
         <notification-window>
-            <img src={notificationsIcon} alt='notifications' onClick={handleOnClickButton} ref={btnRef}/>
+            <img src={notificationsIcon} alt='notifications' onClick={handleOnClickButton} ref={btnRef} />
             <div className={`notification-popup-${isPopupOpen ? 'visible' : 'hidden'}`} ref={popupRef}>
                 {notificationItems}
             </div>
         </notification-window>
     );
+}
+
+NotificationWindow.propTypes = {
+    openLoginModal: PropTypes.func,
 }
 
 export default NotificationWindow;
