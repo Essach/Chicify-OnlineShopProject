@@ -61,6 +61,14 @@ const NotificationWindow = () => {
             createNotificationItems()
         }
     }, [user])
+
+    useEffect(() => {
+        window.addEventListener('resize', ()=>setIsPopupOpen(false));
+
+        return () => {
+            window.removeEventListener('resize', ()=>setIsPopupOpen(false));
+        }
+    },[])
     
     useEffect(() => {
         const clickFunc = (e) => {

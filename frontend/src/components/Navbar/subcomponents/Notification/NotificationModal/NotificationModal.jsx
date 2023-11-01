@@ -59,14 +59,11 @@ const NotificationModal = ({ handleOnClose, isModalOpen }) => {
     }, [user]);
 
     useEffect(() => {
-        const resizeFunc = () => {
-            handleOnClose()
-        }
 
-        window.addEventListener('resize', resizeFunc);
+        window.addEventListener('resize', ()=>handleOnClose());
 
         return () => {
-            window.removeEventListener('resize', resizeFunc);
+            window.removeEventListener('resize', ()=>handleOnClose());
         }
     },[])
 
