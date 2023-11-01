@@ -33,6 +33,17 @@ product-buy-form {
     }
 
     product-reviews {
+        display: block;
+        margin-bottom: 5px;
+
+        .favorites,
+        .favoritesFilled {
+            display: block;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
 
     }
 

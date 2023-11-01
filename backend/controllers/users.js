@@ -173,8 +173,7 @@ exports.patchUserFavorite = (request, response, next) => {
     try {
         const { userId, productId, action } = request.body;
 
-        const user = usersData.find(user => user.userId = userId);
-
+        const user = usersData.find(user => user.userId === userId);
         if (!user) {
             response.status(404).json({
                 message: "Couldn't find user with given id",
@@ -183,12 +182,15 @@ exports.patchUserFavorite = (request, response, next) => {
             return;
         }
 
+        let userUpdated
         if (action === ADDFAVORITE) {
-            const favoriteProduct = product
-            const product = productsData.find(product => product.id = productId);
-            const userUpdated = user.favorites.concat(favoriteProduct);
+            userUpdated = { ...user, favorites: [...user.favorites, productId]};
         } else if (action === REMOVEFAVORITE) {
-            const userUpdated = user.favorites.filter(favorite => favorite.id !== productId)
+            userUpdated = { ...user, favorites: user.favorites.filter(favoriteId => favoriteId !== productId)};
+        } else {
+            response.status(405).json({
+                message: 'Unknown action'
+            })
         }
 
         response.status(200).json({

@@ -5,21 +5,30 @@ import PropTypes from 'prop-types';
 import deliveryIcon from '../../../../icons/deliveryIcon.svg';
 import plus from '../../../../icons/plus.svg';
 import minus from '../../../../icons/minus.svg';
+import favorite from '../../../../icons/favoritesDBlue.svg';
+import favoriteFilled from '../../../../icons/favoritesDBlueFilled.svg';
 
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { CartContext } from '../../../../context/CartContext';
 import { useNavigate } from 'react-router';
+import { StoreContext } from '../../../../store/StoreProvider';
+import request from '../../../../helpers/request';
+import { updateUser } from '../../../../helpers/localStorage';
 
 const ProductBuyForm = (props) => {
     const { name, price, quantity, reviews, cheapestDeliveryPrice, id} = props
 
     const { state, dispatch } = useContext(CartContext);
 
+    const { user, setUser, userInterval } = useContext(StoreContext)
+
     const navigate = useNavigate()
 
     const [currentQuantity, setCurrentQuantity] = useState(1);
 
     const inputRef = useRef()
+
+    const [isFavorite, setIsFavorite] = useState(false)
 
     const handleIncreaseButton = () => {
         if (currentQuantity < quantity) {
@@ -79,6 +88,36 @@ const ProductBuyForm = (props) => {
         }
     }
 
+    const handleAddToFavorites = async () => {
+        const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'add' });
+        if (status === 200) {
+            clearInterval(userInterval.current);
+            setUser(data.userUpdated);
+            updateUser(data.userUpdated);
+        } else {
+            throw new Error(data.message)
+        }
+    }
+
+    const handleRemoveFromFavorites = async () => {
+        const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'remove' });
+        if (status === 200) {
+            clearInterval(userInterval.current);
+            setUser(data.userUpdated);
+            updateUser(data.userUpdated);
+        } else {
+            throw new Error(data.message)
+        }
+    }
+
+    useEffect(() => {
+        if ((user.favorites.find(item => item === id)) !== undefined) {
+            setIsFavorite(true);
+        } else {
+            setIsFavorite(false);
+        }
+    },[user.favorites, id])
+
 
     return (  
         <product-buy-form>
@@ -87,6 +126,9 @@ const ProductBuyForm = (props) => {
             </product-name>
             <product-reviews>
                 {reviews}
+                {isFavorite ? <img src={favoriteFilled} alt='remove from favorites' onClick={handleRemoveFromFavorites} className='favoritesFilled'/> :
+                    <img src={favorite} alt='add to favorites' onClick={handleAddToFavorites} className='favorites'/>
+                }
             </product-reviews>
             <delivery-info>
                 <div>
