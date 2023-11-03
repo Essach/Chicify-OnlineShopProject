@@ -184,9 +184,12 @@ exports.patchUserFavorite = (request, response, next) => {
 
         let userUpdated
         if (action === ADDFAVORITE) {
-            userUpdated = { ...user, favorites: [...user.favorites, productId]};
+            user.favorites.push(productId);
+            // userUpdated = { ...user, favorites: [...user.favorites, productId]};
         } else if (action === REMOVEFAVORITE) {
-            userUpdated = { ...user, favorites: user.favorites.filter(favoriteId => favoriteId !== productId)};
+            const favoriteIndex = user.favorites.findIndex(item => item === productId);
+            user.favorites.splice(favoriteIndex, 1);
+            // userUpdated = { ...user, favorites: user.favorites.filter(favoriteId => favoriteId !== productId)};
         } else {
             response.status(405).json({
                 message: 'Unknown action'
@@ -194,7 +197,7 @@ exports.patchUserFavorite = (request, response, next) => {
         }
 
         response.status(200).json({
-            userUpdated
+            user
         });
 
         return;

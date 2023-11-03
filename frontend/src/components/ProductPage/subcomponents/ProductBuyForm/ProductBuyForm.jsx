@@ -14,15 +14,16 @@ import { useNavigate } from 'react-router';
 import { StoreContext } from '../../../../store/StoreProvider';
 import request from '../../../../helpers/request';
 import { updateUser } from '../../../../helpers/localStorage';
+import Login from '../../../Login/Login';
 
 const ProductBuyForm = (props) => {
     const { name, price, quantity, reviews, cheapestDeliveryPrice, id} = props
 
     const { state, dispatch } = useContext(CartContext);
 
-    const { user, setUser, userInterval } = useContext(StoreContext)
+    const { user, setUser } = useContext(StoreContext);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [currentQuantity, setCurrentQuantity] = useState(1);
 
@@ -89,71 +90,87 @@ const ProductBuyForm = (props) => {
     }
 
     const handleAddToFavorites = async () => {
-        const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'add' });
-        if (status === 200) {
-            clearInterval(userInterval.current);
-            setUser(data.userUpdated);
-            updateUser(data.userUpdated);
+        if (user !== undefined && user !== null) {
+            const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'add' });
+            if (status === 200) {
+                setUser(data.user);
+                updateUser(data.user);
+            } else {
+                throw new Error(data.message)
+            }
         } else {
-            throw new Error(data.message)
+            setIsModalOpenLogin(true);
         }
     }
 
     const handleRemoveFromFavorites = async () => {
+        if (user !== undefined && user !== null) {
         const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'remove' });
-        if (status === 200) {
-            clearInterval(userInterval.current);
-            setUser(data.userUpdated);
-            updateUser(data.userUpdated);
+            if (status === 200) {
+                setUser(data.user);
+                updateUser(data.user);
+            } else {
+                throw new Error(data.message)
+            }
         } else {
-            throw new Error(data.message)
+            setIsModalOpenLogin(true);
         }
     }
 
     useEffect(() => {
-        if ((user.favorites.find(item => item === id)) !== undefined) {
-            setIsFavorite(true);
+        if (user !== undefined && user !== null) {
+            if ((user.favorites.find(item => item === id)) !== undefined) {
+                setIsFavorite(true);
+            } else {
+                setIsFavorite(false);
+            }
         } else {
             setIsFavorite(false);
         }
-    },[user.favorites, id])
+    }, [user, id])
+    
 
-
-    return (  
-        <product-buy-form>
-            <product-name>
-                <p>{name}</p>
-            </product-name>
-            <product-reviews>
-                {reviews}
-                {isFavorite ? <img src={favoriteFilled} alt='remove from favorites' onClick={handleRemoveFromFavorites} className='favoritesFilled'/> :
-                    <img src={favorite} alt='add to favorites' onClick={handleAddToFavorites} className='favorites'/>
-                }
-            </product-reviews>
-            <delivery-info>
-                <div>
-                    <img src={deliveryIcon} alt='delivery truck'/>
-                    <p>Delivery by ...</p>
-                </div>
-                <div>
-                    <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
-                </div>
-            </delivery-info>
-            <product-price>
-                <p>
-                    {`US$ ${price}`}
-                </p>
-            </product-price>
-            <quantity-button>
-                <div className='side' onClick={handleDecreaseButton}><img src={minus} alt='decrease quantity' /></div>
-                <div className='center'><input type="number" onChange={handleChangeQuantity} value={currentQuantity} ref={inputRef} /></div>
-                <div className='side' onClick={handleIncreaseButton}><img src={plus} alt='increase quantity'/></div>
-            </quantity-button>
-            <buy-form-buttons>
-                <div className='add-to-cart-button' onClick={handleAddToCartBtn}><p>Add to cart</p></div>
-                <div className='buy-now-button' onClick={handleBuyNowBtn}><p>Buy now</p></div>
-            </buy-form-buttons>
-        </product-buy-form>
+    const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
+    const handleOnCloseLogin = () => setIsModalOpenLogin(false);
+    
+    return ( 
+        <>
+            <product-buy-form>
+                <product-name>
+                    <p>{name}</p>
+                </product-name>
+                <product-reviews>
+                    {reviews}
+                    {isFavorite ? <img src={favoriteFilled} alt='remove from favorites' onClick={handleRemoveFromFavorites} className='favoritesFilled'/> :
+                        <img src={favorite} alt='add to favorites' onClick={handleAddToFavorites} className='favorites'/>
+                    }
+                </product-reviews>
+                <delivery-info>
+                    <div>
+                        <img src={deliveryIcon} alt='delivery truck'/>
+                        <p>Delivery by ...</p>
+                    </div>
+                    <div>
+                        <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
+                    </div>
+                </delivery-info>
+                <product-price>
+                    <p>
+                        {`US$ ${price}`}
+                    </p>
+                </product-price>
+                <quantity-button>
+                    <div className='side' onClick={handleDecreaseButton}><img src={minus} alt='decrease quantity' /></div>
+                    <div className='center'><input type="number" onChange={handleChangeQuantity} value={currentQuantity} ref={inputRef} /></div>
+                    <div className='side' onClick={handleIncreaseButton}><img src={plus} alt='increase quantity'/></div>
+                </quantity-button>
+                <buy-form-buttons>
+                    <div className='add-to-cart-button' onClick={handleAddToCartBtn}><p>Add to cart</p></div>
+                    <div className='buy-now-button' onClick={handleBuyNowBtn}><p>Buy now</p></div>
+                </buy-form-buttons>
+            </product-buy-form>
+            <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />
+        </>
     );
 }
 
