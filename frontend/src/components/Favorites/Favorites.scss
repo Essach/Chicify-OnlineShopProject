@@ -1,0 +1,63 @@
+@use '../../variables' as v;
+
+favorites-page {
+    background-color: v.$white;
+    width: 40%;
+    flex-grow: 1;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @media only screen and (max-width: 1500px) {
+        width: 70%
+    }
+
+    @media only screen and (max-width: 1100px) {
+        width: 90%;
+    }
+
+    f-title {
+        display: flex;
+        gap: 25px;
+        height: 3rem;
+        padding-left: 1rem;
+        align-items: center;
+
+        img {
+            transform: scale(2.1);
+        }
+
+        p {
+            color: v.$minty-blue-darker;
+            font-family: Inter;
+            font-size: 2.3rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+        
+    }
+
+    f-content {
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+
+        .rectangleFavoritesPage:last-child::after {
+            display: none;
+        }
+
+        .addFavorites {
+            font-size: 1.2rem;
+            font-weight: 550;
+            text-align: center;
+            padding: 0 10rem;
+            margin-top: 5rem;
+        }
+    }
+}

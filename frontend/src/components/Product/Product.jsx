@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import star from '../../icons/star.svg';
 import halfStar from '../../icons/halfStar.svg';
 import deliveryIcon from '../../icons/deliveryIcon.svg';
+import deliveryIconWhite from '../../icons/deliveryTruckWhite.svg';
 import productArrowRight from '../../icons/productArrowRight.svg';
 
 import './Product.scss';
@@ -72,7 +73,9 @@ const ProductSquare = (props) => {
                     </info-top>
                     <info-bottom>
                         <div>
-                            <img src={deliveryIcon} alt='delivery truck'/>
+                            {type === 'rectangleFavoritesPage' ? <img src={deliveryIconWhite} alt='delivery truck' /> :
+                                <img src={deliveryIcon} alt='delivery truck' />
+                            }
                             <p>Delivery by ...</p>
                         </div>
                         <div>
