@@ -8,7 +8,7 @@ const SearchHistoryItem = ({ itemTitle, itemLink, itemId, removeFromSearchHistor
     const navigate = useNavigate();
 
     const handleOnClick = () => {
-        navigate(`/search:${itemLink}`);
+        navigate(`/search/${itemLink}`);
         window.scrollTo(0, 0);
         if (window.innerWidth < 1100) {
             handleCloseSearchMobile();

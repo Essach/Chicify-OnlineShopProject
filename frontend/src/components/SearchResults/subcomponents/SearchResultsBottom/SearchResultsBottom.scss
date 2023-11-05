@@ -1,0 +1,278 @@
+@use '../../../../variables' as v;
+
+sr-bottom {
+    display: grid;
+    grid-template-columns: 3fr 9fr;
+    column-gap: 1rem;
+    flex-grow: 1;
+    height: 25rem;
+    overflow: hidden;
+
+    sr-options {
+        background-color: v.$white;
+        padding: 1rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        overflow: hidden;
+        outline: 1px;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            height: 17px;
+            width: 100%;
+            background-color: v.$white;
+            bottom: 0;
+        }
+
+        sort-option {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            sort-btn {
+                flex-grow: 1;
+                height: 3rem;
+                border: 2px solid v.$minty-blue-darker;
+                color: v.$minty-blue-darker;
+                font-family: Inter;
+                font-size: 1.2rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .sort-selection-visible {
+                display: flex;
+                flex-direction: column;
+                border: 2px solid v.$minty-blue-darker;
+                border-top: 0px;
+                width: 96%;
+                top: 3rem;
+                left: 2%;
+                padding: 0 15px;
+                position: absolute;
+                background-color: v.$white;
+
+                p {
+                    color: v.$minty-blue-darker;
+                    font-family: Inter;
+                    font-size: 1.1rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    border-bottom: 1px solid v.$minty-blue-darker;
+                    white-space: nowrap;
+                    padding: 0.6rem 0;
+
+                    &:last-child {
+                        border-bottom: 0px;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .sort-selection-hidden {
+                display: none;
+            }
+        }
+
+        change-view-btn {
+            display: flex;
+            height: 3rem;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid v.$minty-blue-darker;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+            
+            p {
+                color: v.$minty-blue-darker;
+                font-family: Inter;
+                font-size: 1.3rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+        }
+
+        filter-option {
+            display: flex;
+            flex-direction: column;
+
+            filter-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 3rem;
+                color: v.$minty-blue-darker;
+                font-family: Inter;
+                font-size: 1.5rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                border: 2px solid v.$minty-blue-darker;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .filter-options-visible {
+                background-color: v.$white;
+                border: 2px solid v.$minty-blue-darker;
+                border-top: 0px;
+                padding: 1rem;
+                margin: 0 2%;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                price-option {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.5rem;
+
+                    price-title {
+                        color: v.$minty-blue-darker;
+                        font-family: Inter;
+                        font-size: 1.4rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                        width: 100%;
+                    }
+
+                    price-interval {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+
+                        input {
+                            height: 2rem;
+                            width: 3rem;
+                            border-radius: 5px;
+                            background-color: v.$minty-blue-darker;
+                            outline: none;
+                            border: none;
+                            color: v.$white;
+                            text-align: center;
+
+                            &::-webkit-outer-spin-button,
+                            &::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+                        }
+
+                        .line {
+                            height: 2px;
+                            width: 15px;
+                            background-color: v.$minty-blue-darker;
+                        }
+                    }
+                }
+
+                rating-option {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+
+                    rating-title {
+                        color: v.$minty-blue-darker;
+                        font-family: Inter;
+                        font-size: 1.4rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                        width: 100%;
+                    }
+
+                    rating-options {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 9px;
+                        margin-left: 1rem;
+
+                        .rating-section {
+                            display: flex;
+                            gap: 5px;
+
+                            &:hover {
+                                cursor: pointer;
+                                outline: 1px solid v.$darker-grey;
+                                border-radius: 5px;
+                            }
+
+                            p {
+                                color: v.$darker-grey;
+                                font-family: Inter;
+                                font-size: 1rem;
+                                font-style: normal;
+                                font-weight: 400;
+                                line-height: normal;
+                            }
+
+                            star-icons {
+                                display: flex;
+                                align-items: center;
+                                gap: 1px;
+
+                                img {
+                                    height: 15px;
+                                    width: 15px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            .filter-options-hidden {
+                display: none;
+            }
+        }
+
+        filler-blocks {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+
+            filler-block {
+                border-radius: 2rem;
+                height: 1.1rem;
+                background-color: v.$minty-blue-darker;
+            }
+        }
+    }
+}

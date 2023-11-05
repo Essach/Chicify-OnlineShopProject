@@ -1,0 +1,24 @@
+@use '../../variables' as v;
+
+search-results-page {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 60%;
+    height: 100%;
+    margin: 2rem 0;
+    gap: 2rem;
+
+    @media only screen and (max-width: 1500px) {
+        width: 75%;
+    }
+
+    sr-top {
+        color: v.$white;
+        font-family: Inter;
+        font-size: 2.25rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}

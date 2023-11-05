@@ -20,7 +20,7 @@ const SearchPropositionItem = (props) => {
             removeFromSearchHistory(id);
         }
         
-        navigate(`/search:${name}`)
+        navigate(`/search/${name}`)
         window.scrollTo(0, 0);
         if (window.innerWidth < 1100) {
             handleCloseSearchMobile();

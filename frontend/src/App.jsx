@@ -18,6 +18,7 @@ import Orders from './components/Orders/Orders';
 import Faq from './components/Faq/Faq';
 import Notifications from './components/Notifications/Notifications';
 import Favorites from './components/Favorites/Favorites';
+import SearchResults from './components/SearchResults/SearchResults';
 
 const App = () => {
 
@@ -40,7 +41,8 @@ const App = () => {
                             <Route path='/faq' Component={Faq} />
                             <Route path='/notifications/:id' Component={Notifications}/>
                             <Route path='/notifications' Component={Notifications}/>
-                            <Route path='/favorites' Component={Favorites}/>
+                            <Route path='/favorites' Component={Favorites} />
+                            <Route path='/search/:item' Component={SearchResults}/>
                         </Routes>
                     </content-wrapper>
                 </CartProvider>
