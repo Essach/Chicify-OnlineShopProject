@@ -10,8 +10,8 @@ import express from '../../../icons/deliveryExpress.svg';
 import { CartContext } from '../../../context/CartContext';
 import { StoreContext } from '../../../store/StoreProvider';
 
-import PaymentForm from './PaymentForm/PaymentForm';
-import AddressForm from './AddressForm/AddressForm.scss/AddressForm';
+import PaymentForm from './PaymentForm';
+import AddressForm from './AddressForm';
 
 import request from '../../../helpers/request';
 
@@ -19,7 +19,6 @@ import { updateUser } from '../../../helpers/localStorage';
 
 const CartForm = (props) => {
     const { price, delivery } = props;
-    // console.log(price, delivery)
 
     const { state, dispatch } = useContext(CartContext)
 

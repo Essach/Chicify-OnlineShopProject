@@ -10,7 +10,7 @@ const SearchResults = () => {
             <sr-top>
                 Results for {item}
             </sr-top>
-            <SearchResultsBottom />
+            <SearchResultsBottom itemName={item !== undefined ? item : ''} />
         </search-results-page>
     );
 }

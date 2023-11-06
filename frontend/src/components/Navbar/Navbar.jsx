@@ -226,7 +226,7 @@ const Navbar = () => {
                 const id = autocompleteSaved[0].id;
                 removeFromSearchHistory(id);
             }
-            navigate(`/search:${searchValue}`);
+            navigate(`/search/${searchValue}`);
             window.scrollTo(0, 0);
         }
 

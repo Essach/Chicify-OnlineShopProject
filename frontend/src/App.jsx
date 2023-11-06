@@ -43,6 +43,7 @@ const App = () => {
                             <Route path='/notifications' Component={Notifications}/>
                             <Route path='/favorites' Component={Favorites} />
                             <Route path='/search/:item' Component={SearchResults}/>
+                            <Route path='/search/' Component={SearchResults}/>
                         </Routes>
                     </content-wrapper>
                 </CartProvider>

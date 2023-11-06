@@ -1,5 +1,3 @@
-import './PaymentForm.scss';
-
 import PropTypes from 'prop-types';
 
 const PaymentForm = (props) => {

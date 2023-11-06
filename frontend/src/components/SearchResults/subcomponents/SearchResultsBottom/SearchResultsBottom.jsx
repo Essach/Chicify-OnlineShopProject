@@ -4,9 +4,11 @@ import './SearchResultsBottom.scss';
 import changeViewToBig from '../../../../icons/changeViewBig.svg';
 import changeViewToSmall from '../../../../icons/changeViewSmall.svg';
 import FilterOption from "../FilterOption";
+import SearchProducts from "../SearchProducts";
+import { PropTypes } from 'prop-types';
 
 
-const SearchResultsBottom = () => {
+const SearchResultsBottom = ({itemName}) => {
     const [sortOption, setSortOption] = useState('accuracy');
     const changeSortOption = (option) => setSortOption(option);
 
@@ -16,12 +18,20 @@ const SearchResultsBottom = () => {
         if (viewMode === 'big') setViewMode('small')
     }
     
-    const [starFilter, setStarFilter] = useState('any');
-    const [priceFilterBottom, setPriceFilterBottom] = useState(0);
-    const [priceFilterTop, setPriceFilterTop] = useState(0);
+    const [starFilter, setStarFilter] = useState('all');
+    const [priceFilterBottom, setPriceFilterBottom] = useState('0');
+    const [priceFilterTop, setPriceFilterTop] = useState('');
     const changeStarFilter = (option) => setStarFilter(option);
-    const changePriceFilterTop = (option) => setPriceFilterTop(option);
-    const changePriceFilterBottom = (option) => setPriceFilterBottom(option);
+    const changePriceFilterTop = (e) => {
+        if (/^[0-9]*$/.test(e.target.value) || e.target.value.at(-1) === undefined) {
+            setPriceFilterTop(e.target.value);
+        }
+    }
+    const changePriceFilterBottom = (e) => {
+        if (/^[0-9]*$/.test(e.target.value) || e.target.value.at(-1) === undefined) {
+            setPriceFilterBottom(e.target.value);
+        }
+    }
 
     return (
         <sr-bottom>
@@ -59,10 +69,13 @@ const SearchResultsBottom = () => {
                     <filler-block></filler-block>
                 </filler-blocks>
             </sr-options>
-            <search-results>
-            </search-results>
+            <SearchProducts viewMode={viewMode} starFilter={starFilter} priceBottom={priceFilterBottom} priceTop={priceFilterTop} itemName={itemName} />
         </sr-bottom>
     );
+}
+
+SearchResultsBottom.propTypes = {
+    itemName: PropTypes.string,
 }
 
 export default SearchResultsBottom;

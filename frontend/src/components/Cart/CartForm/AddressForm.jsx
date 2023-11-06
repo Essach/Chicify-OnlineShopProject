@@ -1,7 +1,6 @@
-import './AddressForm.scss';
 import PropTypes from 'prop-types';
 
-import selectArrow from '../../../../../icons/selectArrow.svg';
+import selectArrow from '../../../icons/selectArrow.svg';
 
 const AddressForm = (props) => {
     const { isVisible, countryHandler, nameHandler, addressHandler, cityHandler, country, name, address, city } = props;
