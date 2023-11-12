@@ -42,7 +42,6 @@ const SearchResultsBottom = ({itemName}) => {
     useEffect(() => {
         setSrOptionsTop(srBottomRef.current.getBoundingClientRect().top)
         const scrollFunc = () => {
-            console.log(srBottomRef.current.getBoundingClientRect().top)
             if (srBottomRef.current.getBoundingClientRect().top <= 100) {
                 setSrOptionsTop(100);
                 setIsPositionFixed(true);
@@ -54,7 +53,9 @@ const SearchResultsBottom = ({itemName}) => {
 
         setSrOptionsWidth(srBottomLeftRef.current.getBoundingClientRect().right - srBottomLeftRef.current.getBoundingClientRect().left);
         const resizeFunc = () => {
-            setSrOptionsWidth(srBottomLeftRef.current.getBoundingClientRect().right - srBottomLeftRef.current.getBoundingClientRect().left)
+            if (srBottomLeftRef.current) {
+                setSrOptionsWidth(srBottomLeftRef.current.getBoundingClientRect().right - srBottomLeftRef.current.getBoundingClientRect().left)
+            }
         }
 
         window.addEventListener('scroll', scrollFunc);
@@ -64,11 +65,6 @@ const SearchResultsBottom = ({itemName}) => {
             window.removeEventListener('scroll', scrollFunc);
         }
     },[])
-
-    // useEffect(() => {
-    //     console.log("here") 
-    // },[])
-
 
     return (
         <sr-bottom ref={srBottomRef}>
@@ -84,10 +80,10 @@ const SearchResultsBottom = ({itemName}) => {
                         gap: '0.5rem',
                         overflow: 'hidden',
                         outline: '1px',
-                        position: 'fixed',  
+                        position: 'fixed',
                         top: `${srOptionsTop}px`,
                         width: `${srOptionsWidth}px`,
-                    } : 
+                    } :
                     {
                         gridArea: 'options',
                         backgroundColor: '#F5F5F5',
@@ -98,7 +94,7 @@ const SearchResultsBottom = ({itemName}) => {
                         gap: '0.5rem',
                         overflow: 'hidden',
                         outline: '1px',
-                        position: 'static',  
+                        position: 'relative',
                     }
                 }>
                     <SortOption sortOption={sortOption} changeSortOption={changeSortOption} />
@@ -135,7 +131,7 @@ const SearchResultsBottom = ({itemName}) => {
                     </filler-blocks>
                 </div>
             </sr-bottom-left>
-            <SearchProducts viewMode={viewMode} starFilter={starFilter} priceBottom={priceFilterBottom} priceTop={priceFilterTop} itemName={itemName} />
+            <SearchProducts viewMode={viewMode} starFilter={starFilter} priceBottom={priceFilterBottom} priceTop={priceFilterTop} itemName={itemName} sortOption={sortOption} />
         </sr-bottom>
     );
 }
