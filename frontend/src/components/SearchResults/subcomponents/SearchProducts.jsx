@@ -57,7 +57,7 @@ const SearchProducts = (props) => {
             type={styleType} />);
 
         setSearchProducts(searchProductsItems);
-    }, [itemName, starFilter, priceBottom, priceTop, viewMode, products, sortOption, styleType]);
+    }, [itemName, starFilter, priceBottom, priceTop, viewMode, products, sortOption]);
 
     return (
         <search-products>
