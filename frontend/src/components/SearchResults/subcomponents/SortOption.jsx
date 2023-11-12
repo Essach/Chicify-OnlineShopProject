@@ -1,6 +1,8 @@
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 
+import sortArrowDown from '../../../icons/sortArrowDown.svg';
+
 const SortOption = (props) => {
     const { sortOption, changeSortOption } = props;
 
@@ -30,7 +32,10 @@ const SortOption = (props) => {
     
     return (
         <sort-option>
-            <sort-btn onClick={handleSortBtn}>Sort by: {sortBy}</sort-btn>
+            <sort-btn onClick={handleSortBtn}>
+                <p>Sort by: {sortBy}</p>
+                {window.innerWidth <= 1100 && <img src={sortArrowDown} alt='show sort options' />}
+            </sort-btn>
             <div className={`sort-selection-${isSortSelectionVisible ? 'visible' : 'hidden'}`}>
                 {sortSelectionItemsAll.filter(item => item.key !== sortOption)}
             </div>

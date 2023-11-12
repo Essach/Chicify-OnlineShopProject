@@ -1,0 +1,116 @@
+@use '../../../../variables' as v;
+
+options-mobile {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1px;
+    position: fixed;
+    width: 100%;
+    top: 3.5rem;
+    left: 0;
+    background-color: v.$white;
+    z-index: 50;
+    border-top: 1px solid v.$white;
+    height: 3rem;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.4);
+
+    @media only screen and (min-width: 1101px) {
+        display: none;
+    }
+
+    filter-mobile {
+        height: 3rem;
+        background-color: v.$dark-grey;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            color: v.$white;
+            font-family: Inter;
+            font-size: 1.7rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
+
+    sort-option {
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: v.$dark-grey;
+        padding: 9px 17px;
+
+        sort-btn {
+            flex-grow: 1;
+            width: 100%;
+            color: v.$white;
+            font-family: Inter;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            position: relative;
+            white-space: nowrap;
+            border: 1px solid v.$light-grey;
+            border-radius: 5px;
+
+            img {
+                transform: scale(2);
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .sort-selection-visible {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid v.$white;
+            border-top: 0px;
+            width: 96%;
+            top: 3rem;
+            left: 2%;
+            padding: 0 15px;
+            position: absolute;
+            background-color: v.$dark-grey;
+
+            p {
+                color: v.$white;
+                font-family: Inter;
+                font-size: 1.1rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                border-bottom: 1px solid v.$minty-blue-darker;
+                white-space: nowrap;
+                padding: 0.6rem 0;
+
+                &:last-child {
+                    border-bottom: 0px;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .sort-selection-hidden {
+            display: none;
+        }
+    }
+}

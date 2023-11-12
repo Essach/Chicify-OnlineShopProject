@@ -6,6 +6,7 @@ import changeViewToSmall from '../../../../icons/changeViewSmall.svg';
 import FilterOption from "../FilterOption";
 import SearchProducts from "../SearchProducts";
 import { PropTypes } from 'prop-types';
+import OptionsMobile from "../OptionsMobile/OptionsMobile";
 
 
 const SearchResultsBottom = ({itemName}) => {
@@ -45,7 +46,7 @@ const SearchResultsBottom = ({itemName}) => {
             if (srBottomRef.current.getBoundingClientRect().top <= 100) {
                 setSrOptionsTop(100);
                 setIsPositionFixed(true);
-            } 
+            }
             else {
                 setIsPositionFixed(false)
             }
@@ -67,72 +68,86 @@ const SearchResultsBottom = ({itemName}) => {
     },[])
 
     return (
-        <sr-bottom ref={srBottomRef}>
-            <sr-bottom-left ref={srBottomLeftRef}>
-                <div className="sr-options" style={isPositionFixed ?
-                    {
-                        gridArea: 'options',
-                        backgroundColor: '#F5F5F5',
-                        height: '58vh',
-                        padding: '1rem 1.5rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                        overflow: 'hidden',
-                        outline: '1px',
-                        position: 'fixed',
-                        top: `${srOptionsTop}px`,
-                        width: `${srOptionsWidth}px`,
-                    } :
-                    {
-                        gridArea: 'options',
-                        backgroundColor: '#F5F5F5',
-                        height: '58vh',
-                        padding: '1rem 1.5rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                        overflow: 'hidden',
-                        outline: '1px',
-                        position: 'relative',
-                    }
-                }>
-                    <SortOption sortOption={sortOption} changeSortOption={changeSortOption} />
-                    <change-view-btn onClick={handleChangeViewMode}>
-                        {viewMode === 'small' ?
-                            <img src={changeViewToBig} alt='change view' /> :
-                            <img src={changeViewToSmall} alt='change view' />
+        <>
+            <OptionsMobile
+                starFilter={starFilter}
+                priceFilterBottom={priceFilterBottom}
+                priceFilterTop={priceFilterTop}
+                changeStarFilter={changeStarFilter}
+                changePriceFilterBottom={changePriceFilterBottom}
+                changePriceFilterTop={changePriceFilterTop}
+                sortOption={sortOption}
+                changeSortOption={changeSortOption}
+                handleChangeViewMode={handleChangeViewMode}
+                viewMode={viewMode}
+            />
+            <sr-bottom ref={srBottomRef}>
+                <sr-bottom-left ref={srBottomLeftRef}>
+                    <div className="sr-options" style={isPositionFixed ?
+                        {
+                            gridArea: 'options',
+                            backgroundColor: '#F5F5F5',
+                            height: '58vh',
+                            padding: '1rem 1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            overflow: 'hidden',
+                            outline: '1px',
+                            position: 'fixed',
+                            top: `${srOptionsTop}px`,
+                            width: `${srOptionsWidth}px`,
+                        } :
+                        {
+                            gridArea: 'options',
+                            backgroundColor: '#F5F5F5',
+                            height: '58vh',
+                            padding: '1rem 1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            overflow: 'hidden',
+                            outline: '1px',
+                            position: 'relative',
                         }
-                        <p>Change view</p>
-                    </change-view-btn>
-                    <FilterOption
-                        starFilter={starFilter}
-                        priceFilterBottom={priceFilterBottom}
-                        priceFilterTop={priceFilterTop}
-                        changeStarFilter={changeStarFilter}
-                        changePriceFilterBottom={changePriceFilterBottom}
-                        changePriceFilterTop={changePriceFilterTop}
-                    />
-                    <filler-blocks>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                        <filler-block></filler-block>
-                    </filler-blocks>
-                </div>
-            </sr-bottom-left>
-            <SearchProducts viewMode={viewMode} starFilter={starFilter} priceBottom={priceFilterBottom} priceTop={priceFilterTop} itemName={itemName} sortOption={sortOption} />
-        </sr-bottom>
+                    }>
+                        <SortOption sortOption={sortOption} changeSortOption={changeSortOption} />
+                        <change-view-btn onClick={handleChangeViewMode}>
+                            {viewMode === 'small' ?
+                                <img src={changeViewToBig} alt='change view' /> :
+                                <img src={changeViewToSmall} alt='change view' />
+                            }
+                            <p>Change view</p>
+                        </change-view-btn>
+                        <FilterOption
+                            starFilter={starFilter}
+                            priceFilterBottom={priceFilterBottom}
+                            priceFilterTop={priceFilterTop}
+                            changeStarFilter={changeStarFilter}
+                            changePriceFilterBottom={changePriceFilterBottom}
+                            changePriceFilterTop={changePriceFilterTop}
+                        />
+                        <filler-blocks>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                            <filler-block></filler-block>
+                        </filler-blocks>
+                    </div>
+                </sr-bottom-left>
+                <SearchProducts viewMode={viewMode} starFilter={starFilter} priceBottom={priceFilterBottom} priceTop={priceFilterTop} itemName={itemName} sortOption={sortOption} />
+            </sr-bottom>
+        </>
     );
 }
 
