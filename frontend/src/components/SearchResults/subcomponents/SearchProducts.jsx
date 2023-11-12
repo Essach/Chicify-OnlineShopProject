@@ -9,8 +9,6 @@ const SearchProducts = (props) => {
     
     const [searchProducts, setSearchProducts] = useState([]);
     
-    const [styleType, setStyleType] = useState('rectangleProductPage');
-
     useEffect(() => {
         let searchProducts = products.filter(product => product.name.toLowerCase().includes(itemName));
         searchProducts = searchProducts.filter(product => product.price > priceBottom);
@@ -60,27 +58,6 @@ const SearchProducts = (props) => {
 
         setSearchProducts(searchProductsItems);
     }, [itemName, starFilter, priceBottom, priceTop, viewMode, products, sortOption, styleType]);
-
-    // useEffect(() => {
-    //     const resizeFunc = () => {
-    //         let styleType;
-    //         if (window.innerWidth > 1100) {
-    //             if (viewMode === 'small') styleType = 'rectangleProductPage';
-    //             else styleType = 'squareProductPage';
-    //         } else {
-    //             if (viewMode === 'small') styleType = 'rectangleProductPageMobile';
-    //             else styleType = 'squareProductPageMobile';
-    //         }
-    //         console.log(styleType)
-    //         setStyleType(styleType);
-    //     }
-
-    //     window.addEventListener('resize', resizeFunc);
-
-    //     return () => {
-    //         window.removeEventListener('resize', resizeFunc);
-    //     }
-    // }, [viewMode]);
 
     return (
         <search-products>
