@@ -1,19 +1,26 @@
 import { useState } from 'react';
 import star from '../../../icons/star.svg';
+import close from '../../../icons/closeBlack.svg';
 import { PropTypes } from 'prop-types';
 
 const FilterOption = (props) => {
-    const { starFilter, priceFilterBottom, priceFilterTop, changeStarFilter, changePriceFilterBottom, changePriceFilterTop } = props;
+    const { starFilter, priceFilterBottom, priceFilterTop, changeStarFilter, changePriceFilterBottom, changePriceFilterTop, handleOnCloseFilter } = props;
 
-    const [areOptionsVIsible, setAreOptionsVisible] = useState(false);
+    const [areOptionsVisible, setAreOptionsVisible] = useState(false);
     const handleClickFilterBtn = () => setAreOptionsVisible(prev => !prev);
 
     return (
         <filter-option>
-            <filter-btn onClick={handleClickFilterBtn}>
-                Filter
-            </filter-btn>
-            <div className={`filter-options-${areOptionsVIsible ? 'visible' : 'hidden'}`}>
+            {window.innerWidth > 1100 ?
+                <filter-btn onClick={handleClickFilterBtn}>
+                    Filter
+                </filter-btn> : 
+                <filter-top>
+                    <p>Filter</p>
+                    <img src={close} alt='close filter options' onClick={handleOnCloseFilter}/>
+                </filter-top>
+            }
+            <div className={`filter-options-${areOptionsVisible || window.innerWidth < 1100 ? 'visible' : 'hidden'}`}>
                 <price-option>
                     <price-title>
                         Price:
@@ -83,7 +90,8 @@ FilterOption.propTypes = {
     priceFilterTop: PropTypes.string,
     changeStarFilter: PropTypes.func,
     changePriceFilterBottom: PropTypes.func,
-    changePriceFilterTop: PropTypes.func
+    changePriceFilterTop: PropTypes.func,
+    handleOnCloseFilter: PropTypes.func,
 }
 
 export default FilterOption;

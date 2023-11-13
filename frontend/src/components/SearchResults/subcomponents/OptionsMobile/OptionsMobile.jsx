@@ -3,13 +3,13 @@ import SortOption from "../SortOption";
 
 import { PropTypes } from 'prop-types';
 
-import changeViewToBig from '../../../../icons/changeViewBig.svg';
-import changeViewToSmall from '../../../../icons/changeViewSmall.svg';
+import changeViewToBig from '../../../../icons/changeViewBigMobile.svg';
+import changeViewToSmall from '../../../../icons/changeViewSmallMobile.svg';
 
 import './OptionsMobile.scss';
 
 import Modal from '../../../Modal/Modal';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const OptionsMobile = (props) => {
     const { starFilter,
@@ -27,8 +27,26 @@ const OptionsMobile = (props) => {
     const handleOnCloseFilter = () => setIsFilterOpen(false);
     const handleOnClickFilter = () => setIsFilterOpen(true);
 
+    const [areOptionsMobileFixed, setAreOptionsMobileFixed] = useState(false);
+
+    useEffect(() => {
+        const scrollFunc = () => {
+            if (window.scrollY >= 76) {
+                setAreOptionsMobileFixed(true);
+            } else {
+                setAreOptionsMobileFixed(false);
+            }
+        }
+        
+        window.addEventListener('scroll', scrollFunc);
+
+        return () => {
+            window.removeEventListener('scroll', scrollFunc);
+        }
+    },[])
+
     return (
-        <options-mobile>
+        <div className={`options-mobile-${areOptionsMobileFixed ? 'fixed' : 'normal'}`}>
             <filter-mobile>
                 <p onClick={handleOnClickFilter}>Filter</p>
                 <Modal handleOnClose={handleOnCloseFilter} isOpen={isFilterOpen} shouldBeClosedOnOutsideClick={true}>
@@ -38,7 +56,9 @@ const OptionsMobile = (props) => {
                         priceFilterTop={priceFilterTop}
                         changeStarFilter={changeStarFilter}
                         changePriceFilterBottom={changePriceFilterBottom}
-                        changePriceFilterTop={changePriceFilterTop}/>
+                        changePriceFilterTop={changePriceFilterTop}
+                        handleOnCloseFilter={handleOnCloseFilter}
+                        />
                 </Modal>
             </filter-mobile>
             <SortOption sortOption={sortOption} changeSortOption={changeSortOption}/>
@@ -49,7 +69,7 @@ const OptionsMobile = (props) => {
                 }
                 <p>Change view</p>
             </change-view-btn>
-        </options-mobile>
+        </div>
     );
 }
 
