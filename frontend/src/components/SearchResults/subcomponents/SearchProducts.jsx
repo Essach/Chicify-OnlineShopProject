@@ -57,6 +57,7 @@ const SearchProducts = (props) => {
             reviews={sp.reviews}
             type={styleType} />);
 
+        window.scrollTo(0, 0);
         setSearchProducts(searchProductsItems);
     }, [itemName, starFilter, priceBottom, priceTop, viewMode, products, sortOption, styleType]);
 
