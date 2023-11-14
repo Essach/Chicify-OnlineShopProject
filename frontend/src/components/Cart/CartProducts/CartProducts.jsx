@@ -4,7 +4,6 @@ import './CartProducts.scss';
 import PropTypes from 'prop-types';
 
 const CartProducts = ({ products }) => {
-    // console.log(products)
 
     return (
         <div className={`cart-products-${products.length > 0 ? 'shown' : 'hidden'}`}>
