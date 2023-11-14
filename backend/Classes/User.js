@@ -27,10 +27,16 @@ class User {
         }
         ];
         this.userId = uuidv4();
+        this.sellerInfo = []
     }
 
-    becomeSeller() {
+    becomeSeller(companyName, accountNumber, companyAddress) {
         this.accessLevel = 2;
+        this.sellerInfo.push({
+            companyName: companyName,
+            accountNumber: accountNumber,
+            companyAddress: companyAddress,
+        })
     }
 
     changePassword(newPassword) {
@@ -38,7 +44,6 @@ class User {
     }
 
     sendMessage(recipientId, content) {
-        // console.log(content)
         const conversation = this.conversations.find(conversation => conversation.recipientId === recipientId);
         if (conversation === undefined) {
             this.conversations.push({

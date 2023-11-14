@@ -212,7 +212,7 @@ exports.patchUserFavorite = (request, response, next) => {
 
 exports.patchUserSeller = (request, response, next) => {
     try {
-        const { id } = request.params;
+        const { id, name, country, city, street, postal, accountNumber } = request.body;
         const userToUpdate = usersData.find(user => user.userId === id);
         
         if (!userToUpdate) {
@@ -221,15 +221,15 @@ exports.patchUserSeller = (request, response, next) => {
             });
 
             return;
-        } else if (user.accessLevel !== 1) {
+        } else if (userToUpdate.accessLevel !== 1) {
             response.status(405).json({
-                message: 'Tried to make non user access level user a seller',
+                message: 'Only users with basic access level can become a seller',
             });
 
             return;
         }
 
-        userToUpdate.becomeSeller()
+        userToUpdate.becomeSeller(name, accountNumber, `${country}, ${city}, ${street}, ${postal}`)
 
         response.status(200).json({
             user: userToUpdate,

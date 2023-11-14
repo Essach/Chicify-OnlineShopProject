@@ -19,6 +19,7 @@ import Faq from './components/Faq/Faq';
 import Notifications from './components/Notifications/Notifications';
 import Favorites from './components/Favorites/Favorites';
 import SearchResults from './components/SearchResults/SearchResults';
+import StartSelling from './components/StartSelling/StartSelling';
 
 const App = () => {
 
@@ -43,7 +44,8 @@ const App = () => {
                             <Route path='/notifications' Component={Notifications}/>
                             <Route path='/favorites' Component={Favorites} />
                             <Route path='/search/:item' Component={SearchResults}/>
-                            <Route path='/search/' Component={SearchResults}/>
+                            <Route path='/search/' Component={SearchResults} />
+                            <Route path='/selling-sign-in' Component={StartSelling} />
                         </Routes>
                     </content-wrapper>
                 </CartProvider>
