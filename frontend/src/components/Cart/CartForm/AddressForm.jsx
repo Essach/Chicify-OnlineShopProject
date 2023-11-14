@@ -264,7 +264,7 @@ const AddressForm = (props) => {
 				<p>Country:</p>
 				<select-container>
 					<select defaultValue={country} name='country' onChange={countryHandler}>
-					<option value='' disabled selected>Please select a country</option>
+					<option value=''>Please select a country</option>
 					{countryOptions}
 				</select>
 				<div className='icon-container'>
