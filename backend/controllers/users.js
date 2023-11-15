@@ -1,6 +1,7 @@
 const User = require('../Classes/User.js');
 const BotUser = require('../Classes/BotUser.js');
 const { productsData } = require('./products.js');
+const Product = require('../Classes/Product.js');
 
 const usersData = [
     new User(
@@ -240,6 +241,39 @@ exports.patchUserSeller = (request, response, next) => {
             error,
             message: 'Error with making user a seller'
         })
+    }
+}
+
+exports.patchUserSellProduct = (request, response, next) => {
+    try {
+        const { name, price, delivery, quantity, images, description, categories, sellerId } = request.body;
+
+        const user = usersData.find(user.userId === sellerId);
+
+        if (!user) {
+            response.status(404).json({
+                message: "Couldn't find user with given id",
+            })
+
+            return;
+        }
+
+        const newProduct = Product(name, price, delivery, quantity, images, description, categories, sellerId);
+        user.putProductForSale(newProduct.id);
+        productsData.push(newProduct);
+
+        response.status(200).json({
+            user,
+        })
+
+        return;
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: "Internal server error",
+        })
+
+        return;
     }
 }
 

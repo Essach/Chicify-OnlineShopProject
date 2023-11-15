@@ -27,7 +27,8 @@ class User {
         }
         ];
         this.userId = uuidv4();
-        this.sellerInfo = []
+        this.sellerInfo = [];
+        this.productsForSale = [];
     }
 
     becomeSeller(companyName, accountNumber, companyAddress) {
@@ -37,6 +38,10 @@ class User {
             accountNumber: accountNumber,
             companyAddress: companyAddress,
         })
+    }
+
+    putProductForSale(productId) {
+        this.productsForSale.push(productId);
     }
 
     changePassword(newPassword) {
