@@ -57,38 +57,43 @@ header {
                 }
             }
         }
-
-        start-selling-btn {
+        seller-btns {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            background: v.$minty-blue;
-            color: white;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.10);
+            gap: 1rem;
 
-                @media only screen and (max-width: 1100px) {
-                    height: 2rem;
+            my-products-btn,
+            start-selling-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 5px;
+                background: v.$minty-blue;
+                color: white;
+                transition: all 0.2s ease-in-out;
+                box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.10);
+
+                    @media only screen and (max-width: 1100px) {
+                        height: 2rem;
+                    }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: v.$minty-blue-darker;
                 }
 
-            &:hover {
-                cursor: pointer;
-                background-color: v.$minty-blue-darker;
-            }
 
+                p {
+                    font-family: Inter;
+                    font-size: 1.7rem;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    margin: 0.4rem 0.8rem;
 
-            p {
-                font-family: Inter;
-                font-size: 1.7rem;
-                font-style: normal;
-                font-weight: 500;
-                line-height: normal;
-                margin: 0.4rem 0.8rem;
-
-                @media only screen and (max-width: 1100px) {
-                    font-size: 1.2rem;
-                    margin: 0.5rem 1rem;
+                    @media only screen and (max-width: 1100px) {
+                        font-size: 1.2rem;
+                        margin: 0.5rem 1rem;
+                    }
                 }
             }
         }

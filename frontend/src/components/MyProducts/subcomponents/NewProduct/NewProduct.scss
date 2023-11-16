@@ -1,0 +1,103 @@
+@use '../../../../variables' as v;
+
+new-product {
+    background-color: v.$lighter-grey;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0.5rem 1rem;
+
+    np-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 1rem;
+
+        np-title {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+
+            p {
+                color: v.$dark-grey;
+                font-family: Inter;
+                font-size: 2.25rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+
+        .close {
+            transform: scale(1.5);
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+
+
+    }
+
+    form-single {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+        
+        p {
+            color: v.$dark-grey;
+            font-family: Inter;
+            font-size: 1.3rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        input {
+            margin: 0 1rem;
+            border-radius: 10px;
+            background-color: v.$light-grey;
+            padding: 7px;
+            color: v.$white;
+            font-family: Inter;
+            font-size: 0.9rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            outline: none;
+            border: 2px solid v.$dark-grey;
+
+            &:focus-visible {
+                outline: none;
+            }
+
+            &::placeholder {
+                color: v.$white;
+            }
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+
+        form-title {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+
+            .small {
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    form-double {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
