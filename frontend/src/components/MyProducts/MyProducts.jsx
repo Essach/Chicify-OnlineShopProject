@@ -43,7 +43,10 @@ const MyProducts = () => {
                 <my-products>
                     
                 </my-products>
-                    <NewProduct handleOnClose={() => { setIsModalOpenSellProduct(false)}} isOpen={isModalOpenSellProduct} />
+                    <NewProduct handleOnClose={() => { setIsModalOpenSellProduct(false) }} isOpen={isModalOpenSellProduct} openModal={() => {
+                        setIsModalOpenSellProduct(true)
+                        console.log("here")
+                    }} />
             </my-products-page>
             }
         </>

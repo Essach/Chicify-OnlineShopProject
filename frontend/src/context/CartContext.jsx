@@ -13,18 +13,20 @@ const CartProvider = ({ children }) => {
     
     useEffect(() => {
         const savedCart = getCartSaved();
-        if (savedCart.cart.length > 0) {
-            dispatch({
-                type: 'CLEAR'
-            })
-            for (let i = 0; i < savedCart.cart.length; i++) {
+        if (savedCart.cart) {
+            if (savedCart.cart.length > 0) {
                 dispatch({
-                    type: 'ADD',
-                    payload: {
-                        id: savedCart.cart[i].id,
-                        quantity: savedCart.cart[i].quantity
-                    }
+                    type: 'CLEAR'
                 })
+                for (let i = 0; i < savedCart.cart.length; i++) {
+                    dispatch({
+                        type: 'ADD',
+                        payload: {
+                            id: savedCart.cart[i].id,
+                            quantity: savedCart.cart[i].quantity
+                        }
+                    })
+                }
             }
         }
     },[])

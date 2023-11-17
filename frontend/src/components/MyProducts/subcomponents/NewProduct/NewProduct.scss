@@ -93,6 +93,131 @@ new-product {
                 font-size: 0.9rem;
             }
         }
+
+        .select-options {
+            margin: 0 1rem;
+            height: calc(9rem + 6px);
+            background-color: v.$dark-grey;
+            border-radius: 10px;
+            border: 2px solid v.$dark-grey;
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            padding: 1px 1px 1px 1px;
+            scroll-snap-type: y mandatory;
+
+            p {
+                color: v.$white;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding-left: 1rem;
+                background-color: v.$light-grey;
+                transition: background 0.05s ease-in-out;
+                user-select: none;
+                white-space: nowrap;
+                scroll-snap-align: start none;
+
+                &.delivery {
+                    height: 4.5rem;
+                }
+
+                &.category {
+                    height: 3rem;
+                }
+
+                &.selected {
+                    background-color: v.$dark-grey;
+                }
+                
+                &:first-child {
+                    border-radius: 7px 7px 0 0;
+                }
+
+                &:last-child {
+                    border-radius: 0 0 7px 7px;
+                }
+                
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            &.scrollable {
+                overflow-y: scroll;
+
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: v.$dark-grey;
+                    margin: 5px 0;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: v.$white;
+                    background-clip: padding-box;
+                    border-right:1px solid v.$dark-grey;
+                    border-left:1px solid v.$dark-grey;
+
+                    &:hover {
+                        background-color: v.$lighter-grey;
+                    }
+                }
+
+                p {
+                    &:first-child {
+                        border-radius: 7px 0 0 0;
+                    }
+
+                    &:last-child {
+                        border-radius: 0 0 0 7px;
+                    }
+                }
+            }
+
+        }
+
+        added-images {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+            margin: 0 1rem;
+
+            label {
+                display: flex;
+                height: 7rem;
+                width: 7rem;
+                background-color: v.$dark-grey;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px;
+
+                input {
+                    display: none;
+                }
+
+                img {
+                    display: block;
+
+                    &.plus {
+                        transform: scale(1.2);
+                    }
+
+                    &.added {
+                        object-fit: cover;
+                        height: 7rem;
+                        width: 7rem;
+                        border-radius: 10px;
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
     }
 
     form-double {
