@@ -14,10 +14,6 @@ const MyProducts = () => {
 
     const [isModalOpenSellProduct, setIsModalOpenSellProduct] = useState(false);
 
-    const handleSellProductBtn = () => {
-        console.log('')
-    }
-
     useEffect(() => {
         if (user !== null && user !== undefined && user.productsForSale.length > 0) {
             return;
@@ -43,9 +39,12 @@ const MyProducts = () => {
                 <my-products>
                     
                 </my-products>
-                    <NewProduct handleOnClose={() => { setIsModalOpenSellProduct(false) }} isOpen={isModalOpenSellProduct} openModal={() => {
+                    <NewProduct handleOnClose={(e, location) => {
+                        if (e !== undefined) setIsModalOpenSellProduct(false);
+                        else if (location === 'addBtn') setIsModalOpenLogin(false);
+                        else if (location === 'closeBtn') setIsModalOpenLogin(false);
+                    }} isOpen={isModalOpenSellProduct} openModal={() => {
                         setIsModalOpenSellProduct(true)
-                        console.log("here")
                     }} />
             </my-products-page>
             }

@@ -247,8 +247,10 @@ exports.patchUserSeller = (request, response, next) => {
 exports.patchUserSellProduct = (request, response, next) => {
     try {
         const { name, price, delivery, quantity, images, description, categories, sellerId } = request.body;
-
-        const user = usersData.find(user.userId === sellerId);
+        
+        console.log(name, price, delivery, quantity, images, description, categories, sellerId)
+        // console.log(images)
+        const user = usersData.find(user => user.userId === sellerId);
 
         if (!user) {
             response.status(404).json({
@@ -258,15 +260,18 @@ exports.patchUserSellProduct = (request, response, next) => {
             return;
         }
 
-        const newProduct = Product(name, price, delivery, quantity, images, description, categories, sellerId);
-        user.putProductForSale(newProduct.id);
+        const newProduct = new Product(name, price, delivery, quantity, images, description, categories, sellerId);
+        console.log(newProduct)
+        user.putProductForSale(newProduct.ID);
         productsData.push(newProduct);
+
 
         response.status(200).json({
             user,
         })
 
         return;
+
     } catch (error) {
         response.status(500).json({
             error,

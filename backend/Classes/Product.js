@@ -8,7 +8,7 @@ class Product {
         this.addId(this.id)
         this.name = name;
         this.price = price;
-        this.delivery = delivery;
+        this.delivery = this.createDeliveries(delivery);
         this.quantity = quantity;
         this.images = images;
         this.description = description;
@@ -27,6 +27,13 @@ class Product {
 
     addId(id) {
         ids.push(id)
+    }
+
+    createDeliveries(deliveryOptions) {
+        const delivery = []
+        if(deliveryOptions.find(item => item === "Standard") !== undefined) delivery.push({type: "Standard", price: 3})
+        if(deliveryOptions.find(item => item === "Express") !== undefined) delivery.push({type: "Express", price: 8})
+        return (delivery);
     }
 }
 
