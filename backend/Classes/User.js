@@ -27,17 +27,16 @@ class User {
         }
         ];
         this.userId = uuidv4();
-        this.sellerInfo = [];
-        this.productsForSale = [];
     }
 
     becomeSeller(companyName, accountNumber, companyAddress) {
         this.accessLevel = 2;
-        this.sellerInfo.push({
+        this.sellerInfo = {
             companyName: companyName,
             accountNumber: accountNumber,
             companyAddress: companyAddress,
-        })
+        }
+        this.productsForSale = []
     }
 
     putProductForSale(productId) {
