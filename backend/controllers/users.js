@@ -247,9 +247,7 @@ exports.patchUserSeller = (request, response, next) => {
 exports.patchUserSellProduct = (request, response, next) => {
     try {
         const { name, price, delivery, quantity, images, description, categories, sellerId } = request.body;
-        
-        console.log(name, price, delivery, quantity, images, description, categories, sellerId)
-        // console.log(images)
+
         const user = usersData.find(user => user.userId === sellerId);
 
         if (!user) {
@@ -261,7 +259,6 @@ exports.patchUserSellProduct = (request, response, next) => {
         }
 
         const newProduct = new Product(name, price, delivery, quantity, images, description, categories, sellerId);
-        console.log(newProduct)
         user.putProductForSale(newProduct.ID);
         productsData.push(newProduct);
 

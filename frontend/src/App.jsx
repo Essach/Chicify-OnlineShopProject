@@ -21,6 +21,7 @@ import Favorites from './components/Favorites/Favorites';
 import SearchResults from './components/SearchResults/SearchResults';
 import StartSelling from './components/StartSelling/StartSelling';
 import MyProducts from './components/MyProducts/MyProducts';
+import Test from './Test';
 
 const App = () => {
 
@@ -48,6 +49,8 @@ const App = () => {
                             <Route path='/search/' Component={SearchResults} />
                             <Route path='/selling-sign-in' Component={StartSelling} />
                             <Route path='/my-products' Component={MyProducts} />
+                            <Route path='/test' Component={Test} />
+                            
                         </Routes>
                     </content-wrapper>
                 </CartProvider>

@@ -11,6 +11,11 @@ import request from "../../../../helpers/request";
 import { StoreContext } from "../../../../store/StoreProvider";
 import { updateUser } from "../../../../helpers/localStorage";
 
+import { storage } from "../../../../firebase";
+import { ref, uploadBytes, getDownloadURL  } from "firebase/storage";
+
+import { v4 } from 'uuid';
+
 const NewProduct = ({ handleOnClose, isOpen}) => {
     
     const { user, setUser } = useContext(StoreContext);
@@ -108,38 +113,67 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
         setIsFormValidated(true);
         return true;
     }
+
+    const uploadImagesAndGetURLs = (imageList) => {
+        const promises = imageList.map((imageUpload) => {
+            return new Promise((resolve, reject) => {
+                const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+                uploadBytes(imageRef, imageUpload)
+                    .then((snapshot) => {
+                        getDownloadURL(snapshot.ref)
+                            .then((url) => {
+                                resolve(url);
+                            })
+                            .catch((error) => {
+                                reject(error);
+                            });
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        });
+
+        return Promise.all(promises);
+    };
     
     const handleAddNewProductBtn = async () => {
         const isValidated = validateForm();
         if (isValidated) {
             
-            const price = parseInt(priceValue)
-            const quantity = parseInt(quantityValue)
+            const price = parseInt(priceValue);
+            const quantity = parseInt(quantityValue);
+            const imagesLinks = await uploadImagesAndGetURLs(images);
 
-            const { data, status } = await request.patch('/users/product', {
-                name: nameValue,
-                price: price,
-                delivery: selectedDelivery,
-                quantity: quantity,
-                images: images,
-                description: descriptionValue,
-                categories: selectedCategories,
-                sellerId: user.userId,
-            });
+            if (imagesLinks !== undefined && imagesLinks.length > 0) {
+                const { data, status } = await request.patch('/users/product', {
+                    name: nameValue,
+                    price: price,
+                    delivery: selectedDelivery,
+                    quantity: quantity,
+                    images: imagesLinks,
+                    description: descriptionValue,
+                    categories: selectedCategories,
+                    sellerId: user.userId,
+                });
 
-            if (status === 200) {
-                setUser(data.user);
-                updateUser(data.user);
-                setNameValue('');
-                setPriceValue(0);
-                setQuantityValue(0);
-                setDescriptionValue('');
-                setImages([]);
-                setSelectedCategories([]);
-                setSelectedDelivery([]);
-                handleOnClose('addBtn');
+                if (status === 200) {
+                    setUser(data.user);
+                    updateUser(data.user);
+                    setNameValue('');
+                    setPriceValue(0);
+                    setQuantityValue(0);
+                    setDescriptionValue('');
+                    setImages([]);
+                    setSelectedCategories([]);
+                    setSelectedDelivery([]);
+                    handleOnClose('addBtn');
+                } else {
+                    throw new Error(data.message)
+                }
             } else {
-                throw new Error(data.message)
+                setIsFormValidated(false);
+                setValidationMessage('*Problem with uploading images');
             }
         }
     }
