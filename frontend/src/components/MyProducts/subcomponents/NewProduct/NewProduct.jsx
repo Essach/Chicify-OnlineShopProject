@@ -89,6 +89,13 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
 
     const addImage = (imgSrc, column) => {
         if (imgSrc === undefined) return;
+        if (imgSrc.size > 500000) {
+            setIsFormValidated(false);
+            setValidationMessage("*Files should not exceed 500KB size")
+            return;
+        } else {
+            setIsFormValidated(true)
+        }
         if (images.find(img => img.name === imgSrc.name) !== undefined) return;
         if (images[column] !== undefined) {
             let newImages = [...images];
@@ -138,14 +145,16 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
     };
     
     const handleAddNewProductBtn = async () => {
+        console.log("hi")
         const isValidated = validateForm();
         if (isValidated) {
-            
+            console.log("hi2")
             const price = parseInt(priceValue);
             const quantity = parseInt(quantityValue);
             const imagesLinks = await uploadImagesAndGetURLs(images);
 
             if (imagesLinks !== undefined && imagesLinks.length > 0) {
+                console.log('hi3')
                 const { data, status } = await request.patch('/users/product', {
                     name: nameValue,
                     price: price,
