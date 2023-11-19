@@ -63,6 +63,8 @@ product-main {
             width: 100%;
 
             product-additional-images {
+                display: flex;
+                gap: 0.5rem;
 
                 small-img {
                     display: block;
@@ -73,8 +75,8 @@ product-main {
 
                     img {
                         object-fit: cover;
-                        height: 5rem;
-                        width: 5rem;
+                        height: 7rem;
+                        width: 7rem;
                         border-radius: 5px;
                         border: solid 0.5px rgba(0,0,0, 0.15);
                         box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.10);
