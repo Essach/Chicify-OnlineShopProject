@@ -222,18 +222,19 @@ const Navbar = () => {
         if (searchValue !== '') {
             const id = new Date().getTime().toString();
             addToSearchHistory(id, searchValue, searchValue, autocompleteSaved);
-            while (autocompleteSaved.length >= 6) {
+            if (autocompleteSaved.length >= 4) {
                 const id = autocompleteSaved[0].id;
-                removeFromSearchHistory(id);
+                removeFromSearchHistory(id, autocompleteSaved);
             }
             navigate(`/search/${searchValue}`);
             window.scrollTo(0, 0);
+            setSearchValue('');
         }
 
     }
 
     const handleSearchFocus = () => {
-        setSearchHistory(autocompleteSaved.map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} itemId={item.id} removeFromSearchHistory={removeFromSearchHistory} handleCloseSearchMobile={handleCloseSearchMobile}/>));
+        setSearchHistory(autocompleteSaved.slice().reverse().map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} itemId={item.id} addToSearchHistory={addToSearchHistory} removeFromSearchHistory={removeFromSearchHistory} handleCloseSearchMobile={handleCloseSearchMobile} resetSearchValue={()=>{setSearchValue('')}} />));
         if (window.innerWidth > 1100 && ( autocompleteSaved.length > 0 || searchPropositions.length >0)) {
             toggleAreSearchResultsVisible(true);
             setIsSearchLineVisible(false);
@@ -270,7 +271,7 @@ const Navbar = () => {
                 keywords = keywords.slice(0,4);
             }
 
-            setSearchPropositions(keywords.map(result => <SearchPropositionItem key={result} name={result} handleCloseSearchMobile={handleCloseSearchMobile}/>));
+            setSearchPropositions(keywords.map(result => <SearchPropositionItem key={result} name={result} handleCloseSearchMobile={handleCloseSearchMobile} resetSearchValue={()=>{setSearchValue('')}} />));
 
             toggleAreSearchResultsVisible(true);
             

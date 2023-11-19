@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { addToSearchHistory, removeFromSearchHistory, getAutocompleteSaved } from "../../../helpers/localStorage";
 
 const SearchPropositionItem = (props) => {
-    const { name, handleCloseSearchMobile } = props;
+    const { name, handleCloseSearchMobile, resetSearchValue } = props;
 
     const navigate = useNavigate();
 
@@ -15,9 +15,9 @@ const SearchPropositionItem = (props) => {
         const autocompleteSaved = getAutocompleteSaved();
         const id = new Date().getTime().toString();
         addToSearchHistory(id, name, name, autocompleteSaved);
-        while (autocompleteSaved.length >= 6) {
+        if (autocompleteSaved.length >= 4) {
             const id = autocompleteSaved[0].id;
-            removeFromSearchHistory(id);
+            removeFromSearchHistory(id, getAutocompleteSaved());
         }
         
         navigate(`/search/${name}`)
@@ -25,6 +25,7 @@ const SearchPropositionItem = (props) => {
         if (window.innerWidth < 1100) {
             handleCloseSearchMobile();
         }
+        resetSearchValue()
     }
 
     return (
@@ -38,6 +39,7 @@ const SearchPropositionItem = (props) => {
 SearchPropositionItem.propTypes = {
     name: PropTypes.string,
     handleCloseSearchMobile: PropTypes.func,
+    resetSearchValue: PropTypes.func,
 }
 
 export default SearchPropositionItem;
