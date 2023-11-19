@@ -16,9 +16,13 @@ import { ref, uploadBytes, getDownloadURL  } from "firebase/storage";
 
 import { v4 } from 'uuid';
 
+import { ColorRing } from 'react-loader-spinner';
+
 const NewProduct = ({ handleOnClose, isOpen}) => {
     
     const { user, setUser } = useContext(StoreContext);
+
+    const [loading, setLoading] = useState(false);
 
     const categories = [
         'Clothing and Apparel',
@@ -145,16 +149,17 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
     };
     
     const handleAddNewProductBtn = async () => {
-        console.log("hi")
         const isValidated = validateForm();
+        
         if (isValidated) {
-            console.log("hi2")
+            
+            setLoading(true);
             const price = parseInt(priceValue);
             const quantity = parseInt(quantityValue);
             const imagesLinks = await uploadImagesAndGetURLs(images);
 
             if (imagesLinks !== undefined && imagesLinks.length > 0) {
-                console.log('hi3')
+                
                 const { data, status } = await request.patch('/users/product', {
                     name: nameValue,
                     price: price,
@@ -184,6 +189,7 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
                 setIsFormValidated(false);
                 setValidationMessage('*Problem with uploading images');
             }
+            setLoading(false)
         }
     }
 
@@ -195,6 +201,17 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
 
     return (
         <Modal handleOnClose={handleOnClose} isOpen={isOpen} shouldBeClosedOnOutsideClick={true}>
+            {loading ? <loading-screen>
+                <ColorRing
+                    visible={true}
+                    height="200"
+                    width="200"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="blocks-wrapper"
+                    colors={['#153E47', '#4E8490', '#378EA1', '#388D9F', '#64C0D4']}
+                />
+            </loading-screen> : null}
             <new-product>
                 <np-top>
                     <np-title>
