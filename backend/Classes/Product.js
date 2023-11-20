@@ -37,9 +37,4 @@ class Product {
     }
 }
 
-
-// function addId(id) {
-//     ids.append(id)
-// }
-
 module.exports = Product

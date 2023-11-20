@@ -3,6 +3,12 @@ const BotUser = require('../Classes/BotUser.js');
 const { productsData } = require('./products.js');
 const Product = require('../Classes/Product.js');
 
+const { storage, firebaseConfig } = require('../firebase.js');
+const { ref, uploadBytes, getDownloadURL, uploadBytesResumable  } = require("firebase/storage");
+const { v4 } = require('uuid');
+const { initializeApp } = require("firebase/app");
+initializeApp(firebaseConfig);
+
 const usersData = [
     new User(
         1,
@@ -25,6 +31,32 @@ const usersData = [
     new BotUser("1", "Chicify Online Shop", "111111111", ""),
     new BotUser("2", "Test User", "123123123", ""),
 ]
+
+const uploadImagesAndGetURLs = (imageList) => {
+    const promises = imageList.map((imageUpload) => {
+        return new Promise((resolve, reject) => {
+            const imageRef = ref(storage, `images/${imageUpload.filename + v4()}`);
+            const metadata = {
+                contentType: imageUpload.mimetype,
+            }
+            uploadBytes(imageRef, imageUpload.buffer, metadata)
+                .then((snapshot) => {
+                    getDownloadURL(snapshot.ref)
+                        .then((url) => {
+                            resolve(url);
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    });
+
+    return Promise.all(promises);
+};
 
 exports.postUserCreate = (request, response, next) => {
     try {
@@ -84,6 +116,73 @@ exports.postUserLogin = (request, response, next) => {
         });
     }
 };
+
+exports.postUserSellProduct = async (request, response, next) => {
+    try {
+        const name = request.body.name;
+        const price = request.body.price;
+        const quantity = request.body.quantity;
+        const description = request.body.description;
+        const sellerId = request.body.sellerId;
+
+        const delivery = [];
+        Object.keys(request.body).forEach((key) => {
+            if (key.startsWith('delivery')) {
+                const value = request.body[key];
+
+                delivery.push(value)
+            }
+        });
+
+        const categories = [];
+        Object.keys(request.body).forEach((key) => {
+            if (key.startsWith('category')) {
+                const value = request.body[key];
+
+                categories.push(value)
+            }
+        });
+
+        let imageList = [];
+        for (let i = 0; i < request.files.length; i++){
+            imageList.push(request.files[i]);
+        }
+        
+
+        const user = usersData.find(user => user.userId === sellerId);
+
+        if (!user) {
+            response.status(404).json({
+                message: "Couldn't find user with given id",
+            })
+
+            return;
+        }
+
+        const imagesLinks = await uploadImagesAndGetURLs(imageList);
+
+        const newProduct = new Product(name, price, delivery, quantity, imagesLinks, description, categories, sellerId);
+        user.putProductForSale(newProduct.ID);
+        productsData.push(newProduct);
+
+
+        response.status(200).json({
+            user,
+        })
+
+        return;
+
+    } catch (error) {
+        console.log(error);
+
+        response.status(500).json({
+            error,
+            message: "Internal server error",
+        })
+
+        return;
+    }
+}
 
 exports.patchUserOrder = (request, response, next) => {
     try {
@@ -241,41 +340,6 @@ exports.patchUserSeller = (request, response, next) => {
             error,
             message: 'Error with making user a seller'
         })
-    }
-}
-
-exports.patchUserSellProduct = (request, response, next) => {
-    try {
-        const { name, price, delivery, quantity, images, description, categories, sellerId } = request.body;
-
-        const user = usersData.find(user => user.userId === sellerId);
-
-        if (!user) {
-            response.status(404).json({
-                message: "Couldn't find user with given id",
-            })
-
-            return;
-        }
-
-        const newProduct = new Product(name, price, delivery, quantity, images, description, categories, sellerId);
-        user.putProductForSale(newProduct.ID);
-        productsData.push(newProduct);
-
-
-        response.status(200).json({
-            user,
-        })
-
-        return;
-
-    } catch (error) {
-        response.status(500).json({
-            error,
-            message: "Internal server error",
-        })
-
-        return;
     }
 }
 
