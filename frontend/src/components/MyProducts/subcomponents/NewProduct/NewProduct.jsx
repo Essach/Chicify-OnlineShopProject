@@ -11,11 +11,6 @@ import request from "../../../../helpers/request";
 import { StoreContext } from "../../../../store/StoreProvider";
 import { updateUser } from "../../../../helpers/localStorage";
 
-import { storage } from "../../../../firebase";
-import { ref, uploadBytes, getDownloadURL  } from "firebase/storage";
-
-import { v4 } from 'uuid';
-
 import { ColorRing } from 'react-loader-spinner';
 
 const NewProduct = ({ handleOnClose, isOpen}) => {
@@ -124,29 +119,6 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
         setIsFormValidated(true);
         return true;
     }
-
-    const uploadImagesAndGetURLs = (imageList) => {
-        const promises = imageList.map((imageUpload) => {
-            return new Promise((resolve, reject) => {
-                const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-                uploadBytes(imageRef, imageUpload)
-                    .then((snapshot) => {
-                        getDownloadURL(snapshot.ref)
-                            .then((url) => {
-                                resolve(url);
-                            })
-                            .catch((error) => {
-                                reject(error);
-                            });
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
-        });
-
-        return Promise.all(promises);
-    };
     
     const handleAddNewProductBtn = async () => {
         const isValidated = validateForm();
@@ -156,40 +128,42 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
             setLoading(true);
             const price = parseInt(priceValue);
             const quantity = parseInt(quantityValue);
-            const imagesLinks = await uploadImagesAndGetURLs(images);
 
-            if (imagesLinks !== undefined && imagesLinks.length > 0) {
-                
-                const { data, status } = await request.patch('/users/product', {
-                    name: nameValue,
-                    price: price,
-                    delivery: selectedDelivery,
-                    quantity: quantity,
-                    images: imagesLinks,
-                    description: descriptionValue,
-                    categories: selectedCategories,
-                    sellerId: user.userId,
-                });
-
-                if (status === 200) {
-                    setUser(data.user);
-                    updateUser(data.user);
-                    setNameValue('');
-                    setPriceValue(0);
-                    setQuantityValue(0);
-                    setDescriptionValue('');
-                    setImages([]);
-                    setSelectedCategories([]);
-                    setSelectedDelivery([]);
-                    handleOnClose('addBtn');
-                } else {
-                    throw new Error(data.message)
-                }
-            } else {
-                setIsFormValidated(false);
-                setValidationMessage('*Problem with uploading images');
+            const formData = new FormData();
+            for (let i = 0; i < images.length; i++){
+                formData.append(`image${i}`, images[i]);
             }
-            setLoading(false)
+            selectedDelivery.forEach((element, index) => {
+                formData.append(`delivery[${index}]`, element)
+            });
+            selectedCategories.forEach((element, index) => {
+                formData.append(`category[${index}]`, element)
+            });
+            formData.append('name', nameValue);
+            formData.append('price', price);
+            formData.append('quantity', quantity);
+            formData.append('description', descriptionValue);
+            formData.append('sellerId', user.userId);
+
+            const { data, status } = await request.post('/users/product', formData);
+
+            if (status === 200) {
+                setUser(data.user);
+                updateUser(data.user);
+                setNameValue('');
+                setPriceValue(0);
+                setQuantityValue(0);
+                setDescriptionValue('');
+                setImages([]);
+                setSelectedCategories([]);
+                setSelectedDelivery([]);
+                handleOnClose('addBtn');
+            } else {
+                setValidationMessage(`${data.error}`);
+                setIsFormValidated(false);
+                throw new Error(data.error);
+            }
+            setLoading(false);
         }
     }
 
