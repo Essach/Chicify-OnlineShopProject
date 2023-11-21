@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { postUserCreate, postUserLogin, postUserSellProduct, patchUserOrder, patchUserFavorite, patchUserSeller, patchUserPassword, getUserName, getUsers, patchSendMessage } = require('../controllers/users.js');
+const { postUserCreate, postUserLogin, postUserSellProduct, postUserEditProduct, patchUserOrder, patchUserFavorite, patchUserSeller, patchUserPassword, getUserName, getUsers, patchSendMessage } = require('../controllers/users.js');
 
 const router = express.Router();
 
@@ -10,7 +10,8 @@ const upload = multer({storage: storage});
 
 router.post('/create', postUserCreate);
 router.post('/login', postUserLogin);
-router.post('/product', upload.any(), postUserSellProduct);
+router.post('/productAdd', upload.any(), postUserSellProduct);
+router.post('/productEdit', upload.any(), postUserEditProduct);
 router.patch('/orders', patchUserOrder);
 router.patch('/favorites', patchUserFavorite);
 router.patch('/seller', patchUserSeller);

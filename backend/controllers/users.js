@@ -4,7 +4,7 @@ const { productsData } = require('./products.js');
 const Product = require('../Classes/Product.js');
 
 const { storage, firebaseConfig } = require('../firebase.js');
-const { ref, uploadBytes, getDownloadURL, uploadBytesResumable  } = require("firebase/storage");
+const { ref, uploadBytes, getDownloadURL, deleteObject } = require("firebase/storage");
 const { v4 } = require('uuid');
 const { initializeApp } = require("firebase/app");
 initializeApp(firebaseConfig);
@@ -35,7 +35,8 @@ const usersData = [
 const uploadImagesAndGetURLs = (imageList) => {
     const promises = imageList.map((imageUpload) => {
         return new Promise((resolve, reject) => {
-            const imageRef = ref(storage, `images/${imageUpload.filename + v4()}`);
+            const filePath = `${imageUpload.originalname + v4()}`
+            const imageRef = ref(storage, `images/${filePath}`);
             const metadata = {
                 contentType: imageUpload.mimetype,
             }
@@ -43,7 +44,7 @@ const uploadImagesAndGetURLs = (imageList) => {
                 .then((snapshot) => {
                     getDownloadURL(snapshot.ref)
                         .then((url) => {
-                            resolve(url);
+                            resolve({url: url, filePath: filePath});
                         })
                         .catch((error) => {
                             reject(error);
@@ -57,6 +58,24 @@ const uploadImagesAndGetURLs = (imageList) => {
 
     return Promise.all(promises);
 };
+
+const deleteImages = (imageFilePaths) => {
+    const promises = imageFilePaths.map((filePath) => {
+        return new Promise((resolve, reject) => {
+            const imageRef = ref(storage, `images/${filePath}`)
+            deleteObject(imageRef)
+                .then(() => {
+                    console.log('file deleted')
+                    resolve();
+                })
+                .catch((error) => {
+                    console.log('file not deleted')
+                    reject(error);
+                })
+        })
+    })
+
+}
 
 exports.postUserCreate = (request, response, next) => {
     try {
@@ -117,6 +136,105 @@ exports.postUserLogin = (request, response, next) => {
     }
 };
 
+exports.postUserEditProduct = async (request, response, next) => {
+    try {
+        const name = request.body.name;
+        const price = request.body.price;
+        const quantity = request.body.quantity;
+        const description = request.body.description;
+        const sellerId = request.body.sellerId;
+        const productId = request.body.productId;
+
+        let delivery = [];
+        Object.keys(request.body).forEach((key) => {
+            if (key.startsWith('delivery')) {
+                const value = request.body[key];
+
+                delivery.push(value)
+            }
+        });
+        delivery = delivery[0]
+
+        let categories = [];
+        Object.keys(request.body).forEach((key) => {
+            if (key.startsWith('category')) {
+                const value = request.body[key];
+
+                categories.push(value)
+            }
+        });
+        categories = categories[0];
+
+        let imageFilePaths = [];
+        Object.keys(request.body).forEach((key) => {
+            if (key.startsWith('imageFilePath')) {
+                const value = request.body[key];
+
+                imageFilePaths.push(value)
+            }
+        });
+
+        let imageList = [];
+        for (let i = 0; i < request.files.length; i++){
+            imageList.push(request.files[i]);
+        }
+
+        const user = usersData.find(user => user.userId === sellerId);
+        const product = productsData.find(product => product.ID === productId);
+        
+        if (!user) {
+            response.status(404).json({
+                message: "Couldn't find user with given id",
+            })
+
+            return;
+        }
+        if (!product) {
+            response.status(404).json({
+                message: "Couldn't find product with given id",
+            })
+
+            return;
+        }
+        if (user.accessLevel < 2) {
+            response.status(404).json({
+                message: "User with given id isn't a seller",
+            })
+
+            return;
+        }
+        if (!user.productsForSale.find(product => product === productId)) {
+            response.status(404).json({
+                message: "User isn't a seller of requested product",
+            })
+
+            return;
+        }
+
+        await deleteImages(imageFilePaths);
+
+        const imagesLinksAndPaths = await uploadImagesAndGetURLs(imageList);
+
+        product.editProduct(name, price, delivery, quantity, imagesLinksAndPaths, description, categories)
+
+        response.status(200).json({
+            user,
+        })
+
+        return;
+
+    } catch (error) {
+        console.log(error);
+
+        response.status(500).json({
+            error,
+            message: "Internal server error",
+        })
+
+        return;
+    }
+}
+
 exports.postUserSellProduct = async (request, response, next) => {
     try {
         const name = request.body.name;
@@ -125,7 +243,7 @@ exports.postUserSellProduct = async (request, response, next) => {
         const description = request.body.description;
         const sellerId = request.body.sellerId;
 
-        const delivery = [];
+        let delivery = [];
         Object.keys(request.body).forEach((key) => {
             if (key.startsWith('delivery')) {
                 const value = request.body[key];
@@ -133,8 +251,9 @@ exports.postUserSellProduct = async (request, response, next) => {
                 delivery.push(value)
             }
         });
+        delivery = delivery[0]
 
-        const categories = [];
+        let categories = [];
         Object.keys(request.body).forEach((key) => {
             if (key.startsWith('category')) {
                 const value = request.body[key];
@@ -142,6 +261,7 @@ exports.postUserSellProduct = async (request, response, next) => {
                 categories.push(value)
             }
         });
+        categories = categories[0];
 
         let imageList = [];
         for (let i = 0; i < request.files.length; i++){
@@ -159,9 +279,9 @@ exports.postUserSellProduct = async (request, response, next) => {
             return;
         }
 
-        const imagesLinks = await uploadImagesAndGetURLs(imageList);
+        const imagesLinksAndPaths = await uploadImagesAndGetURLs(imageList);
 
-        const newProduct = new Product(name, price, delivery, quantity, imagesLinks, description, categories, sellerId);
+        const newProduct = new Product(name, price, delivery, quantity, imagesLinksAndPaths, description, categories, sellerId);
         user.putProductForSale(newProduct.ID);
         productsData.push(newProduct);
 
