@@ -12,12 +12,15 @@ import { StoreContext } from "../../../../store/StoreProvider";
 import { updateUser } from "../../../../helpers/localStorage";
 
 import { ColorRing } from 'react-loader-spinner';
+import { useNavigate } from "react-router";
 
 const NewProduct = ({ handleOnClose, isOpen}) => {
     
     const { user, setUser } = useContext(StoreContext);
 
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const categories = [
         'Clothing and Apparel',
@@ -145,7 +148,7 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
             formData.append('description', descriptionValue);
             formData.append('sellerId', user.userId);
 
-            const { data, status } = await request.post('/users/product', formData);
+            const { data, status } = await request.post('/users/productAdd', formData);
 
             if (status === 200) {
                 setUser(data.user);
@@ -158,6 +161,7 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
                 setSelectedCategories([]);
                 setSelectedDelivery([]);
                 handleOnClose('addBtn');
+                navigate(0);
             } else {
                 setValidationMessage(`${data.error}`);
                 setIsFormValidated(false);
@@ -372,7 +376,6 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
 NewProduct.propTypes = {
     handleOnClose: PropTypes.func,
     isOpen: PropTypes.bool,
-    openModal: PropTypes.func,
 }
 
 export default NewProduct;
