@@ -35,6 +35,16 @@ class Product {
         if(deliveryOptions.find(item => item === "Express") !== undefined) delivery.push({type: "Express", price: 8})
         return (delivery);
     }
+
+    editProduct(name, price, delivery, quantity, images, description, categories) {
+        this.name = name;
+        this.price = price;
+        this.delivery = this.createDeliveries(delivery);
+        this.quantity = quantity;
+        this.images = images;
+        this.description = description;
+        this.categories = categories;
+    }
 }
 
 module.exports = Product
