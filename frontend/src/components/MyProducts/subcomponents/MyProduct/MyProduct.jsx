@@ -2,9 +2,11 @@ import './MyProduct.scss';
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from "react";
 import request from '../../../../helpers/request';
-import EditProduct from '../EditProduct/EditProduct';
+// import EditProduct from '../EditProduct/EditProduct';
 
-const MyProduct = ({id}) => {
+const MyProduct = (props) => {
+    const { id, handleEditProduct } = props;
+
     const [productInfo, setProductInfo] = useState({
         id: '',
         name: '',
@@ -18,17 +20,14 @@ const MyProduct = ({id}) => {
     });
 
     const fetchData = async (id) => {
-        const { data } = await request.get(`/products/${id}`);
-        setProductInfo(data.product);
+        const { data, status } = await request.get(`/products/${id}`);
+        
+        if (status === 200) {
+            const productInfo = data.product;
+            productInfo.images = productInfo.images.map(image => image.url);
+            setProductInfo(productInfo);
+        }
     }
-
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const handleOnCloseEditProduct = (event, location) => {
-        if (event !== undefined) setIsEditOpen(false);
-        else if (location === 'addBtn') setIsEditOpen(false);
-        else if (location === 'closeBtn') setIsEditOpen(false);
-    }
-    const openEdit = () => setIsEditOpen(true);
 
     useEffect(() => {
         fetchData(id);
@@ -54,16 +53,17 @@ const MyProduct = ({id}) => {
                     {`US$ ${productInfo.price}`}
                 </product-price>
             </my-product-content>
-            <my-product-footer>
+            <my-product-footer onClick={() => { handleEditProduct(id) }}>
                 Edit
             </my-product-footer>
-            <EditProduct handleOnClose={handleOnCloseEditProduct} isOpen={isEditOpen} openModal={openEdit} />
+            {/* <EditProduct handleOnClose={handleOnCloseEditProduct} isOpen={isEditOpen} openModal={openEdit} /> */}
         </my-product-item>
     );
 }
 
 MyProduct.propTypes = {
     id: PropTypes.string,
+    handleEditProduct: PropTypes.func,
 }
 
 export default MyProduct;

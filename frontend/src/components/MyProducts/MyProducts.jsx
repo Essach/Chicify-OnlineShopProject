@@ -8,6 +8,7 @@ import NewProduct from "./subcomponents/NewProduct/NewProduct";
 import './MyProducts.scss';
 import { useNavigate } from "react-router";
 import MyProduct from "./subcomponents/MyProduct/MyProduct";
+import EditProduct from "./subcomponents/EditProduct/EditProduct";
 
 const MyProducts = () => {
     const { user } = useContext(StoreContext);
@@ -19,6 +20,15 @@ const MyProducts = () => {
     const handleOnCloseLogin = () => setIsModalOpenLogin(false);
 
     const [isModalOpenSellProduct, setIsModalOpenSellProduct] = useState(false);
+
+    const [isModalOpenEditProduct, setIsModalOpenEditProduct] = useState(false);
+    const [editId, setEditId] = useState('');
+    
+    const handleEditProduct = (id) => {
+        setEditId(id);
+        setIsModalOpenEditProduct(true);
+    }
+
 
     const [myProductsItems, setMyProductsItems] = useState([]); 
 
@@ -34,12 +44,12 @@ const MyProducts = () => {
     useEffect(() => {
         if (user !== null && user !== undefined && user.accessLevel >= 2) {
             if (user.productsForSale.length > 0) {
-                setMyProductsItems(user.productsForSale.map(product => <MyProduct key={product} id={product}/>))
+                setMyProductsItems(user.productsForSale.map(product => <MyProduct key={product} handleEditProduct={handleEditProduct} id={product}/>))
             } else {
                 setMyProductsItems(<p className='createProducts'>{`You don't have any products put up for sale yet`}</p>)
             }
         }
-    },[user])
+    },[user, editId])
 
     return (
         <>
@@ -70,12 +80,15 @@ const MyProducts = () => {
                     </my-products>
                     <NewProduct handleOnClose={(e, location) => {
                         if (e !== undefined) setIsModalOpenSellProduct(false);
-                        else if (location === 'addBtn') setIsModalOpenLogin(false);
-                        else if (location === 'closeBtn') setIsModalOpenLogin(false);
-                    }} isOpen={isModalOpenSellProduct} openModal={() => {
-                        setIsModalOpenSellProduct(true)
-                    }} />
-                </my-products-page> 
+                        else if (location === 'addBtn') setIsModalOpenSellProduct(false);
+                        else if (location === 'closeBtn') setIsModalOpenSellProduct(false);
+                    }} isOpen={isModalOpenSellProduct}/>
+                    <EditProduct handleOnClose={(e, location) => {
+                        if (e !== undefined) setIsModalOpenEditProduct(false);
+                        else if (location === 'addBtn') setIsModalOpenEditProduct(false);
+                        else if (location === 'closeBtn') setIsModalOpenEditProduct(false);
+                    }} isOpen={isModalOpenEditProduct} id={editId} resetEditId={()=>{setEditId('')}} />
+                </my-products-page>
                 }
             </>
             }
