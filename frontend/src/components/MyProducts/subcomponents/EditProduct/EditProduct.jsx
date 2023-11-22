@@ -126,7 +126,7 @@ const EditProduct = (props) => {
         return true;
     }
 
-    
+
     const handleEditProductBtn = async () => {
         const isValidated = validateForm();
         
@@ -178,6 +178,37 @@ const EditProduct = (props) => {
             }
             setLoading(false)
         }
+    }
+
+    const handleDeleteProductBtn = async () => {
+            setLoading(true);
+
+            const formData = new FormData();
+            for (let i = 0; i < oldFilePaths.length; i++){
+                formData.append(`imageFilePath${i}`, oldFilePaths[i]);
+            }
+            formData.append('sellerId', user.userId);
+            formData.append('productId', id);
+
+            const { data, status } = await request.post('/users/productDelete', formData);
+
+            if (status === 200) {
+                setUser(data.user);
+                updateUser(data.user);
+                setNameValue('');
+                setPriceValue(0);
+                setQuantityValue(0);
+                setDescriptionValue('');
+                setImages([]);
+                setSelectedCategories([]);
+                setSelectedDelivery([]);
+                resetEditId();
+                handleOnClose('addBtn');
+                navigate(0);
+            } else {
+                throw new Error(data.message)
+            }
+            setLoading(false)
     }
 
     const uploadURLsAndGetImages = (imageList) => {
@@ -440,7 +471,7 @@ const EditProduct = (props) => {
                         </p>
                     </edit-product-btn>
                     <delete-product-btn>
-                        <p>
+                        <p onClick={handleDeleteProductBtn}>
                             Delete product
                         </p>
                     </delete-product-btn>

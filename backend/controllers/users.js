@@ -136,6 +136,80 @@ exports.postUserLogin = (request, response, next) => {
     }
 };
 
+exports.postUserDeleteProduct = async (request, response, next) => {
+    try {
+
+        const sellerId = request.body.sellerId;
+        const productId = request.body.productId;
+
+        console.log(sellerId)
+
+        let imageFilePaths = [];
+        Object.keys(request.body).forEach((key) => {
+            if (key.startsWith('imageFilePath')) {
+                const value = request.body[key];
+
+                imageFilePaths.push(value)
+            }
+        });
+
+        const user = usersData.find(user => user.userId === sellerId);
+        const productIndex = productsData.findIndex(product => product.ID === productId)
+        
+        if (!user) {
+            response.status(404).json({
+                message: "Couldn't find user with given id",
+            })
+
+            return;
+        }
+        if (productIndex === -1) {
+            response.status(404).json({
+                message: "Couldn't find product with given id",
+            })
+
+            return;
+        }
+        if (user.accessLevel < 2) {
+            response.status(404).json({
+                message: "User with given id isn't a seller",
+            })
+
+            return;
+        }
+        
+        const productIndexInUser = user.productsForSale.findIndex(product => product === productId);
+        if (productIndexInUser === -1) {
+            response.status(404).json({
+                message: "User isn't a seller of requested product",
+            })
+
+            return;
+        }
+
+        await deleteImages(imageFilePaths);
+
+        productsData.splice(productIndex, 1);
+        user.productsForSale.splice(productIndexInUser, 1);
+
+        response.status(200).json({
+            user,
+        })
+
+        return;
+
+    } catch (error) {
+        console.log(error);
+
+        response.status(500).json({
+            error,
+            message: "Internal server error",
+        })
+
+        return;
+    }
+}
+
 exports.postUserEditProduct = async (request, response, next) => {
     try {
         const name = request.body.name;
