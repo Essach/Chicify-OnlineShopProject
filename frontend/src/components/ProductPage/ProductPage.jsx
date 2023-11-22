@@ -34,9 +34,12 @@ const ProductPage = () => {
     const [productReviews, setProductReviews] = useState(null)
 
     const fetchData = async (id) => {
-        const { data } = await request.get(`/products/${id}`);
-        
-        setProductData(data.product)
+        const { data, status } = await request.get(`/products/${id}`);
+        if (status === 200) {
+            const productInfo = data.product;
+            productInfo.images = productInfo.images.map(image => image.url);
+            setProductData(productInfo);
+        }
     };
 
     useEffect(() => {
@@ -86,27 +89,27 @@ const ProductPage = () => {
     const pageRef = useRef();
 
     const scrollFunc = () => {
-            if (leftRef.current && rightRef.current && pageRef.current) {
-                if (leftRef.current.getBoundingClientRect().top <= 76) {
-                        setPageRightStyle({
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '20px',
-                            width: `${pageRef.current.getBoundingClientRect().right - pageRef.current.getBoundingClientRect().left - leftRef.current.offsetWidth - 20}px`,
-                            position: 'fixed',
-                            top: '76px',
-                            left: `${leftRef.current.getBoundingClientRect().right + 20}px`,
-                            bottom: '6.5rem',
-                        })
-                } else {
+        if (leftRef.current && rightRef.current && pageRef.current) {
+            if (leftRef.current.getBoundingClientRect().top <= 76) {
                     setPageRightStyle({
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '20px',
+                        width: `${pageRef.current.getBoundingClientRect().right - pageRef.current.getBoundingClientRect().left - leftRef.current.offsetWidth - 20}px`,
+                        position: 'fixed',
+                        top: '76px',
+                        left: `${leftRef.current.getBoundingClientRect().right + 20}px`,
+                        bottom: '6.5rem',
                     })
-                }
+            } else {
+                setPageRightStyle({
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px',
+                })
             }
         }
+    }
 
     useEffect(() => {
         window.addEventListener('scroll', scrollFunc);

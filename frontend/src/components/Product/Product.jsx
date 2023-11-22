@@ -16,6 +16,8 @@ const ProductSquare = (props) => {
 
     const [productRating, setProductRating] = useState(0);
     const [starRating, setStarRating] = useState(null);
+    
+    const [imagesLinks, setImagesLinks] = useState([]);
 
     useEffect(() => {
         let rating = 0;
@@ -58,11 +60,15 @@ const ProductSquare = (props) => {
         window.scrollTo(0, 0);
     }
 
+    useEffect(() => {
+        setImagesLinks(images.map(image => image.url));
+    },[images])
+
     return (
         <div onClick={handleOnClickProduct} className={type}>
             <product-inner-box>
                 <product-image>
-                    <img src={images[0]} />
+                    <img src={imagesLinks[0]} />
                 </product-image>
                 <product-info>
                     <info-top>
