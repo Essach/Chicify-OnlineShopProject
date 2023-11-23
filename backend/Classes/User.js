@@ -27,6 +27,7 @@ class User {
         }
         ];
         this.userId = uuidv4();
+        this.reviews = [];
     }
 
     becomeSeller(companyName, accountNumber, companyAddress) {
@@ -92,6 +93,10 @@ class User {
             this.conversations.splice(i, 1);
             this.conversations.push(conversation);
         }
+    }
+
+    sendReview(productId) {
+        this.reviews.push(productId);
     }
 
 }
