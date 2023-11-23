@@ -1,8 +1,8 @@
 
 class Review {
-    constructor(rating, description, userId) {
+    constructor(rating, comment = '', userId) {
         this.rating = rating;
-        this.description = description;
+        this.comment = comment;
         this.userId = userId;
     }
 }

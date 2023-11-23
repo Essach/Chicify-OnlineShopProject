@@ -32,9 +32,39 @@ product-buy-form {
         }
     }
 
-    product-reviews {
-        display: block;
+    product-reviews-and-favorite {
+        display: flex;
         margin-bottom: 5px;
+        gap: 1rem;
+
+        product-rating {
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            p {
+                color: v.$darker-grey;
+                font-family: Inter;
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+            
+            review-stars {
+                display: flex;
+                align-items: center;
+                gap: -5px;
+                margin-bottom: 3px;
+
+                img {
+                    transform: scale(0.8);
+                }
+            }
+        }
 
         .favorites,
         .favoritesFilled {

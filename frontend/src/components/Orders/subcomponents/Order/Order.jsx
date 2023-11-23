@@ -2,6 +2,8 @@ import './Order.scss';
 
 import truckIcon from '../../../../icons/orderTruck.svg';
 import boxIcon from '../../../../icons/orderBox.svg';
+import rateStarYellow from '../../../../icons/rateStarYellow.svg';
+import rateStarDark from '../../../../icons/rateStarDark.svg';
 
 import request from '../../../../helpers/request';
 
@@ -30,6 +32,8 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
 
     const [commentValue, setCommentValue] = useState('')
     const [rating, setRating] = useState(0);
+    
+    const [ratingItem, setRatingItem] = useState()
 
     let orderHeader;
     if (status === 'inDelivery') {
@@ -85,6 +89,30 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         fetchData(id);
     }, [id])
 
+    useEffect(() => {
+        if (productInfo.reviews !== undefined && productInfo.reviews.length > 0) {
+            const rating = Math.round(productInfo.reviews.reduce(
+                (accumulator, review) => accumulator + review.rating, 0) / productInfo.reviews.length)
+
+            const stars = []
+            for (let i = 0; i < rating; i++) {
+                stars.push(<img key={i} src={rateStarYellow} alt='star selected' />)
+            }
+            for (let i = 0; i < (5 - rating); i++) {
+                stars.push(<img key={5 - i} src={rateStarDark} alt='star unselected' />)
+            }
+
+            const ratingItem = (
+                <product-rating>
+                    <p>{`(${productInfo.reviews.length})`}</p>
+                    <review-stars>{stars}</review-stars>
+                    <p>{rating}</p>
+                </product-rating>
+            )
+            setRatingItem(ratingItem)
+        }
+    },[productInfo.reviews])
+
     return (
         <order-item>
             <order-header>
@@ -114,9 +142,9 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
                         <product-name>
                             {productInfo.name}
                         </product-name>
-                        <product-reviews>
-                            
-                        </product-reviews>
+                        <product-rating>
+                            {ratingItem}
+                        </product-rating>
                     </order-info>
                 </inner-box>
                 <product-price>

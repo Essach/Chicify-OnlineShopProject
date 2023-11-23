@@ -31,8 +31,6 @@ const ProductPage = () => {
 
     const [cheapestDeliveryPrice, setCheapestDeliveryPrice] = useState(0);
 
-    const [productReviews, setProductReviews] = useState(null)
-
     const fetchData = async (id) => {
         const { data, status } = await request.get(`/products/${id}`);
         if (status === 200) {
@@ -65,14 +63,6 @@ const ProductPage = () => {
                 if (Math.round(rating) === rating + 1) {
                     star.concat(halfStar)
                 }
-
-                setProductReviews((
-            <product-reviews>
-                <div>`(${productData.reviews.length})`</div>
-                <div>{stars}</div>
-                <div>{rating}</div>
-            </product-reviews>
-        ))
             }
 
         }
@@ -160,7 +150,7 @@ const ProductPage = () => {
                             name={productData.name}
                             price={productData.price}
                             quantity={productData.quantity}
-                            reviews={productReviews}
+                            reviews={productData.reviews}
                             cheapestDeliveryPrice={cheapestDeliveryPrice}
                             id={id}
                         />
@@ -174,7 +164,7 @@ const ProductPage = () => {
                             name={productData.name}
                             price={productData.price}
                             quantity={productData.quantity}
-                            reviews={productReviews}
+                            reviews={productData.reviews}
                             cheapestDeliveryPrice={cheapestDeliveryPrice}
                             id={id}
                     />

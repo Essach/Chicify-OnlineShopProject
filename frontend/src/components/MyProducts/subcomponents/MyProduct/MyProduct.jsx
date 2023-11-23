@@ -2,7 +2,9 @@ import './MyProduct.scss';
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from "react";
 import request from '../../../../helpers/request';
-// import EditProduct from '../EditProduct/EditProduct';
+
+import rateStarYellow from '../../../../icons/rateStarYellow.svg';
+import rateStarDark from '../../../../icons/rateStarDark.svg';
 
 const MyProduct = (props) => {
     const { id, handleEditProduct } = props;
@@ -19,6 +21,8 @@ const MyProduct = (props) => {
         reviews: [],
     });
 
+    const [ratingItem, setRatingItem] = useState();
+
     const fetchData = async (id) => {
         const { data, status } = await request.get(`/products/${id}`);
         
@@ -33,6 +37,30 @@ const MyProduct = (props) => {
         fetchData(id);
     }, [id])
 
+    useEffect(() => {
+        if (productInfo.reviews !== undefined && productInfo.reviews.length > 0) {
+            const rating = Math.round(productInfo.reviews.reduce(
+                (accumulator, review) => accumulator + review.rating, 0) / productInfo.reviews.length)
+
+            const stars = []
+            for (let i = 0; i < rating; i++) {
+                stars.push(<img key={i} src={rateStarYellow} alt='star selected' />)
+            }
+            for (let i = 0; i < (5 - rating); i++) {
+                stars.push(<img key={5 - i} src={rateStarDark} alt='star unselected' />)
+            }
+
+            const ratingItem = (
+                <product-rating>
+                    <p>{`(${productInfo.reviews.length})`}</p>
+                    <review-stars>{stars}</review-stars>
+                    <p>{rating}</p>
+                </product-rating>
+            )
+            setRatingItem(ratingItem)
+        }
+    },[productInfo.reviews])
+
     return (
         <my-product-item>
             <my-product-content>
@@ -44,9 +72,9 @@ const MyProduct = (props) => {
                         <product-name>
                             {productInfo.name}
                         </product-name>
-                        <product-reviews>
-                            
-                        </product-reviews>
+                        <product-rating>
+                            {ratingItem}
+                        </product-rating>
                     </my-product-info>
                 </inner-box>
                 <product-price>
@@ -56,7 +84,6 @@ const MyProduct = (props) => {
             <my-product-footer onClick={() => { handleEditProduct(id) }}>
                 Edit
             </my-product-footer>
-            {/* <EditProduct handleOnClose={handleOnCloseEditProduct} isOpen={isEditOpen} openModal={openEdit} /> */}
         </my-product-item>
     );
 }

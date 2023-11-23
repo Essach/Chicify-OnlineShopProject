@@ -215,9 +215,8 @@ exports.getProductReviews = (request, response, next) => {
     try {
         const { id } = request.params;
         const product = productsData.find(product => product.ID === id);
-        const reviewsToSend = product.reviews;
 
-        if (!productToSend) {
+        if (!product) {
             response.status(404).json({
                 message: "Couldn't find product of given id"
             });
@@ -226,7 +225,7 @@ exports.getProductReviews = (request, response, next) => {
         }
 
         response.status(200).json({
-            reviews: reviewsToSend,
+            reviews: product.reviews,
         });
     } catch (error) {
         response.status(500).json({

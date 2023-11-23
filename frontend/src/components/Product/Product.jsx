@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import star from '../../icons/star.svg';
-import halfStar from '../../icons/halfStar.svg';
+import rateStarYellow from '../../icons/rateStarYellow.svg';
+import rateStarDark from '../../icons/rateStarDark.svg';
 import deliveryIcon from '../../icons/deliveryIcon.svg';
 import deliveryIconWhite from '../../icons/deliveryTruckWhite.svg';
 import productArrowRight from '../../icons/productArrowRight.svg';
@@ -14,40 +14,9 @@ import './Product.scss';
 const ProductSquare = (props) => {
     const { id, name, price, delivery, images, reviews, type } = props;
 
-    const [productRating, setProductRating] = useState(0);
-    const [starRating, setStarRating] = useState(null);
+    const [ratingItem, setRatingItem] = useState()
     
     const [imagesLinks, setImagesLinks] = useState([]);
-
-    useEffect(() => {
-        let rating = 0;
-        reviews.forEach(review => {
-            rating += review.rating;
-        })
-        rating = (rating / reviews.length).toFixed(1);
-
-        let stars = []
-        for (let i = 0; i < Math.floor(rating); i++) {
-            stars.concat(star)
-        }
-        if (Math.round(rating) === rating + 1) {
-            star.concat(halfStar)
-        }
-
-        setStarRating(stars);
-        setProductRating(rating);
-    }, [reviews])
-
-    let productReviews = null;
-    if (reviews.length > 0) {
-        productReviews = (
-            <product-reviews>
-                <div>`(${reviews.length})`</div>
-                <div>{starRating}</div>
-                <div>{productRating}</div>
-            </product-reviews>
-        )
-    }
 
     const deliveryPrices = delivery.map(option => option.price);
     const cheapestDeliveryPrice = Math.min(...deliveryPrices);
@@ -61,8 +30,33 @@ const ProductSquare = (props) => {
     }
 
     useEffect(() => {
+        if (reviews !== undefined && reviews.length > 0) {
+            const rating = Math.round(reviews.reduce(
+                (accumulator, review) => accumulator + review.rating, 0) / reviews.length)
+
+            const stars = []
+            for (let i = 0; i < rating; i++) {
+                stars.push(<img key={i} src={rateStarYellow} alt='star selected' />)
+            }
+            for (let i = 0; i < (5 - rating); i++) {
+                stars.push(<img key={5 - i} src={rateStarDark} alt='star unselected' />)
+            }
+
+            const ratingItem = (
+                <product-rating>
+                    <p>{`(${reviews.length})`}</p>
+                    <review-stars>{stars}</review-stars>
+                    <p>{rating}</p>
+                </product-rating>
+            )
+            setRatingItem(ratingItem)
+        }
+    },[reviews])
+
+    useEffect(() => {
         setImagesLinks(images.map(image => image.url));
-    },[images])
+    }, [images])
+    
 
     return (
         <div onClick={handleOnClickProduct} className={type}>
@@ -73,9 +67,9 @@ const ProductSquare = (props) => {
                 <product-info>
                     <info-top>
                         <product-name>{name}</product-name>
-                        <product-reviews>
-                            {productReviews}
-                        </product-reviews>
+                        <product-rating>
+                            {ratingItem}
+                        </product-rating>
                     </info-top>
                     <info-bottom>
                         <div>

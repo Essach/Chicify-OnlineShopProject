@@ -7,6 +7,8 @@ import plus from '../../../../icons/plus.svg';
 import minus from '../../../../icons/minus.svg';
 import favorite from '../../../../icons/favoritesDBlue.svg';
 import favoriteFilled from '../../../../icons/favoritesDBlueFilled.svg';
+import rateStarYellow from '../../../../icons/rateStarYellow.svg';
+import rateStarDark from '../../../../icons/rateStarDark.svg';
 
 import { useContext, useEffect, useRef, useState } from 'react';
 import { CartContext } from '../../../../context/CartContext';
@@ -15,6 +17,7 @@ import { StoreContext } from '../../../../store/StoreProvider';
 import request from '../../../../helpers/request';
 import { updateUser } from '../../../../helpers/localStorage';
 import Login from '../../../Login/Login';
+import Reviews from './Reviews/Reviews';
 
 const ProductBuyForm = (props) => {
     const { name, price, quantity, reviews, cheapestDeliveryPrice, id} = props
@@ -30,6 +33,10 @@ const ProductBuyForm = (props) => {
     const inputRef = useRef()
 
     const [isFavorite, setIsFavorite] = useState(false)
+
+    const [ratingItem, setRatingItem] = useState();
+
+    const [areReviewsOpen, setAreReviewsOpen] = useState(false);
 
     const handleIncreaseButton = () => {
         if (currentQuantity < quantity) {
@@ -128,7 +135,30 @@ const ProductBuyForm = (props) => {
             setIsFavorite(false);
         }
     }, [user, id])
-    
+
+    useEffect(() => {
+        if (reviews !== undefined && reviews.length > 0) {
+            const rating = Math.round(reviews.reduce(
+                (accumulator, review) => accumulator + review.rating, 0) / reviews.length)
+
+            const stars = []
+            for (let i = 0; i < rating; i++) {
+                stars.push(<img key={i} src={rateStarYellow} alt='star selected' />)
+            }
+            for (let i = 0; i < (5 - rating); i++) {
+                stars.push(<img key={5 - i} src={rateStarDark} alt='star unselected' />)
+            }
+
+            const ratingItem = (
+                <product-rating onClick={()=>setAreReviewsOpen(true)}>
+                    <p>{`(${reviews.length})`}</p>
+                    <review-stars>{stars}</review-stars>
+                    <p>{rating}</p>
+                </product-rating>
+            )
+            setRatingItem(ratingItem)
+        }
+    },[reviews])
 
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const handleOnCloseLogin = () => setIsModalOpenLogin(false);
@@ -139,12 +169,13 @@ const ProductBuyForm = (props) => {
                 <product-name>
                     <p>{name}</p>
                 </product-name>
-                <product-reviews>
-                    {reviews}
+                <product-reviews-and-favorite>
+                    {ratingItem}
                     {isFavorite ? <img src={favoriteFilled} alt='remove from favorites' onClick={handleRemoveFromFavorites} className='favoritesFilled'/> :
                         <img src={favorite} alt='add to favorites' onClick={handleAddToFavorites} className='favorites'/>
                     }
-                </product-reviews>
+                    <Reviews isOpen={areReviewsOpen} closeReviews={() => setAreReviewsOpen(false)} reviews={reviews} productName={name} />
+                </product-reviews-and-favorite>
                 <delivery-info>
                     <div>
                         <img src={deliveryIcon} alt='delivery truck'/>
@@ -178,7 +209,7 @@ ProductBuyForm.propTypes = {
     name: PropTypes.string,
     price: PropTypes.number,
     quantity: PropTypes.number,
-    reviews: PropTypes.object,
+    reviews: PropTypes.array,
     cheapestDeliveryPrice: PropTypes.number,
     id: PropTypes.string,
 }

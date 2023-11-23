@@ -116,6 +116,32 @@ order-item {
                     font-weight: 500;
                     line-height: normal;
                 }
+
+                product-rating {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+
+                    p {
+                        color: v.$darker-grey;
+                        font-family: Inter;
+                        font-size: 1rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                    }
+                    
+                    review-stars {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 3px;
+
+                        img {
+                            transform: scale(0.8);
+                            margin: 0 -2px;
+                        }
+                    }
+                }
             }
         }
 

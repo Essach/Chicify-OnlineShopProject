@@ -381,7 +381,7 @@ exports.postUserSellProduct = async (request, response, next) => {
 
 exports.postReview = (request, response, next) => {
     try {
-        const { rating, description, productId, userId } = request.body;
+        const { rating, comment, productId, userId } = request.body;
         const product = productsData.find(product => product.ID === productId);
         const user = usersData.find(user => user.userId === userId);
 
@@ -405,7 +405,7 @@ exports.postReview = (request, response, next) => {
             return;
         }
         
-        const newReview = new Review(rating, description, userId);
+        const newReview = new Review(rating, comment, userId);
         product.reviews.push(newReview);
         user.sendReview(productId);
 
