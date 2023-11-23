@@ -143,19 +143,8 @@ exports.postUserDeleteProduct = async (request, response, next) => {
         const sellerId = request.body.sellerId;
         const productId = request.body.productId;
 
-        console.log(sellerId)
-
-        let imageFilePaths = [];
-        Object.keys(request.body).forEach((key) => {
-            if (key.startsWith('imageFilePath')) {
-                const value = request.body[key];
-
-                imageFilePaths.push(value)
-            }
-        });
-
         const user = usersData.find(user => user.userId === sellerId);
-        const productIndex = productsData.findIndex(product => product.ID === productId)
+        const product = productsData.find(product => product.ID === productId)
         
         if (!user) {
             response.status(404).json({
@@ -164,7 +153,7 @@ exports.postUserDeleteProduct = async (request, response, next) => {
 
             return;
         }
-        if (productIndex === -1) {
+        if (!product) {
             response.status(404).json({
                 message: "Couldn't find product with given id",
             })
@@ -188,9 +177,7 @@ exports.postUserDeleteProduct = async (request, response, next) => {
             return;
         }
 
-        await deleteImages(imageFilePaths);
-
-        productsData.splice(productIndex, 1);
+        product.deleteProduct();
         user.productsForSale.splice(productIndexInUser, 1);
 
         response.status(200).json({

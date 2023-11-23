@@ -45,6 +45,11 @@ class Product {
         this.description = description;
         this.categories = categories;
     }
+
+    deleteProduct() {
+        this.quantity = 0;
+        this.categories = []
+    }
 }
 
 module.exports = Product
