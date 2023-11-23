@@ -190,15 +190,17 @@ const ProductBuyForm = (props) => {
                         {`US$ ${price}`}
                     </p>
                 </product-price>
+                {quantity > 0 ?
                 <quantity-button>
                     <div className='side' onClick={handleDecreaseButton}><img src={minus} alt='decrease quantity' /></div>
                     <div className='center'><input type="number" onChange={handleChangeQuantity} value={currentQuantity} ref={inputRef} /></div>
-                    <div className='side' onClick={handleIncreaseButton}><img src={plus} alt='increase quantity'/></div>
-                </quantity-button>
+                    <div className='side' onClick={handleIncreaseButton}><img src={plus} alt='increase quantity' /></div>
+                </quantity-button> : null}
+                {quantity > 0 ?
                 <buy-form-buttons>
                     <div className='add-to-cart-button' onClick={handleAddToCartBtn}><p>Add to cart</p></div>
                     <div className='buy-now-button' onClick={handleBuyNowBtn}><p>Buy now</p></div>
-                </buy-form-buttons>
+                </buy-form-buttons> : null}
             </product-buy-form>
             <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />
         </>
