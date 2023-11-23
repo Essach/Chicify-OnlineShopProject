@@ -2,6 +2,7 @@ const User = require('../Classes/User.js');
 const BotUser = require('../Classes/BotUser.js');
 const { productsData } = require('./products.js');
 const Product = require('../Classes/Product.js');
+const Review = require('../Classes/Review.js');
 
 const { storage, firebaseConfig } = require('../firebase.js');
 const { ref, uploadBytes, getDownloadURL, deleteObject } = require("firebase/storage");
@@ -375,6 +376,47 @@ exports.postUserSellProduct = async (request, response, next) => {
         })
 
         return;
+    }
+}
+
+exports.postReview = (request, response, next) => {
+    try {
+        const { rating, description, productId, userId } = request.body;
+        const product = productsData.find(product => product.ID === productId);
+        const user = usersData.find(user => user.userId === userId);
+
+        if (rating === undefined || userId === undefined) {
+            response.status(404).json({
+                message: 'Not enough information provided'
+            });
+
+            return;
+        } else if (!product) {
+            response.status(405).json({
+                message: "Couldn't find product with given id"
+            });
+
+            return;
+        } else if (!user) {
+            response.status(406).json({
+                message: "Couldn't find user with given id"
+            });
+
+            return;
+        }
+        
+        const newReview = new Review(rating, description, userId);
+        product.reviews.push(newReview);
+        user.sendReview(productId);
+
+        response.status(200).json({
+            user: user
+        });
+    } catch (error) {
+        response.status(500).json({
+            error,
+            message: 'Internal server error'
+        });
     }
 }
 

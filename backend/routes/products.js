@@ -7,7 +7,6 @@ router.get('/:id', getProduct);
 router.get('/', getProducts);
 // router.get('/:id', getProductReviews);
 router.post('/', postProduct);
-router.post('/review', postProductReview);
 router.put('/seller', putProductBySeller);
 router.put('/system', putProductBySystem);
 router.delete('/:id', deleteProduct)

@@ -261,39 +261,6 @@ exports.postProduct = (request, response, next) => {
     }
 };
 
-exports.postProductReview = (request, response, next) => {
-    try {
-        const { rating, description, productId } = request.body;
-        const product = productsData.find(product => product.ID === productId)
-
-        if (!rating) {
-            response.status(404).json({
-                message: 'Rating for the review not given'
-            });
-
-            return;
-        } else if (!product) {
-            response.status(405).json({
-                message: "Couldn't find product of given id"
-            });
-
-            return;
-        }
-        
-        const newReview = new Review(rating, description);
-        product.reviews.push(newReview);
-
-        response.status(200).json({
-            productReviews: product.reviews,
-        });
-    } catch (error) {
-        response.status(500).json({
-            error,
-            message: 'Error with posting review'
-        });
-    }
-};
-
 exports.putProductBySeller = (request, response, next) => {
     try {
         let { productId, newName, newPrice, newDelivery, newDescription, newImages } = request.body;
