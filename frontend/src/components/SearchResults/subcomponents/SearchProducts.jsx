@@ -38,6 +38,8 @@ const SearchProducts = (props) => {
             }).reverse();
         }
 
+        searchProducts = searchProducts.filter(sp => sp.quantity !== 0);
+
         let styleType;
         if (window.innerWidth > 1100) {
             if (viewMode === 'small') styleType = 'rectangleProductPage';
