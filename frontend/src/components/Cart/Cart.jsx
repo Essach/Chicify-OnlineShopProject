@@ -65,13 +65,31 @@ const Cart = () => {
                     }
                 }
             }
+            let isDeliveryStandard = true
+            let isDeliveryExpress = true
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].delivery.map(delivery => delivery.type).includes("Standard")) isDeliveryStandard = false;
+            }
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].delivery.map(delivery => delivery.type).includes("Express")) isDeliveryExpress = false;
+            }
 
-            deliveryStandard = deliveryStandard.reduce((a, b) => a + b);
-            deliveryExpress = deliveryExpress.reduce((a, b) => a + b);
-
+            let standardPrice = 0;
+            if (isDeliveryStandard) {
+                for (let i = 0; i < products.length; i++) {
+                    standardPrice = standardPrice + products[i].delivery.filter(delivery => delivery.type === "Standard")[0].price;
+                }
+            }
+            let expressPrice = 0;
+            if (isDeliveryExpress) {
+                for (let i = 0; i < products.length; i++) {
+                    expressPrice = expressPrice + products[i].delivery.filter(delivery => delivery.type === "Standard")[0].price;
+                }
+            }
+            
             setDelivery({
-                standardPrice: deliveryStandard,
-                expressPrice: deliveryExpress,
+                standardPrice: standardPrice,
+                expressPrice: expressPrice,
             })
         }
     },[products]);

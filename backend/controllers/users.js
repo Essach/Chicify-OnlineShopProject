@@ -290,7 +290,7 @@ exports.postUserEditProduct = async (request, response, next) => {
 
         const imagesLinksAndPaths = await uploadImagesAndGetURLs(imageList);
 
-        product.editProduct(name, price, delivery, quantity, imagesLinksAndPaths, description, categories)
+        product.editProduct(name, parseInt(price), delivery, parseInt(quantity), imagesLinksAndPaths, description, categories)
 
         response.status(200).json({
             user,
@@ -356,7 +356,7 @@ exports.postUserSellProduct = async (request, response, next) => {
 
         const imagesLinksAndPaths = await uploadImagesAndGetURLs(imageList);
 
-        const newProduct = new Product(name, price, delivery, quantity, imagesLinksAndPaths, description, categories, sellerId);
+        const newProduct = new Product(name, parseInt(price), delivery, parseInt(quantity), imagesLinksAndPaths, description, categories, sellerId);
         user.putProductForSale(newProduct.ID);
         productsData.push(newProduct);
 

@@ -220,14 +220,16 @@ const CartForm = (props) => {
                         <cart-form-title>
                             Delivery option
                         </cart-form-title>
+                        {delivery.standardPrice !== 0 ?
                         <div className={deliveryOption === 'standard' ? 'option-active' : 'option-inactive'} onClick={handleClickStandardDelivery}>
                             <img src={standard} alt='standard delivery' />
                             <p>Standard</p>
-                        </div>
+                        </div> : <p>Standard delivery not possible for selected products</p> }
+                        {delivery.expressPrice !== 0 ?
                         <div className={deliveryOption === 'express' ? 'option-active' : 'option-inactive'} onClick={handleClickExpressDelivery}>
                             <img src={express} alt='express delivery' />
                             <p>Express</p>
-                        </div>
+                        </div> : <p>Express delivery not possible for selected products</p> }
                     </cart-form-container>
                 </cart-form-options>
                 {isAddressFormValidated ?

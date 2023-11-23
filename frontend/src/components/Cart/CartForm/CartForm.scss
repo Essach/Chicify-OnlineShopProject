@@ -97,6 +97,15 @@ cart-form-component {
                         font-weight: 400;
                     }
                 }
+
+                p {
+                    display: flex;
+                    align-items: center;
+                    font-size: 0.8rem;
+                    color:v.$white;
+                    text-align: center;
+                    height: 100%;
+                }
             }
         }
 
