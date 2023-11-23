@@ -9,6 +9,10 @@ orders-page {
     margin-bottom: 3rem;
     flex-grow: 1;
 
+    @media only screen and (max-width: 1500px) {
+        width: 60%;
+    }
+
     @media only screen and (max-width: 1100px) {
         width: 100%;
         padding: 0 10px;

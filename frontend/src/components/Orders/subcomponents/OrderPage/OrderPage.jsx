@@ -84,8 +84,12 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
     }
 
     const fetchProductData = async (id) => {
-        const { data } = await request.get(`/products/${id}`);
-        setProductInfo(data.product);
+        const { data, status } = await request.get(`/products/${id}`);
+        if (status === 200) {
+            const productInfo = data.product;
+            productInfo.images = productInfo.images.map(image => image.url);
+            setProductInfo(productInfo);
+        }
     }
 
     const handleClickProductItem = () => {

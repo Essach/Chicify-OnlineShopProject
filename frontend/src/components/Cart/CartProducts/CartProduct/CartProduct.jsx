@@ -6,12 +6,14 @@ import minus from '../../../../icons/minus.svg';
 import trashcan from '../../../../icons/trashcanCart.svg';
 
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../../../context/CartContext';
 import { useNavigate } from 'react-router';
 
 const CartProduct = (props) => {
     const { id, image, name, reviews, delivery, quantity, maxQuantity, price } = props;
+
+    const [imageLink, setImageLink] = useState('');
 
     const { dispatch } = useContext(CartContext);
 
@@ -105,11 +107,15 @@ const CartProduct = (props) => {
         })
     }
 
+    useEffect(() => {
+        setImageLink(image.url);
+    },[image])
+
     return (
         <cart-product>
             <inner-container onClick={handleOnClickProduct}>
                 <product-image>
-                    <img src={image} alt={`${name} image`} />
+                    <img src={imageLink} alt={`${name} image`} />
                 </product-image>
                 <product-info>
                     <info-top>
@@ -144,7 +150,7 @@ const CartProduct = (props) => {
 
 CartProduct.propTypes = {
     id: PropTypes.string,
-    image: PropTypes.string, 
+    image: PropTypes.object, 
     name: PropTypes.string, 
     reviews: PropTypes.array, 
     delivery: PropTypes.array, 

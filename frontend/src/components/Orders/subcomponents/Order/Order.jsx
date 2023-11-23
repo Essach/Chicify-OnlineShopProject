@@ -5,9 +5,13 @@ import boxIcon from '../../../../icons/orderBox.svg';
 
 import request from '../../../../helpers/request';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
+import RateProduct from '../RateProduct/RateProduct';
+
+import {StoreContext} from '../../../../store/StoreProvider';
+import { updateUser } from '../../../../helpers/localStorage';
 
 const Order = ({id, status, setOrderId, openOrderPage}) => {
     const [productInfo, setProductInfo] = useState({
@@ -22,25 +26,30 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         reviews: [],
     });
 
+    const { user, setUser } = useContext(StoreContext)
+
+    const [commentValue, setCommentValue] = useState('')
+    const [rating, setRating] = useState(0);
+
     let orderHeader;
     if (status === 'inDelivery') {
         orderHeader = (
-            <>
+            <delivery-status>
                 <img src={truckIcon} alt='truck icon' />
                 <p>In delivery...</p>
-            </>
+            </delivery-status>
         )
     } else if (status === 'delivered') {
         orderHeader = (
-            <>
+            <delivery-status>
                 <img src={boxIcon} alt='box icon' />
-                <p>Your order is ready to collect</p>
-            </>
+                <p>Your order has been delivered</p>
+            </delivery-status>
         )
     }
 
     const fetchData = async (id) => {
-        const { data } = await request.get(`/products/${id}`);
+        const { data, status } = await request.get(`/products/${id}`);
         if (status === 200) {
             const productInfo = data.product;
             productInfo.images = productInfo.images.map(image => image.url);
@@ -53,6 +62,25 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         openOrderPage()
     }
 
+    const [isRatingOpen, setIsRatingOpen] = useState(false);
+
+    const sendReview = async () => {
+        const { status, data } = await request.post('/users/review', {
+            rating: rating, comment: commentValue, productId: id, userId: user.userId
+        })
+
+        if (status === 200) {
+            updateUser(data.user);
+            setUser(data.user);
+            setIsRatingOpen(false);
+            setRating(0);
+            setCommentValue('');
+        }
+        else {
+            throw new Error(data.message);
+        }
+    }
+
     useEffect(() => {
         fetchData(id);
     }, [id])
@@ -61,6 +89,21 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         <order-item>
             <order-header>
                 {orderHeader}
+                {status === 'delivered' && !user.reviews.includes(id)? <>
+                    <rating-btn onClick={()=>{setIsRatingOpen(true)}}>
+                        Send a review
+                    </rating-btn>
+                    <RateProduct
+                        isOpen={isRatingOpen}
+                        closeRating={() => setIsRatingOpen(false)}
+                        handleSendReview={sendReview}
+                        rating={rating}
+                        handleChangeRating={(value)=>setRating(value)}
+                        commentValue={commentValue}
+                        handleChangeCommentValue={(value)=>setCommentValue(value)}
+                    />
+                </> :
+                null }
             </order-header>
             <order-content>
                 <inner-box>
