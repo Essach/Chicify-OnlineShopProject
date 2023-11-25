@@ -1,6 +1,6 @@
 @use '../../variables' as v;
 
-sign-in-dialog {
+sign-up-dialog {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,12 +42,12 @@ sign-in-dialog {
         }
     }
 
-    sign-in-image {
+    sign-up-image {
         display: flex;
         justify-content: center;
     }
 
-    sign-in-form {
+    sign-up-form {
         display: flex;
         flex-direction: column;
         gap: 10px;

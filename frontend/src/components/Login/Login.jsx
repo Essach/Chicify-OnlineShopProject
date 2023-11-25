@@ -58,8 +58,8 @@ const Login = ({handleOnClose, isModalOpen}) => {
         setIsPasswordHidden(true);
     }
 
-    const handleSignInBtn = () => {
-        navigate('/signIn');
+    const handleSignUpBtn = () => {
+        navigate('/sign-up');
         navigate(0);
         window.scrollTo(0, 0);
     }
@@ -178,7 +178,7 @@ const Login = ({handleOnClose, isModalOpen}) => {
                         </input-container>
                     </form-section>
                     <additional-options>
-                        <p onClick={handleSignInBtn}>Sign in</p>
+                        <p onClick={handleSignUpBtn}>Sign up</p>
                         <p onClick={handleForgotPasswordBtn}>Forgot your password?</p>
                     </additional-options>
                 </login-form>

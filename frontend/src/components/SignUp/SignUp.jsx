@@ -1,11 +1,11 @@
-import './SignIn.scss';
+import './SignUp.scss';
 
 import close from '../../icons/closeMintyBlue.svg';
 import email from '../../icons/emailLogin.svg';
 import lock from '../../icons/lock.svg';
 import passwordShow from '../../icons/passwordShow.svg';
 import passwordHide from '../../icons/passwordHide.svg';
-import user from '../../icons/userSignin.svg';
+import user from '../../icons/userSignup.svg';
 
 import { useEffect, useState } from 'react';
 
@@ -13,7 +13,7 @@ import request from '../../helpers/request';
 
 import { useNavigate } from 'react-router';
 
-const SignIn = () => {
+const SignUp = () => {
     const navigate = useNavigate()
 
     const [userEmails, setUserEmails] = useState();
@@ -141,15 +141,15 @@ const SignIn = () => {
     })
 
     return (
-        <sign-in-dialog>
+        <sign-up-dialog>
             <title-and-close>
                 <p>Create a new account</p>
                 <img src={close} alt='close sign in form' onClick={handleClose}/>
             </title-and-close>
-            <sign-in-image>
+            <sign-up-image>
                 <img src='http://localhost:8000/images/Login/signin.png' alt='sign in image'/>
-            </sign-in-image>
-            <sign-in-form>
+            </sign-up-image>
+            <sign-up-form>
                 <form-section>
                     <p>Username:</p>
                     <input-container>
@@ -211,11 +211,11 @@ const SignIn = () => {
                         <a href='/terms-and-conditions'>Terms & Conditions</a>
                     </agreement-text>
                 </checkbox-agreement>
-            </sign-in-form>
+            </sign-up-form>
             <validation-message>{isFormValidated ? null : <p>{errorText}</p>}</validation-message>
             <create-account-button onClick={handleCreateAccountButton}><p>Create a new account</p></create-account-button>
-        </sign-in-dialog>
+        </sign-up-dialog>
     );
 }
 
-export default SignIn;
+export default SignUp;

@@ -10,7 +10,6 @@ import StoreProvider from './store/StoreProvider';
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import CartProvider from './context/CartContext';
-import SignIn from './components/SignIn/SignIn';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 import PasswordRecovery from './components/PasswordRecovery/PasswordRecovery';
 import Cart from './components/Cart/Cart';
@@ -21,6 +20,7 @@ import Favorites from './components/Favorites/Favorites';
 import SearchResults from './components/SearchResults/SearchResults';
 import StartSelling from './components/StartSelling/StartSelling';
 import MyProducts from './components/MyProducts/MyProducts';
+import SignUp from './components/SignUp/SignUp';
 // import Test from './Test';
 
 const App = () => {
@@ -36,7 +36,7 @@ const App = () => {
                             <Route path='/' Component={Home} />
                             <Route path='/home' Component={Home} />
                             <Route path='/product/:id' Component={ProductPage} />
-                            <Route path='/signin' Component={SignIn} />
+                            <Route path='/sign-up' Component={SignUp} />
                             <Route path='/terms-and-conditions' Component={TermsAndConditions} />
                             <Route path='/password-recovery' Component={PasswordRecovery} />
                             <Route path='/cart' Component={Cart} />
