@@ -39,6 +39,8 @@ const ProductBuyForm = (props) => {
 
     const [areReviewsOpen, setAreReviewsOpen] = useState(false);
 
+    const [sellerName, setSellerName] = useState('');
+
     const handleIncreaseButton = () => {
         if (currentQuantity < quantity) {
             setCurrentQuantity(prev => prev + 1)
@@ -165,6 +167,18 @@ const ProductBuyForm = (props) => {
         }
     },[reviews])
 
+    useEffect(() => {
+        const fetchSellerName = async () => {
+            const { data, status } = await request.get(`/users/${sellerId}`);
+
+            if (status === 200) {
+                setSellerName(data.username);
+            }
+        }
+
+        fetchSellerName();
+    },[sellerId])
+
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false);
     const handleOnCloseLogin = () => setIsModalOpenLogin(false);
     
@@ -173,6 +187,7 @@ const ProductBuyForm = (props) => {
             <product-buy-form>
                 <product-name>
                     <p>{name}</p>
+                    <p className='small'>{sellerName}</p>
                 </product-name>
                 <product-reviews-and-favorite>
                     {ratingItem}
