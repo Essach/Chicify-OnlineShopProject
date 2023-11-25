@@ -413,9 +413,10 @@ exports.patchUserOrder = (request, response, next) => {
 
         const user = usersData.find(user => user.userId === userId);
 
+        const productBySellerFixed = productBySeller.filter(item => item.sellerId !== undefined)
         let areSellersValid = true;
-        for (let i = 0; i < productBySeller.length; i++) {
-            if (!usersData.find(user => user.userId === productBySeller[i].sellerId)) areSellersValid = false;
+        for (let i = 0; i < productBySellerFixed.length; i++) {
+            if (!usersData.find(user => user.userId === productBySellerFixed[i].sellerId)) areSellersValid = false;
         }
 
         if (!user || !areSellersValid) {
@@ -438,7 +439,7 @@ exports.patchUserOrder = (request, response, next) => {
             }
         }
 
-        productBySeller.forEach((item) => {
+        productBySellerFixed.forEach((item) => {
             const seller = usersData.find(user => user.userId === item.sellerId);
             user.receiveMessage(item.sellerId, `Thank you for purchasing ${item.productName}`);
             seller.sendMessage(userId, `Thank you for purchasing ${item.productName}`)

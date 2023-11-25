@@ -210,7 +210,7 @@ const Navbar = () => {
     const [searchHistory, setSearchHistory] = useState([]);
 
     const searchResults = useRef();
-    const [areSearchResultsVisible, toggleAreSearchResultsVisible] = useState(false);
+    const [areSearchResultsVisible, setAreSearchResultsVisible] = useState(false);
 
 
     const handleSearch = (e) => {
@@ -241,7 +241,7 @@ const Navbar = () => {
     const handleSearchFocus = () => {
         setSearchHistory(autocompleteSaved.slice().reverse().map(item => <SearchHistoryItem key={item.id} itemTitle={item.name} itemLink={item.link} itemId={item.id} addToSearchHistory={addToSearchHistory} removeFromSearchHistory={removeFromSearchHistory} handleCloseSearchMobile={handleCloseSearchMobile} resetSearchValue={()=>{setSearchValue('')}} />));
         if (window.innerWidth > 1100 && ( autocompleteSaved.length > 0 || searchPropositions.length >0)) {
-            toggleAreSearchResultsVisible(true);
+            setAreSearchResultsVisible(true);
             setIsSearchLineVisible(false);
             if (autocompleteSaved.length > 0 && searchPropositions.length > 0) {
                 setIsSearchLineVisible(true)
@@ -256,7 +256,7 @@ const Navbar = () => {
     const handleSearchBlur = (e) => {
         e.preventDefault();
         setTimeout(() => {
-            toggleAreSearchResultsVisible(false);
+            setAreSearchResultsVisible(false);
         }, 100)
     }
 
@@ -279,14 +279,14 @@ const Navbar = () => {
 
             setSearchPropositions(keywords.map(result => <SearchPropositionItem key={result} name={result} handleCloseSearchMobile={handleCloseSearchMobile} resetSearchValue={()=>{setSearchValue('')}} />));
 
-            toggleAreSearchResultsVisible(true);
+            setAreSearchResultsVisible(true);
             
             if (autocompleteSaved.length > 0 && keywords.length > 0) {
                 setIsSearchLineVisible(true);
             } else if (keywords.length === 0) {
                 setIsSearchLineVisible(false);
                 if (autocompleteSaved.length === 0) {
-                    toggleAreSearchResultsVisible(false);
+                    setAreSearchResultsVisible(false);
                 }
             }
         }
@@ -295,7 +295,7 @@ const Navbar = () => {
             setSearchPropositions([]);
             setIsSearchLineVisible(false);
             if (autocompleteSaved.length === 0) {
-                toggleAreSearchResultsVisible(false);
+                setAreSearchResultsVisible(false);
             }
         }
 
@@ -323,6 +323,21 @@ const Navbar = () => {
         }
         )
     }, [isSearchMobileVisible]);
+
+    useEffect(() => {
+        const resizeFunc = () => {
+            setIsSearchMobileVisible(false);
+            setIsMobileMenuVisible(false);
+            setAreSearchResultsVisible(false);
+            searchBar.current.blur();
+        }
+
+        window.addEventListener('resize', resizeFunc);
+
+        return () => {
+            window.removeEventListener('resize', resizeFunc);
+        }
+    },[])
 
     return (
         <>

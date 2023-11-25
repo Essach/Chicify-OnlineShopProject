@@ -32,6 +32,8 @@ const ProductPage = () => {
 
     const [cheapestDeliveryPrice, setCheapestDeliveryPrice] = useState(0);
 
+    const [windowMode, setWindowMode] = useState('pc');  
+
     const fetchData = async (id) => {
         const { data, status } = await request.get(`/products/${id}`);
         if (status === 200) {
@@ -79,62 +81,49 @@ const ProductPage = () => {
     const rightRef = useRef();
     const pageRef = useRef();
 
-    const scrollFunc = () => {
-        if (leftRef.current && rightRef.current && pageRef.current) {
-            if (leftRef.current.getBoundingClientRect().top <= 76) {
+    useEffect(() => {
+        const scrollFunc = () => {
+            if (leftRef.current && rightRef.current && pageRef.current) {
+                if (leftRef.current.getBoundingClientRect().top <= 76) {
+                        setPageRightStyle({
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '20px',
+                            width: `${pageRef.current.getBoundingClientRect().right - pageRef.current.getBoundingClientRect().left - leftRef.current.offsetWidth - 20}px`,
+                            position: 'fixed',
+                            top: '76px',
+                            left: `${leftRef.current.getBoundingClientRect().right + 20}px`,
+                            bottom: '6.5rem',
+                        })
+                } else {
                     setPageRightStyle({
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '20px',
-                        width: `${pageRef.current.getBoundingClientRect().right - pageRef.current.getBoundingClientRect().left - leftRef.current.offsetWidth - 20}px`,
-                        position: 'fixed',
-                        top: '76px',
-                        left: `${leftRef.current.getBoundingClientRect().right + 20}px`,
-                        bottom: '6.5rem',
                     })
-            } else {
-                setPageRightStyle({
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '20px',
-                })
+                }
             }
         }
-    }
+        const resizeFunc = () => {
+            if (window.innerWidth > 1100) {
+                setWindowMode('pc')
+            } else {
+                setWindowMode('mobile')
+            }
+        }
+        const resizeFuncs = () => {
+            resizeFunc();
+            scrollFunc();
+        }
 
-    useEffect(() => {
         window.addEventListener('scroll', scrollFunc);
-
-        return () => {
-            window.removeEventListener('scroll', scrollFunc)
-        }
-    }, [])
-
-    const [windowMode, setWindowMode] = useState('pc');
-
-    const resizeFunc = () => {
-        if (window.innerWidth > 1100) {
-            setWindowMode('pc')
-        } else {
-            setWindowMode('mobile')
-        }
-    }
-
-    const resizeFuncs = () => {
-        resizeFunc();
-        scrollFunc();
-    }
-
-    useEffect(() => {
-        resizeFunc()
-
         window.addEventListener('resize', resizeFuncs);
 
         return () => {
-            window.removeEventListener('resize', resizeFuncs);
+            window.removeEventListener('scroll', scrollFunc)
+            window.removeEventListener('resize', resizeFuncs)
         }
-    }, [])
-    
+    }, [])  
 
     return (
         <>
@@ -151,6 +140,7 @@ const ProductPage = () => {
                             name={productData.name}
                             price={productData.price}
                             quantity={productData.quantity}
+                            sellerId={productData.sellerId}
                             reviews={productData.reviews}
                             cheapestDeliveryPrice={cheapestDeliveryPrice}
                             id={id}

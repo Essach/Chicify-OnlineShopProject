@@ -160,8 +160,6 @@ const CartForm = (props) => {
                     sellerId: item.sellerId,
                 }
             })
-            console.log(state.cart)
-            console.log(productsWithSellerIds)
 
             if (paymentStatus === 200) {
                 const products = state.cart.map(item => ({...item, status: 'delivered'}))
