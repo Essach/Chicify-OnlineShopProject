@@ -196,6 +196,8 @@ const Navbar = () => {
     const [isSearchLineVisible, setIsSearchLineVisible] = useState(false);
 
     const [isSearchMobileVisible, setIsSearchMobileVisible] = useState(false);
+    
+    const searchMobileInputRef = useRef(null);
 
     const handleCloseSearchMobile = () => setIsSearchMobileVisible(false);
 
@@ -217,6 +219,7 @@ const Navbar = () => {
                 return;
             } else {
                 searchBar.current.blur();
+                handleCloseSearchMobile();
             }
         }
         if (searchValue !== '') {
@@ -229,6 +232,8 @@ const Navbar = () => {
             navigate(`/search/${searchValue}`);
             window.scrollTo(0, 0);
             setSearchValue('');
+            
+            handleCloseSearchMobile();
         }
 
     }
@@ -244,6 +249,7 @@ const Navbar = () => {
         }
         else if (window.innerWidth <= 1100) {
             setIsSearchMobileVisible(true)
+            if (searchMobileInputRef.current) searchMobileInputRef.current.focus();
         }
     }
 
@@ -345,17 +351,18 @@ const Navbar = () => {
                                 placeholder='Search...'
                                 value={searchValue}
                                 onChange={handleChangeSearchValue} />
+                            {window.innerWidth > 1100 ?
                             <div ref={searchResults} className={`search-results${areSearchResultsVisible ? '' : '-hidden'}`}>
                                 {searchHistory}
                                 {isSearchLineVisible ? <div className='search-results-line'></div> : null}
                                 {searchPropositions}
-                            </div>
+                            </div> : null}
                         </search-bar-input>
                         <search-bar-btn onClick={handleSearch}>
                             <img src={searchIcon} alt='search button icon'/>
                         </search-bar-btn>
                     </search-bar>
-                    {isSearchMobileVisible && <SearchMobile
+                    <SearchMobile
                         searchValue={searchValue}
                         handleChangeSearchValue={handleChangeSearchValue}
                         handleSearch={handleSearch}
@@ -363,8 +370,9 @@ const Navbar = () => {
                         isSearchLineVisible={isSearchLineVisible}
                         searchPropositions={searchPropositions}
                         handleCloseSearchMobile={handleCloseSearchMobile}
+                        isSearchMobileVisible={isSearchMobileVisible}
+                        ref={searchMobileInputRef}
                     />
-                    }
                     <nav-buttons>
                         <NotificationWindow openLoginModal={setIsModalOpenLogin} />
                         {navButtons}

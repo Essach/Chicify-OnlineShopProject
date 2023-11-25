@@ -1,6 +1,6 @@
 @use '../../../../variables.scss' as v;
 
-search-mobile {
+.search-mobile-visible {
     width: 100vw;
     height: 100vh;
     z-index: 200;
@@ -169,4 +169,8 @@ search-mobile {
 
     }
     
+}
+
+.search-mobile-hidden {
+    display: none;
 }
