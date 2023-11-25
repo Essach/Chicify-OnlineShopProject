@@ -21,7 +21,7 @@ import Favorites from './components/Favorites/Favorites';
 import SearchResults from './components/SearchResults/SearchResults';
 import StartSelling from './components/StartSelling/StartSelling';
 import MyProducts from './components/MyProducts/MyProducts';
-import Test from './Test';
+// import Test from './Test';
 
 const App = () => {
 
