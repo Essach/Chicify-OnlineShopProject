@@ -83,7 +83,7 @@ const Cart = () => {
             let expressPrice = 0;
             if (isDeliveryExpress) {
                 for (let i = 0; i < products.length; i++) {
-                    expressPrice = expressPrice + products[i].delivery.filter(delivery => delivery.type === "Standard")[0].price;
+                    expressPrice = expressPrice + products[i].delivery.filter(delivery => delivery.type === "Express")[0].price;
                 }
             }
             
