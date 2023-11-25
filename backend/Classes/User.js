@@ -69,7 +69,6 @@ class User {
             this.conversations.splice(i, 1);
             this.conversations.push(conversation);
         }
-        // console.log(this.conversations)
     }
 
     receiveMessage(senderId, content) {

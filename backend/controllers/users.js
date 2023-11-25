@@ -409,11 +409,16 @@ exports.postReview = (request, response, next) => {
 
 exports.patchUserOrder = (request, response, next) => {
     try {
-        const { products, price, userId, paymentId } = request.body;
+        const { products, price, userId, paymentId, productBySeller } = request.body;
 
         const user = usersData.find(user => user.userId === userId);
 
-        if (!user) {
+        let areSellersValid = true;
+        for (let i = 0; i < productBySeller.length; i++) {
+            if (!usersData.find(user => user.userId === productBySeller[i].sellerId)) areSellersValid = false;
+        }
+
+        if (!user || !areSellersValid) {
             response.status(404).json({
                 message: "Couldn't find the user with given id"
             });
@@ -432,6 +437,12 @@ exports.patchUserOrder = (request, response, next) => {
                 productToUpdate.quantity -= products[i].quantity;
             }
         }
+
+        productBySeller.forEach((item) => {
+            const seller = usersData.find(user => user.userId === item.sellerId);
+            user.receiveMessage(item.sellerId, `Thank you for purchasing ${item.productName}`);
+            seller.sendMessage(userId, `Thank you for purchasing ${item.productName}`)
+        })
 
 
         response.status(200).json({

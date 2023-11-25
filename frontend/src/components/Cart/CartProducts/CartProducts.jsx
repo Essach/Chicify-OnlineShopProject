@@ -17,6 +17,7 @@ const CartProducts = ({ products }) => {
                     quantity={product.currentQuantity}
                     maxQuantity={product.quantity}
                     price={product.price}
+                    sellerId={product.sellerId}
                 />)}
         </div>
     );

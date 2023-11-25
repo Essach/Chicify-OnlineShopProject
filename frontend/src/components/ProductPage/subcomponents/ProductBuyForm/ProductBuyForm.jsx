@@ -20,7 +20,8 @@ import Login from '../../../Login/Login';
 import Reviews from './Reviews/Reviews';
 
 const ProductBuyForm = (props) => {
-    const { name, price, quantity, reviews, cheapestDeliveryPrice, id} = props
+    // eslint-disable-next-line react/prop-types
+    const { name, price, quantity, sellerId, reviews, cheapestDeliveryPrice, id} = props
 
     const { state, dispatch } = useContext(CartContext);
 
@@ -69,6 +70,8 @@ const ProductBuyForm = (props) => {
                     payload: {
                         id: id,
                         quantity: prod.quantity + currentQuantity,
+                        sellerId: sellerId,
+                        productName: name,
                     }
                 })
             } else {
@@ -76,7 +79,9 @@ const ProductBuyForm = (props) => {
                     type: 'ADD',
                     payload: {
                         id: id,
-                        quantity: currentQuantity
+                        quantity: currentQuantity,
+                        sellerId: sellerId,
+                        productName: name,
                     }
                 })
             }

@@ -152,11 +152,20 @@ const CartForm = (props) => {
                 price: price + deliveryPrice,
                 address: { country: countryValue, name: nameValue, address: addressValue, city: cityValue },
                 cardInfo: {number: creditCardNum, expiration: expirationDate, cvv: cvvNumber, postal: postalCode}
-            })           
+            })
+            
+            const productsWithSellerIds = state.cart.map((item) => {
+                return {
+                    productName: item.productName,
+                    sellerId: item.sellerId,
+                }
+            })
+            console.log(state.cart)
+            console.log(productsWithSellerIds)
 
             if (paymentStatus === 200) {
                 const products = state.cart.map(item => ({...item, status: 'delivered'}))
-                const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: user.userId, paymentId: paymentData.paymentId });
+                const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: user.userId, paymentId: paymentData.paymentId, productBySeller: productsWithSellerIds });
                 if (userStatus === 200) {
                     setUser(userData.user);
                     updateUser(userData.user);

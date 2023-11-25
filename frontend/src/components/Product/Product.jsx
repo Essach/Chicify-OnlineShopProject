@@ -12,7 +12,8 @@ import productArrowRight from '../../icons/productArrowRight.svg';
 import './Product.scss';
 
 const ProductSquare = (props) => {
-    const { id, name, price, delivery, images, reviews, type } = props;
+    // eslint-disable-next-line no-unused-vars
+    const { id, name, price, delivery, images, reviews, sellerId, type } = props;
 
     const [ratingItem, setRatingItem] = useState()
     
@@ -105,6 +106,7 @@ ProductSquare.propTypes = {
     images: PropTypes.array,
     categories: PropTypes.array,
     reviews: PropTypes.array,
+    sellerId: PropTypes.string,
     type: PropTypes.string,
 }
 

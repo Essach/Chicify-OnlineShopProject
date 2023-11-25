@@ -26,6 +26,7 @@ const ProductPage = () => {
         images: [],
         description: '',
         categories: [],
+        sellerId: '',
         reviews: [],
     });
 
@@ -164,6 +165,7 @@ const ProductPage = () => {
                             name={productData.name}
                             price={productData.price}
                             quantity={productData.quantity}
+                            sellerId={productData.sellerId}
                             reviews={productData.reviews}
                             cheapestDeliveryPrice={cheapestDeliveryPrice}
                             id={id}

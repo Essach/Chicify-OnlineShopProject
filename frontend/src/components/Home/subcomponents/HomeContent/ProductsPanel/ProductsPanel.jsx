@@ -21,6 +21,7 @@ const ProductsPanel = (props) => {
             images={product.images}
             categories={product.categories}
             reviews={product.reviews}
+            sellerId={product.sellerId}
             type={productType}
         />)
     
