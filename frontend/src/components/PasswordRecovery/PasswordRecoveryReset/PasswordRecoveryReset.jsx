@@ -27,6 +27,10 @@ const PasswordRecoveryReset = ({ emailOrPhoneNumberValue }) => {
             setValidationMessage("*Passwords don't match");
             setIsFormValidated(false);
             return false;
+        } else if (passwordValue === '' || repeatPasswordValue === '') {
+            setValidationMessage("*Enter valid info");
+            setIsFormValidated(false);
+            return false;
         }
         return true;
     }

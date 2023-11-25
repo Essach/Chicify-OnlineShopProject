@@ -141,6 +141,10 @@ login-dialog {
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
 
                 &:hover {
                     cursor: pointer;
@@ -175,6 +179,10 @@ login-dialog {
             border-radius: 0.8rem;
             border: 2px solid v.$minty-blue-darker;
             box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.25);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
 
             &:hover {
                 cursor: pointer;
