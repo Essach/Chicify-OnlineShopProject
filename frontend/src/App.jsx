@@ -21,6 +21,7 @@ import SearchResults from './components/SearchResults/SearchResults';
 import StartSelling from './components/StartSelling/StartSelling';
 import MyProducts from './components/MyProducts/MyProducts';
 import SignUp from './components/SignUp/SignUp';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 // import Test from './Test';
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
                             <Route path='/search/' Component={SearchResults} />
                             <Route path='/selling-sign-in' Component={StartSelling} />
                             <Route path='/my-products' Component={MyProducts} />
+                            <Route path='*' Component={ErrorPage} />
                             {/* <Route path='/test' Component={Test} /> */}
                             
                         </Routes>

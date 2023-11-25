@@ -1,0 +1,12 @@
+error-page {
+    display: flex;
+    width: 100vw;
+    height: 30rem;
+    justify-content: center;
+
+    img {
+        padding-left: 5rem;
+        object-fit: contain;
+        max-width: 90vw;
+    }
+}

@@ -1,27 +1,19 @@
 import { useEffect, useState } from "react";
-import sliderBtnLeft from '../../../../icons/sliderBtnLeft.svg';
 import sliderBtnRight from '../../../../icons/sliderBtnRight.svg';
 import SliderNavBtn from "../SliderNavBtn/SliderNavBtn";
 import './Slider.scss'
 import SyncLoader from "react-spinners/SyncLoader";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { storage } from "../../../../firebase";
 
 
 const Slider = () => {
     const [counter, setCounter] = useState(0);
     const [slider, setSlider] = useState([]);
+    const [imageLinks, setImageLinks] = useState([])
     const [sliderNavBtns, setSliderNavBtns] = useState([]);
 
     const [loading, setLoading] = useState(true);
-
-    const fileExists = (url) => {
-        let http = new XMLHttpRequest();
-
-        http.open('HEAD', url, false);
-        http.send();
-
-        return http.status != 404;
-    
-    }
 
     const handleBtnLeft = () => {
         if (counter <= 0) {
@@ -44,52 +36,51 @@ const Slider = () => {
     }
 
     useEffect(() => {
-
-        let i = 1;
-        let slides = [];
-        while (i < 6 && fileExists(`http://localhost:8000/images/slider/${i}.jpg`) === true) {
-            if (fileExists(`http://localhost:8000/images/slider/${i}.jpg`)) {
-                slides = slides.concat({
-                    url: `http://localhost:8000/images/slider/${i}.jpg`,
-                    title: toString(i),
-                })
-            }
-            i = i + 1
-        }
-
-        if (slides.length > 0) {
-            setSlider(slides.map((slide, index) =>
+        if (imageLinks.length > 0) {
+            setSlider(imageLinks.map((slide, index) =>
                 <div key={index} className="slide" style={{ left: `${index * 100}%`, transform: `translateX(-${counter * 100}%)` }}>
-                    <img src={slide.url} alt="" />
+                    <img src={slide} alt="" />
                 </div>
             ));
-
-            let sliderNavBtns = []
-            for (let index = 0; index < slides.length; index++) {
-                sliderNavBtns = sliderNavBtns.concat(<SliderNavBtn key={index} index={index} activeIndex={counter} onClickHandler={() => {handleOnClickNavBtn(index)}} />)
-            }
-            setSliderNavBtns(sliderNavBtns);
         }
         setLoading(false)
 
-    }, [counter])
+    }, [counter, imageLinks])
 
     useEffect(() => {
-            const sliderInterval = setInterval(() => {
-                if (counter >= slider.length - 1) {
-                    setCounter(0);
-                } else {
-                    setCounter(prev => prev + 1);
-                }
-        
-            }, 6000);
+        const listRef = ref(storage, 'chicifyImages/slider');
+        listAll(listRef).then((res) => {
+            res.items.forEach((item) => {
+                getDownloadURL(item).then((url) => {
+                    setImageLinks((prev)=>[...prev, url])
+                })
+            })
+        })
+    },[])
+
+    useEffect(() => {
+        const sliderInterval = setInterval(() => {
+            if (counter >= slider.length - 1) {
+                setCounter(0);
+            } else {
+                setCounter(prev => prev + 1);
+            }
+    
+        }, 6000);
 
         return () => {
             clearInterval(sliderInterval);
         }
     }, [counter, slider.length])
 
-    
+    useEffect(() => {
+        let sliderNavBtns = []
+        for (let index = 0; index < imageLinks.length; index++) {
+            sliderNavBtns = sliderNavBtns.concat(<SliderNavBtn key={index} index={index} activeIndex={counter} onClickHandler={() => {handleOnClickNavBtn(index)}} />)
+        }
+        setSliderNavBtns(sliderNavBtns);
+    },[counter, imageLinks.length])
+
     return (
         <home-slider>
             <slider-top>
