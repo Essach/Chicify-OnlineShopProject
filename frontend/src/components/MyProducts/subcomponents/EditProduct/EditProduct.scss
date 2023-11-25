@@ -6,6 +6,10 @@ edit-product {
     flex-direction: column;
     gap: 1.2rem;
     padding: 0.5rem 1rem 1rem 1rem;
+    
+    @media only screen and (max-width: 1100px) {
+        width: 95vw;
+    }
 
     ep-top {
         display: flex;
@@ -53,6 +57,10 @@ edit-product {
             font-style: normal;
             font-weight: 400;
             line-height: normal;
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 1.1rem;
+            }
         }
 
         input {
@@ -68,6 +76,10 @@ edit-product {
             line-height: normal;
             outline: none;
             border: 2px solid v.$dark-grey;
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 0.8rem;
+            }
 
             &:focus-visible {
                 outline: none;
@@ -92,6 +104,10 @@ edit-product {
             .small {
                 font-size: 0.9rem;
             }
+
+            @media only screen and (max-width: 1100px) {
+                font-size: 0.8rem;
+            }
         }
 
         .select-options {
@@ -105,6 +121,10 @@ edit-product {
             padding: 1px 1px 1px 1px;
             scroll-snap-type: y mandatory;
 
+            @media only screen and (max-width: 1100px) {
+                height: calc(6rem + 6px);
+            }
+
             p {
                 color: v.$white;
                 font-size: 1rem;
@@ -117,12 +137,25 @@ edit-product {
                 user-select: none;
                 scroll-snap-align: start none;
 
+                @media only screen and (max-width: 1100px) {
+                    scroll-snap-align:none;
+                }
+
                 &.delivery {
                     height: calc(7.5rem/2);
+
+                    @media only screen and (max-width: 1100px) {
+                        height: 3rem;
+                    }
                 }
 
                 &.category {
                     height: 2.5rem;
+
+                    @media only screen and (max-width: 1100px) {
+                        height: 2rem;
+                        font-size: 0.8rem;
+                    }
                 }
 
                 &.selected {
@@ -195,26 +228,49 @@ edit-product {
                 border-radius: 10px;
                 position: relative;
 
-                    image-preview {
+                @media only screen and (max-width: 1100px) {
+                    height: 5rem;
+                    width: 5rem;
+                }
+
+                img {
+                    display: block;
+
+                    &.plus {
+                        transform: scale(1.2);
+
+                        @media only screen and (max-width: 1100px) {
+                            transform: scale(0.7);
+                        }
+                    }
+                }
+
+                image-preview {
+                    display: block;
+                    height: 6rem;
+                    width: 6rem;
+
+                    @media only screen and (max-width: 1100px) {
+                        height: 5rem;
+                        width: 5rem;
+                    }
+
+                    img {
                         display: block;
-                        height: 6rem;
-                        width: 6rem;
 
-                        img {
-                            display: block;
+                        &.added {
+                            object-fit: cover;
+                            height: 6rem;
+                            width: 6rem;
+                            border-radius: 10px;
 
-                            &.plus {
-                                transform: scale(1.2);
-                            }
-
-                            &.added {
-                                object-fit: cover;
-                                height: 6rem;
-                                width: 6rem;
-                                border-radius: 10px;
+                            @media only screen and (max-width: 1100px) {
+                                height: 5rem;
+                                width: 5rem;
                             }
                         }
                     }
+                }
 
                 input {
                     display: none;
@@ -228,7 +284,13 @@ edit-product {
                     position: absolute;
                     top: 0;
                     right: 0;
-                    z-index: 110
+                    z-index: 110;
+
+                    @media only screen and (max-width: 1100px) {
+                        transform: scale(0.8);
+                        top: -5px;
+                        right: -5px;
+                    }
                 }
             }
         }

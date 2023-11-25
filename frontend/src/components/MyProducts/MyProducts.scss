@@ -51,6 +51,9 @@ my-products-page {
     }
 
     my-products {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
         .createProducts {
             color: v.$white;
