@@ -19,6 +19,8 @@ const ProductSquare = (props) => {
     
     const [imagesLinks, setImagesLinks] = useState([]);
 
+    const [deliveryDate, setDeliveryDate] = useState('')
+
     const deliveryPrices = delivery.map(option => option.price);
     const cheapestDeliveryPrice = Math.min(...deliveryPrices);
 
@@ -58,6 +60,47 @@ const ProductSquare = (props) => {
         setImagesLinks(images.map(image => image.url));
     }, [images])
     
+    useEffect(() => {
+        function getOrdinalSuffix(day) {
+            if (day >= 11 && day <= 13) {
+                return 'th';
+            }
+            var lastDigit = day % 10;
+            switch (lastDigit) {
+                case 1:
+                return 'st';
+                case 2:
+                return 'nd';
+                case 3:
+                return 'rd';
+                default:
+                return 'th';
+            }
+        }
+
+        const currentDate = new Date();
+
+        // Add 7 days to the current date
+        currentDate.setDate(currentDate.getDate() + 7);
+
+        // Get the day and month from the updated date
+        const day = currentDate.getDate();
+        const monthIndex = currentDate.getMonth();
+
+        // Create an array of month names
+        const monthNames = [
+            "January", "February", "March",
+            "April", "May", "June",
+            "July", "August", "September",
+            "October", "November", "December"
+        ];
+
+        // Format the result as 'day month'
+        const formattedDate = day + getOrdinalSuffix(day) + ' ' + monthNames[monthIndex];
+
+        // Display the result
+        setDeliveryDate(formattedDate);
+    },[])
 
     return (
         <div onClick={handleOnClickProduct} className={type}>
@@ -77,7 +120,7 @@ const ProductSquare = (props) => {
                             {type === 'rectangleFavoritesPage' ? <img src={deliveryIconWhite} alt='delivery truck' /> :
                                 <img src={deliveryIcon} alt='delivery truck' />
                             }
-                            <p>Delivery by ...</p>
+                            <p>Delivery by {deliveryDate}</p>
                         </div>
                         <div>
                             <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
