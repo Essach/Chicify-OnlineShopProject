@@ -125,6 +125,14 @@ const ProductPage = () => {
         }
     }, [])  
 
+    useEffect(() => {
+        if (window.innerWidth < 1100) {
+            setWindowMode('mobile');
+        } else {
+            setWindowMode('pc');
+        }
+    },[])
+
     return (
         <>
             {windowMode === 'pc' ?
