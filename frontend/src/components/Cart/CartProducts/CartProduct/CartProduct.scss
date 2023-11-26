@@ -54,8 +54,35 @@ cart-product {
                     line-height: normal;
                 }
 
-                product-reviews {
+                product-rating {
                     display: flex;
+                    align-items: center;
+                    
+                    
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    p {
+                        color: v.$darker-grey;
+                        font-family: Inter;
+                        font-size: 0.7rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                    }
+                    
+                    review-stars {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 3px;
+
+                        img {
+                            transform: scale(0.5);
+                            margin: -5px;
+                        }
+                    }
                 }
             }
 

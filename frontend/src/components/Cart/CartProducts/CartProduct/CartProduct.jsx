@@ -4,7 +4,8 @@ import deliveryIcon from '../../../../icons/deliveryIcon.svg';
 import plus from '../../../../icons/plus.svg';
 import minus from '../../../../icons/minus.svg';
 import trashcan from '../../../../icons/trashcanCart.svg';
-
+import rateStarYellow from '../../../../icons/rateStarYellow.svg';
+import rateStarDark from '../../../../icons/rateStarDark.svg';
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../../../context/CartContext';
@@ -23,6 +24,8 @@ const CartProduct = (props) => {
     const navigate = useNavigate();
 
     const [currentQuantity, setCurrentQuantity] = useState(parseInt(quantity));
+
+    const [ratingItem, setRatingItem] = useState()
 
     const handleChangeCurrentQuantity = e => {
         if (parseInt(e.target.value) > maxQuantity) {
@@ -108,6 +111,30 @@ const CartProduct = (props) => {
     }
 
     useEffect(() => {
+        if (reviews !== undefined && reviews.length > 0) {
+            const rating = Math.round(reviews.reduce(
+                (accumulator, review) => accumulator + review.rating, 0) / reviews.length)
+
+            const stars = []
+            for (let i = 0; i < rating; i++) {
+                stars.push(<img key={i} src={rateStarYellow} alt='star selected' />)
+            }
+            for (let i = 0; i < (5 - rating); i++) {
+                stars.push(<img key={5 - i} src={rateStarDark} alt='star unselected' />)
+            }
+
+            const ratingItem = (
+                <product-rating>
+                    <p>{`(${reviews.length})`}</p>
+                    <review-stars>{stars}</review-stars>
+                    <p>{rating}</p>
+                </product-rating>
+            )
+            setRatingItem(ratingItem)
+        }
+    },[reviews])
+
+    useEffect(() => {
         setImageLink(image.url);
     },[image])
 
@@ -120,9 +147,9 @@ const CartProduct = (props) => {
                 <product-info>
                     <info-top>
                         <product-name>{name}</product-name>
-                        <product-reviews>
-                            
-                        </product-reviews>
+                        <product-rating>
+                            {ratingItem}
+                        </product-rating>
                     </info-top>
                     <info-bottom>
                         <div>
