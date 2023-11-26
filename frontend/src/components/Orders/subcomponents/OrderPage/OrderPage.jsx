@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router';
 
 const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
 
-    const { user } = useContext(StoreContext);
+    const { user, languageMode } = useContext(StoreContext);
 
     const navigate = useNavigate();
 
@@ -50,13 +50,13 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
     if (user.orders.find(payment => payment.paymentId === paymentId).products.find(prod => prod.id === productId).status === 'inDelivery') {
         status = (
             <>
-                <span className='status'>In delivery...</span>
+                <span className='status'>{languageMode === 'en' ? 'In delivery...' : 'W dostawie...'}</span>
             </>
         )
     } else if (user.orders.find(payment => payment.paymentId === paymentId).products.find(prod => prod.id === productId).status === 'delivered') {
         status = (
             <>
-                <span className='status'>Your order is ready to collect</span>
+                <span className='status'>{languageMode === 'en' ? 'Your order has been delivered' : 'Twoje zamówienia zostało dostarczone'}</span>
             </>
         )
     }
@@ -112,7 +112,7 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
             </close-btn>
             <inner-box>
                 <box-title>
-                    More order details
+                    {languageMode === 'en' ? 'More order details' : 'Więcej o zamówieniu'}
                 </box-title>
                 <product-item onClick={handleClickProductItem}>
                     <order-image>
@@ -122,32 +122,29 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
                         <product-name>
                             {productInfo.name}
                         </product-name>
-                        <product-reviews>
-                            
-                        </product-reviews>
                     </order-info>
                 </product-item>
                 <order-details>
                     <info-quantity>
-                        <p>Product quantity: {q}</p>
-                        <p>All products quantity: {allQ}</p>
+                        <p>{languageMode === 'en' ? `Product quantity: ${q}` : `Ilość produktu: ${q}`}</p>
+                        <p>{languageMode === 'en' ? `All products quantity: ${allQ}` : `Ilość wszystkich produktów ${allQ}`}</p>
                     </info-quantity>
                     <info-price>
-                        <p>Product price: {productInfo.price}</p>
-                        <p>Total order price: {details.price}</p>
+                        <p>{languageMode === 'en' ? `Product price: US$ ${productInfo.price}` : `Cena produktu ${productInfo.price*4} zł`}</p>
+                        <p>{languageMode === 'en' ? `Total order price: US$ ${details.price}` : `Cena całego zamówienia ${productInfo.price*4} zł`}</p>
                     </info-price>
                     <info-delivery>
-                        <p>Delivery status: {status}</p>
+                        <p>{languageMode === 'en' ? `Delivery status:` : `Status wysyłki:`} {status}</p>
                     </info-delivery>
                     <info-address>
-                        <p>Delivery address: {`${details.address.country} ${details.address.city} ${details.cardInfo.postal} ${details.address.address}`}</p>
-                        <p>Recipient name: {details.address.name}</p>
+                        <p>{languageMode === 'en' ? `Delivery address:` : 'Adres wysyłki'} {`${details.address.country} ${details.address.city} ${details.cardInfo.postal} ${details.address.address}`}</p>
+                        <p>{languageMode === 'en' ? 'Recipient name:' : 'Imie adresata:'} {details.address.name}</p>
                     </info-address>
                     <info-card>
-                        <p className='title'>Card info:</p>
-                        <p className='sub'>Card number: {details.cardInfo.number}</p>
-                        <p className='sub'>Expiry date: {details.cardInfo.expiration}</p>
-                        <p className='sub'>CVV number: {details.cardInfo.cvv}</p>
+                        <p className='title'>{languageMode === 'en' ? 'Card info:' : 'Informacje o karcie kredytowej'}</p>
+                        <p className='sub'>{languageMode === 'en' ? 'Card number:' : 'Numer karty kredytowej'} {details.cardInfo.number}</p>
+                        <p className='sub'>{languageMode === 'en' ? 'Expiry date:' : 'Termin ważności'} {details.cardInfo.expiration}</p>
+                        <p className='sub'>{languageMode === 'en' ? 'CVV number:' : 'Numer CVV'} {details.cardInfo.cvv}</p>
                     </info-card>
                 </order-details>
             </inner-box>

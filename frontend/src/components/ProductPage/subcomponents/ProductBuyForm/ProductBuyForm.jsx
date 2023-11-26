@@ -25,7 +25,7 @@ const ProductBuyForm = (props) => {
 
     const { state, dispatch } = useContext(CartContext);
 
-    const { user, setUser } = useContext(StoreContext);
+    const { user, setUser, languageMode } = useContext(StoreContext);
 
     const navigate = useNavigate();
 
@@ -199,15 +199,15 @@ const ProductBuyForm = (props) => {
                 <delivery-info>
                     <div>
                         <img src={deliveryIcon} alt='delivery truck'/>
-                        <p>Delivery by ...</p>
+                        <p>{languageMode === 'en' ? 'Delivery by ...' : 'Dostawa od...'}</p>
                     </div>
                     <div>
-                        <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
+                        <p>{languageMode === 'en' ? `Delivery from US$ ${cheapestDeliveryPrice}` : `Dostawa od ${cheapestDeliveryPrice*4} zł`}</p>
                     </div>
                 </delivery-info>
                 <product-price>
                     <p>
-                        {`US$ ${price}`}
+                        {languageMode === 'en' ? `US$ ${price}` : `${price * 4} zł`}
                     </p>
                 </product-price>
                 {quantity > 0 ?
@@ -218,8 +218,8 @@ const ProductBuyForm = (props) => {
                 </quantity-button> : null}
                 {quantity > 0 ?
                 <buy-form-buttons>
-                    <div className='add-to-cart-button' onClick={handleAddToCartBtn}><p>Add to cart</p></div>
-                    <div className='buy-now-button' onClick={handleBuyNowBtn}><p>Buy now</p></div>
+                    <div className='add-to-cart-button' onClick={handleAddToCartBtn}><p>{languageMode === 'en' ? 'Add to cart' : 'Dodaj do koszyka'}</p></div>
+                    <div className='buy-now-button' onClick={handleBuyNowBtn}><p>{languageMode === 'en' ? 'Buy now' : 'Kup teraz'}</p></div>
                 </buy-form-buttons> : null}
             </product-buy-form>
             <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />

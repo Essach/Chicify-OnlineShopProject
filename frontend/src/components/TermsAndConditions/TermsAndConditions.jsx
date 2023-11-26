@@ -2,9 +2,13 @@ import './TermsAndConditions.scss';
 
 import goBack from '../../icons/goBackT&C.svg';
 import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { StoreContext } from '../../store/StoreProvider';
 
 const TermsAndConditions = () => {
     const navigate = useNavigate();
+
+    const { languageMode } = useContext(StoreContext);
 
     const handleOnClickGoBack = () => navigate(-1);
 
@@ -15,7 +19,7 @@ const TermsAndConditions = () => {
             </go-back-btn>
             <text-content>
                 <text-title>
-                    <p className='big'>Terms & Conditions</p>
+                    <p className='big'>{languageMode === 'en' ? 'Terms & Conditions' : 'Warunki użytkowania'}</p>
                     <p className='small'>Chicify.co</p>
                 </text-title>
                 <text-content-content>

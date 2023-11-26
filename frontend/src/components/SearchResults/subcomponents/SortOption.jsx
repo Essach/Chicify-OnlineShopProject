@@ -1,20 +1,26 @@
 import { PropTypes } from 'prop-types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import sortArrowDown from '../../../icons/sortArrowDown.svg';
+import { StoreContext } from '../../../store/StoreProvider';
 
 const SortOption = (props) => {
     const { sortOption, changeSortOption } = props;
+
+    const { languageMode } = useContext(StoreContext);
 
     const [isSortSelectionVisible, setIsSortSelectionVisible] = useState(false);
 
     let sortBy;
     if (sortOption === 'accuracy') {
-        sortBy = 'Accuracy'
+        if(languageMode === 'en') sortBy = 'Accuracy'
+        else sortBy = 'Trafność'
     } else if (sortOption === 'pricelowest') {
-        sortBy = 'Price'
+        if (languageMode === 'en') sortBy = 'Price'
+        else sortBy = 'Cena'
     } else if (sortOption === 'pricehighest') {
-        sortBy = 'Price'
+        if (languageMode === 'en') sortBy = 'Price'
+        else sortBy = 'Cena'
     }
 
     const handleSortSelectionItemClick = (option) => {
@@ -23,9 +29,9 @@ const SortOption = (props) => {
     }
 
     const sortSelectionItemsAll = [
-        <p key='accuracy' onClick={()=>handleSortSelectionItemClick('accuracy')}>Accuracy</p>,
-        <p key='pricelowest' onClick={()=>handleSortSelectionItemClick('pricelowest')}>Price: the lowest</p>,
-        <p key='pricehighest' onClick={()=>handleSortSelectionItemClick('pricehighest')}>Price: the highest</p>,
+        <p key='accuracy' onClick={() => handleSortSelectionItemClick('accuracy')}>{languageMode === 'en' ? 'Accuracy' : 'Trafność'}</p>,
+        <p key='pricelowest' onClick={() => handleSortSelectionItemClick('pricelowest')}>{languageMode === 'en' ? 'Price: the lowest' : 'Cena: od najniższej'}</p>,
+        <p key='pricehighest' onClick={() => handleSortSelectionItemClick('pricehighest')}>{languageMode === 'en' ? 'Price: the highest' : 'Cena: od najwyższej'}</p>,
     ]
 
     const handleSortBtn = () => setIsSortSelectionVisible(prev => !prev);
@@ -33,7 +39,7 @@ const SortOption = (props) => {
     return (
         <sort-option>
             <sort-btn onClick={handleSortBtn}>
-                <p>Sort by: {sortBy}</p>
+                <p>{languageMode === 'en' ? 'Sort by:' : 'Sortuj według:'} {sortBy}</p>
                 {window.innerWidth <= 1100 && <img src={sortArrowDown} alt='show sort options' />}
             </sort-btn>
             <div className={`sort-selection-${isSortSelectionVisible ? 'visible' : 'hidden'}`}>

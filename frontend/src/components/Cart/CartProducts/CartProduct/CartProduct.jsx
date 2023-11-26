@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../../../context/CartContext';
 import { useNavigate } from 'react-router';
+import { StoreContext } from '../../../../store/StoreProvider';
 
 const CartProduct = (props) => {
     const { id, image, name, reviews, delivery, quantity, maxQuantity, price } = props;
@@ -17,6 +18,10 @@ const CartProduct = (props) => {
     const [imageLink, setImageLink] = useState('');
 
     const { dispatch } = useContext(CartContext);
+
+    const { languageMode } = useContext(StoreContext);
+
+    const [deliveryDate, setDeliveryDate] = useState('')
 
     const deliveryPrices = delivery.map(option => option.price);
     const cheapestDeliveryPrice = Math.min(...deliveryPrices);
@@ -136,7 +141,54 @@ const CartProduct = (props) => {
 
     useEffect(() => {
         setImageLink(image.url);
-    },[image])
+    }, [image])
+    
+        useEffect(() => {
+        function getOrdinalSuffix(day) {
+            if (languageMode === 'pl') {
+                return '-ego'
+            }
+            if (day >= 11 && day <= 13) {
+                return 'th';
+            }
+            var lastDigit = day % 10;
+            switch (lastDigit) {
+                case 1:
+                return 'st';
+                case 2:
+                return 'nd';
+                case 3:
+                return 'rd';
+                default:
+                return 'th';
+            }
+        }
+
+        const currentDate = new Date();
+
+        // Add 7 days to the current date
+        currentDate.setDate(currentDate.getDate() + 7);
+
+        // Get the day and month from the updated date
+        const day = currentDate.getDate();
+        const monthIndex = currentDate.getMonth();
+
+        // Create an array of month names
+        const monthNames = languageMode === 'en' ? [
+            "January", "February", "March",
+            "April", "May", "June",
+            "July", "August", "September",
+            "October", "November", "December"
+        ] : ["Stycznia", "Lutego", "Marca", "Kwietnia",
+            "Maja", "Czerwca", "Lipca", "Sierpnia",
+            "Września", "Października", "Listopada", "Grudnia"];
+
+        // Format the result as 'day month'
+        const formattedDate = day + getOrdinalSuffix(day) + ' ' + monthNames[monthIndex];
+
+        // Display the result
+        setDeliveryDate(formattedDate);
+    },[languageMode])
 
     return (
         <cart-product>
@@ -153,11 +205,11 @@ const CartProduct = (props) => {
                     </info-top>
                     <info-bottom>
                         <div>
-                            <img src={deliveryIcon} alt='delivery truck'/>
-                            <p>Delivery by ...</p>
+                            <img src={deliveryIcon} alt='delivery truck' />
+                            <p>{languageMode === 'en' ? `Delivery by ${deliveryDate}` : `Dostawa od ${deliveryDate}`}</p>
                         </div>
                         <div>
-                            <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
+                            <p>{languageMode === 'en' ? `Delivery from US$ ${cheapestDeliveryPrice}` : `Dostawa od ${cheapestDeliveryPrice * 4}zł`}</p>
                         </div>
                     </info-bottom>
                 </product-info>
@@ -170,7 +222,7 @@ const CartProduct = (props) => {
             <delete-button onClick={handleOnClickDeleteFromCart}>
                 <img src={trashcan} alt="remove product from cart" />
             </delete-button>
-            <product-price>{`US$ ${price}`}</product-price>
+            <product-price>{languageMode === 'en' ? `US$${price}` : `${price * 4} zł`}</product-price>
         </cart-product>
     );
 }

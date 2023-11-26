@@ -23,7 +23,7 @@ import { updateUser } from '../../helpers/localStorage';
 const Login = ({handleOnClose, isModalOpen}) => {
     const navigate = useNavigate();
 
-    const { setUser, userInterval } = useContext(StoreContext)
+    const { setUser, userInterval, languageMode } = useContext(StoreContext)
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -72,15 +72,18 @@ const Login = ({handleOnClose, isModalOpen}) => {
 
     const validateLoginForm = () => {
         if (emailOrPhoneNumberValue === '' || passwordValue === '') {
-            setErrorText('*Please fill in both fields');
+            if(languageMode === 'en') setErrorText('*Please fill in both fields');
+            else setErrorText('*Proszę uzupełnić oba pola');
             setIsFormValidated(false);
             return false
         } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/^[0-9]*$/.test(emailOrPhoneNumberValue))) {
-            setErrorText('*Please insert an email or phone number');
+            if (languageMode === 'en') setErrorText('*Please insert an email or phone number');
+            else setErrorText('*Proszę podać adres email lub number telefonu');
             setIsFormValidated(false);
             return false;
         } else if (/^[0-9]*$/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.length !== 9) {
-            setErrorText('*Please insert an email or phone number');
+            if (languageMode === 'en') setErrorText('*Please insert an email or phone number');
+            else setErrorText('*Proszę podać adres email lub number telefonu');
             setIsFormValidated(false);
             return false
         }
@@ -144,7 +147,7 @@ const Login = ({handleOnClose, isModalOpen}) => {
         <Modal handleOnClose={handleOnClose} isOpen={isModalOpen} shouldBeClosedOnOutsideClick={false} >
             <login-dialog>
                 <title-and-close>
-                    <p>Login</p>
+                    <p>{languageMode === 'en' ? 'Login' : 'Zaloguj się'}</p>
                     <img src={close} alt='close login form' onClick={handleOnCloseModal}/>
                 </title-and-close>
                 <login-image>
@@ -152,24 +155,24 @@ const Login = ({handleOnClose, isModalOpen}) => {
                 </login-image>
                 <login-form>
                     <form-section>
-                        <p>Email or phone number:</p>
+                        <p>{languageMode === 'en' ? 'Email or phone number:' : 'Adres email lub numer telefonu:'}</p>
                         <input-container>
                             <img src={email} alt='letter icon' className='emailIcon'/>
                             <input
                                 type="text"
-                                placeholder='Email or phone number'
+                                placeholder={languageMode === 'en' ? 'Email or phone number' : 'Adres email lub numer telefonu:'}
                                 value={emailOrPhoneNumberValue}
                                 onChange={handleEmailPhoneNumberChange}
                             />
                         </input-container>
                     </form-section>
                     <form-section>
-                        <p>Password:</p>
+                        <p>{languageMode === 'en' ? 'Password:' : 'Hasło:'}</p>
                         <input-container>
                             <img src={lock} alt='lock icon' className='lockIcon'/>
                             <input
                                 type={isPasswordHidden ? 'password' : 'text'}
-                                placeholder='Password'
+                                placeholder={languageMode === 'en' ? 'Password:' : 'Hasło:'}
                                 value={passwordValue}
                                 onChange={handlePasswordChange}
                             />
@@ -178,12 +181,12 @@ const Login = ({handleOnClose, isModalOpen}) => {
                         </input-container>
                     </form-section>
                     <additional-options>
-                        <p onClick={handleSignUpBtn}>Sign up</p>
-                        <p onClick={handleForgotPasswordBtn}>Forgot your password?</p>
+                        <p onClick={handleSignUpBtn}>{languageMode === 'en' ? 'Sign up' : 'Zarejestruj się'}</p>
+                        <p onClick={handleForgotPasswordBtn}>{languageMode === 'en' ? 'Forgot your password?' : 'Zapomniałeś hasła?'}</p>
                     </additional-options>
                 </login-form>
                 <validation-message>{isFormValidated ? null : <p>{errorText}</p>}</validation-message>
-                <login-button onClick={handleLoginButton}><p>Log in</p></login-button>
+                <login-button onClick={handleLoginButton}><p>{languageMode === 'en' ? 'Login' : 'Zaloguj'}</p></login-button>
             </login-dialog>
         </Modal>
     );

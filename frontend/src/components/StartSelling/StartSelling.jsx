@@ -13,7 +13,7 @@ import { updateUser } from '../../helpers/localStorage';
 const StartSelling = () => {
     const navigate = useNavigate();
 
-    const { user, setUser } = useContext(StoreContext);
+    const { user, setUser, languageMode } = useContext(StoreContext);
 
     const countryList = [
         "Afghanistan",
@@ -297,7 +297,8 @@ const StartSelling = () => {
         let isValid = true;
         if (name === '' || country === '' || city === '' || street === '' || accountNumber === '') {
             setIsFormValidated(false);
-            setValidationMessage('*Please insert correct data');
+            if (languageMode === 'en') setValidationMessage('*Please insert correct data');
+            else setValidationMessage('*Proszę wprowadzić prawidłowe dane');
             isValid = false;
             return isValid;
         }
@@ -326,10 +327,12 @@ const StartSelling = () => {
                 navigate('/')
             } else if (status === 405) {
                 setIsFormValidated(false);
-                setValidationMessage("You're already signed up for the seller program");
+                if (languageMode === 'en') setValidationMessage("You're already signed up for the seller program");
+                else setValidationMessage("Jesteś już zarejestrowany w programie dla sprzedawców");
             } else {
                 setIsFormValidated(false);
-                setValidationMessage('*Internal server error');
+                if (languageMode === 'en') setValidationMessage('*Internal server error');
+                else setValidationMessage('*Wewnętrzny błąd serwera');
                 throw new Error(data.message)
             }
         }
@@ -338,43 +341,43 @@ const StartSelling = () => {
     return (
         <start-selling-page>
             <title-and-close>
-                <p>Start selling</p>
+                <p>{languageMode === 'en' ? 'Start selling' : 'Zacznij sprzedawać'}</p>
                 <img src={close} alt='close form' onClick={handleClose}/>
             </title-and-close>
             <start-selling-form>
                 <form-section>
-                    <p>{`Your company's name:`}</p>
+                    <p>{languageMode === 'en' ? `Your company's name:` : 'Nazwa twojej firmy'}</p>
                     <input-container>
                         <input
                             type="text"
-                            placeholder="Company's name"
+                            placeholder={languageMode === 'en' ? "Company's name" : 'Nazwa firmy'}
                             value={name}
                             onChange={handleChangeName}
                         />
                     </input-container>
                 </form-section>
                 <form-section>
-                    <p>{`Company's address:`}</p>
+                    <p>{languageMode === 'en' ? `Company's address:` : 'Adres firmy'}</p>
                     <input-container-center>
                         <select defaultValue={country} name='country' onChange={handleChangeCountry}>
-                            <option value=''>Please select a country</option>
+                            <option value=''>{languageMode === 'en' ? 'Please select a country' : 'Prosze wybierz kraj'}</option>
                             {countryOptions}
                         </select>
                         <input
                             type="text"
-                            placeholder='City'
+                            placeholder={languageMode === 'en' ? 'City' : 'Miasto'}
                             value={city}
                             onChange={handleChangeCity}
                         />
                         <input
                             type="text"
-                            placeholder='Street'
+                            placeholder={languageMode === 'en' ? 'Street' : 'Ulica'}
                             value={street}
                             onChange={handleChangeStreet}
                         />
                         <input
                             type="text"
-                            placeholder='Postal code'
+                            placeholder={languageMode === 'en' ? 'Postal code' : 'Kod pocztowy'}
                             value={postal}
                             onChange={handleChangePostal}
                             maxLength={10}
@@ -382,11 +385,11 @@ const StartSelling = () => {
                     </input-container-center>
                 </form-section>
                 <form-section>
-                    <p>Account number:</p>
+                    <p>{languageMode === 'en' ? 'Account number:' : 'Numer rachunku konta'}</p>
                     <input-container>
                         <input
                             type="text"
-                            placeholder='Account number'
+                            placeholder={languageMode === 'en' ? 'Account number' : 'Numer rachunku konta'}
                             value={accountNumber}
                             onChange={handleChangeAccountNumber}
                             maxLength={30}
@@ -395,7 +398,7 @@ const StartSelling = () => {
                 </form-section>
             </start-selling-form>
             <validation-message>{isFormValidated ? null : <p>{validationMessage}</p>}</validation-message>
-            <start-selling-button onClick={handleStartSelling}><p>Sign in for seller program</p></start-selling-button>
+            <start-selling-button onClick={handleStartSelling}><p>{languageMode === 'en' ? 'Sign ip for seller program' : 'Zapisz się do programu dla sprzedawców'}</p></start-selling-button>
         </start-selling-page>
     );
 }

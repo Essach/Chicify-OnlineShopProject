@@ -1,15 +1,18 @@
 import { useNavigate } from 'react-router';
 import chicifyLogo from '../../icons/logo.svg'
 import './Header.scss'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { StoreContext } from '../../store/StoreProvider';
 import Login from '../Login/Login';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../firebase';
+import { getLanguageMode, toggleLanguageMode } from '../../helpers/localStorage';
 
 const Header = () => {
     const navigate = useNavigate()
 
-    const { user } = useContext(StoreContext);
+    const { user, languageMode } = useContext(StoreContext);
 
     const handleOnClickLogo = () => {
         navigate('/home');
@@ -35,6 +38,30 @@ const Header = () => {
         setIsModalOpenLogin(false);
     }
 
+    const [polandFlag, setPolandFlag] = useState('')
+    const [ukFlag, setUkFlag] = useState('')
+
+    const [isToggleEn, setIsToggleEn] = useState(false);
+    const handleToggleLanguageMode = () => {
+        setIsToggleEn(prev => !prev);
+        toggleLanguageMode();
+        navigate(0)
+    }
+
+    useEffect(() => {
+        const polandRef = ref(storage, 'chicifyImages/toggleFlags/poland.jpg');
+        const ukRef = ref(storage, 'chicifyImages/toggleFlags/uk.png');
+        getDownloadURL(polandRef).then((url) => {
+            setPolandFlag(url);
+        })
+        getDownloadURL(ukRef).then((url) => {
+            setUkFlag(url)
+        })
+
+        if (getLanguageMode() === 'en') setIsToggleEn(true);
+        else setIsToggleEn(false);
+    },[])
+
     return (
         <header>
             <header-container>
@@ -45,21 +72,38 @@ const Header = () => {
                         <p id='blue'>ify</p>
                     </logo-text>
                 </header-logo>
-                <seller-btns>
-                    {user !== undefined && user.accessLevel >= 2 ?
-                        <my-products-btn onClick={handleMyProductsBtn}>
-                            <p>
-                                My products
-                            </p>
-                        </my-products-btn> :
-                        <start-selling-btn onClick={handleStartSellingBtn}>
-                            <p>
-                                Start selling
-                            </p>
-                        </start-selling-btn>
-                    }
-                    <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />
-                </seller-btns>
+                <header-right>
+                    <seller-btns>
+                        {user !== undefined && user.accessLevel >= 2 ?
+                            <my-products-btn onClick={handleMyProductsBtn}>
+                                <p>
+                                    {languageMode === 'en' ? 'My products' : 'Moje produkty'}
+                                </p>
+                            </my-products-btn> :
+                            <start-selling-btn onClick={handleStartSellingBtn}>
+                                <p>
+                                    {languageMode === 'en' ? 'Start selling' : 'Zacznij sprzedawać'}
+                                </p>
+                            </start-selling-btn>
+                        }
+                        <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />
+                    </seller-btns>
+                    <language-select>
+                        <p>{languageMode === 'en' ? 'Currently used language' : 'Obecnie używany język'}</p>
+                        <div className={`language-toggle ${getLanguageMode() ? 'active' : ''}`} onClick={handleToggleLanguageMode}>
+                            <toggle-text-pl>
+                                PL
+                            </toggle-text-pl>
+                            <div className={`toggle-btn ${isToggleEn ? 'active' : ''}`}>
+                                {polandFlag !== '' && ukFlag !== '' ?
+                                    <img src={isToggleEn ? ukFlag : polandFlag} alt={isToggleEn ? 'the uk flag' : 'poland flag'} /> : null}
+                            </div>
+                            <toggle-text-en>
+                                EN
+                            </toggle-text-en>
+                        </div>
+                    </language-select>
+                </header-right>
             </header-container>
         </header>
     );

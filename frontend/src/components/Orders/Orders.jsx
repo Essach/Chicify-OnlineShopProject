@@ -11,7 +11,7 @@ import OrderPage from './subcomponents/OrderPage/OrderPage';
 import Login from '../Login/Login';
 
 const Orders = () => {
-    const { user } = useContext(StoreContext)
+    const { user, languageMode } = useContext(StoreContext)
 
     const [orders, setOrders] = useState([]);
 
@@ -49,23 +49,23 @@ const Orders = () => {
         <>
             {user === null || user === undefined ?
             <login-request>
-                <p>Please login to see your orders</p>
-                <login-btn onClick={handleOpenLogin}>Login</login-btn>
+                <p>{languageMode === 'en' ? 'Please login to see your orders' : 'Zaloguj się, aby zobaczyć swoje zamówienia'}</p>
+                <login-btn onClick={handleOpenLogin}>{languageMode === 'en' ? 'Login' : 'Zaloguj się'}</login-btn>
                 <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen} />
             </login-request> :
             <>
-                    {isDetailsPageOpen ? <OrderPage productId={productId} paymentId={orderId} closeOrderPage={closeOrderPage} /> :
+            {isDetailsPageOpen ? <OrderPage productId={productId} paymentId={orderId} closeOrderPage={closeOrderPage} /> :
             <orders-page>
                 <orders-title>
                     <img src={ordersIcon} alt='orders icon' />
-                    <p>Your orders:</p>
+                    <p>{languageMode === 'en' ? 'Your orders:' : 'Twoje zamówienia:'}</p>
                 </orders-title>
                     {user.orders.length > 0 ?
                         <orders-items>
                             {orders}
                         </orders-items> : 
                         <no-orders>
-                            {`You don't have any orders`}
+                            {languageMode === 'en' ? `You don't have any orders` : 'Nie masz żadnych zamówień'}
                         </no-orders>
                         }
             </orders-page>

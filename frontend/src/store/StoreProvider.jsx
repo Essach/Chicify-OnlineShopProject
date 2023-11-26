@@ -3,7 +3,7 @@ import request from "../helpers/request";
 
 import PropTypes from 'prop-types';
 
-import { getUserInfo, updateUser } from "../helpers/localStorage";
+import { getLanguageMode, getUserInfo, updateUser } from "../helpers/localStorage";
 
 
 export const StoreContext = createContext(null);
@@ -32,7 +32,10 @@ const StoreProvider = ({ children }) => {
         }
     }
 
+    const languageMode = getLanguageMode();
+
     useEffect(() => {
+        if(getLanguageMode() === undefined) localStorage.setItem('languageMode', JSON.stringify('en'))
         fetchData()
         if (getUserInfo().length === undefined) {
             const currUser = getUserInfo();
@@ -63,6 +66,7 @@ const StoreProvider = ({ children }) => {
             user,
             setUser,
             userInterval,
+            languageMode,
         }}>
             {children}
         </StoreContext.Provider>

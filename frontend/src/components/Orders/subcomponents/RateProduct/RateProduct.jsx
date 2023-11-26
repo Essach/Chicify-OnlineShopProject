@@ -5,7 +5,9 @@ import Modal from '../../../Modal/Modal';
 import rateStarTitle from '../../../../icons/rateStarTitle.svg';
 import rateStarYellow from '../../../../icons/rateStarYellow.svg';
 import rateStarDark from '../../../../icons/rateStarDark.svg';
-import { useEffect, useState } from 'react';
+import close from '../../../../icons/closeBlack.svg';
+import { useContext, useEffect, useState } from 'react';
+import { StoreContext } from '../../../../store/StoreProvider';
 
 const RateProduct = (props) => {
     const { isOpen,
@@ -16,6 +18,8 @@ const RateProduct = (props) => {
         commentValue,
         handleChangeCommentValue } = props;
 
+    const { languageMode } = useContext(StoreContext);
+    
     const [starsSelected, setStarsSelected] = useState([])
     const [starsUnselected, setStarsUnselected] = useState([])
 
@@ -35,13 +39,16 @@ const RateProduct = (props) => {
     return (
     <Modal isOpen={isOpen} handleOnClose={closeRating} shouldBeClosedOnOutsideClick={false}>
         <rate-product>
-            <rp-title>
-                <img src={rateStarTitle} alt='Rate the product'/>
-                <p>Rate the product</p>
-            </rp-title>
+            <rp-top>
+                <rp-title>
+                    <img src={rateStarTitle} alt='Rate the product'/>
+                    <p>{languageMode === 'en' ? 'Rate the product' : 'Oceń produkt'}</p>
+                </rp-title>
+                <img src={close} alt='close' onClick={closeRating} className='close'/>
+            </rp-top>
             <rating-forms>
                 <star-rating-form>
-                    <p>Select a rating</p>
+                    <p>{languageMode === 'en' ? 'Select a rating' : 'Wybierz ocenę'}</p>
                     <star-rating-selection>
                         <p>{rating}</p>
                         <stars-list>
@@ -51,14 +58,14 @@ const RateProduct = (props) => {
                     </star-rating-selection>
                 </star-rating-form>
                 <comment-form>
-                    <p>Comment:</p>
-                    <textarea placeholder='Enter your comment...' value={commentValue} onChange={(e)=>handleChangeCommentValue(e.target.value)}/>
+                    <p>{languageMode === 'en' ? 'Comment:' : 'Komentarz' }</p>
+                        <textarea placeholder={languageMode === 'en' ? 'Enter your comment...' : 'Wpisz komentarz...'} value={commentValue} onChange={(e)=>handleChangeCommentValue(e.target.value)}/>
                 </comment-form>
             </rating-forms>
                 <send-review-btn onClick={() => {
                     handleSendReview()
                 }}>
-                <p>Send review</p>
+                <p>{languageMode === 'en' ? 'Send review' : 'Wyślij opinię'}</p>
             </send-review-btn>
         </rate-product>
     </Modal>

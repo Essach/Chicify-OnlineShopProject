@@ -28,7 +28,7 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         reviews: [],
     });
 
-    const { user, setUser } = useContext(StoreContext)
+    const { user, setUser, languageMode } = useContext(StoreContext)
 
     const [commentValue, setCommentValue] = useState('')
     const [rating, setRating] = useState(0);
@@ -40,14 +40,14 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         orderHeader = (
             <delivery-status>
                 <img src={truckIcon} alt='truck icon' />
-                <p>In delivery...</p>
+                <p>{languageMode === 'en' ? 'In delivery...' : 'W dostawie...'}</p>
             </delivery-status>
         )
     } else if (status === 'delivered') {
         orderHeader = (
             <delivery-status>
                 <img src={boxIcon} alt='box icon' />
-                <p>Your order has been delivered</p>
+                <p>{languageMode === 'en' ? 'Your order has been delivered' : 'Twoje zamówienia zostało dostarczone'}</p>
             </delivery-status>
         )
     }
@@ -119,7 +119,7 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
                 {orderHeader}
                 {status === 'delivered' && !user.reviews.includes(id)? <>
                     <rating-btn onClick={()=>{setIsRatingOpen(true)}}>
-                        Send a review
+                        {languageMode === 'en' ? 'Send a review' : 'Oceń produkt'}
                     </rating-btn>
                     <RateProduct
                         isOpen={isRatingOpen}
@@ -152,7 +152,7 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
                 </product-price>
             </order-content>
             <order-footer onClick={handleSeeMoreDetails}>
-                See more details
+                {languageMode === 'en' ? 'See more details' : 'Zobacz więcej'}
             </order-footer>
         </order-item>
     );

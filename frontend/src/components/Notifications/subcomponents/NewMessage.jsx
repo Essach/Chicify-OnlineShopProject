@@ -12,7 +12,7 @@ const NewMessage = (props) => {
 
     const [isShiftClicked, setIsShiftClicked] = useState(false);
 
-    const { setUser } = useContext(StoreContext);
+    const { setUser, languageMode } = useContext(StoreContext);
 
     const handleChangeContent = e => {
         if (e.target.value.length < 200) {
@@ -45,7 +45,7 @@ const NewMessage = (props) => {
 
     return (
         <new-message-section>
-            <textarea placeholder='Type your message...' value={content} onChange={handleChangeContent} onKeyDown={handleSendMessageEnter}/>
+            <textarea placeholder={languageMode === 'en' ? 'Type your message...' : 'Wprowadź wiadomość...'} value={content} onChange={handleChangeContent} onKeyDown={handleSendMessageEnter}/>
             <send-message-btn onClick={handleSendMessage}>
                 <img src={sendMessage} alt='send message'/>
             </send-message-btn>

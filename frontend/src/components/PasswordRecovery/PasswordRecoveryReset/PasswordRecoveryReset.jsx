@@ -4,16 +4,19 @@ import lock from '../../../icons/lock.svg';
 import passwordShow from '../../../icons/passwordShow.svg';
 import passwordHide from '../../../icons/passwordHide.svg';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import request from '../../../helpers/request';
 
 import PropTypes from 'prop-types';
 
 import { useNavigate } from 'react-router';
+import { StoreContext } from '../../../store/StoreProvider';
 
 const PasswordRecoveryReset = ({ emailOrPhoneNumberValue }) => {
     const navigate = useNavigate();
+
+    const { languageMode } = useContext(StoreContext);
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
     const [passwordValue, setPasswordValue] = useState('');
@@ -24,11 +27,13 @@ const PasswordRecoveryReset = ({ emailOrPhoneNumberValue }) => {
 
     const validatePasswordsMatch = () => {
         if (repeatPasswordValue !== passwordValue) {
-            setValidationMessage("*Passwords don't match");
+            if (languageMode === 'en') setValidationMessage("*Passwords don't match");
+            else setValidationMessage("*Hasła się nie zgadzają");
             setIsFormValidated(false);
             return false;
         } else if (passwordValue === '' || repeatPasswordValue === '') {
-            setValidationMessage("*Enter valid info");
+            if (languageMode === 'en') setValidationMessage("*Enter valid info");
+            else setValidationMessage("*Wprowadź prawidłowe informacje");
             setIsFormValidated(false);
             return false;
         }
@@ -77,18 +82,18 @@ const PasswordRecoveryReset = ({ emailOrPhoneNumberValue }) => {
     return (
         <password-recovery-reset>
             <password-recovery-title>
-                Reset your password
+                {languageMode === 'en' ? 'Reset your password' : 'Zresetuj swoje hasło'}
             </password-recovery-title>
             <reset-form>
                 <form-section>
                     <p>
-                        Enter new password:
+                        {languageMode === 'en' ? 'Enter new password:' : 'Wprowadź nowe haslo'}
                     </p>
                     <input-container>
                         <img src={lock} alt='lock icon' className='lockIcon'/>
                         <input
                             type={isPasswordHidden ? 'password' : 'text'}
-                            placeholder='Password'
+                            placeholder={languageMode === 'en' ? 'Password' : 'Hasło'}
                             value={passwordValue}
                             onChange={handlePasswordChange}
                         />
@@ -97,12 +102,12 @@ const PasswordRecoveryReset = ({ emailOrPhoneNumberValue }) => {
                     </input-container>
                 </form-section>
                 <form-section>
-                    <p>Repeat password:</p>
+                    <p>{languageMode === 'en' ? 'Repeat password:' : 'Powtórz hasło'}</p>
                     <input-container>
                         <input
                             className='repeatPassword'
                             type='password'
-                            placeholder='Password'
+                            placeholder={languageMode === 'en' ? 'Password' : 'Hasło'}
                             value={repeatPasswordValue}
                             onChange={handleRepeatPasswordChange}
                         />
@@ -111,7 +116,7 @@ const PasswordRecoveryReset = ({ emailOrPhoneNumberValue }) => {
             </reset-form>
             {!isFormValidated && <validation-message>{validationMessage}</validation-message>}
             <reset-password-button onClick={handleSetNewPassword}>
-                <p>Set new password</p>
+                <p>{languageMode === 'en' ? 'Set new password' : 'Ustaw nowe hasło'}</p>
             </reset-password-button>
         </password-recovery-reset>
     );

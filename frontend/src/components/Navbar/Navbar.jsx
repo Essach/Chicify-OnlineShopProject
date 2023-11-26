@@ -57,137 +57,18 @@ const Navbar = () => {
 
     // Navigate buttons
 
-    const { user, setUser, userInterval } = useContext(StoreContext);
+    const { user, setUser, userInterval, languageMode } = useContext(StoreContext);
 
     const [isModalOpenLogin, setIsModalOpenLogin] = useState(false)
 
     const [isModalOpenNotifications, setIsModalOpenNotifications] = useState(false)
 
-    const navigateFunction = (url) => {
-        navigate(`/${url}`);
-        window.scrollTo(0, 0);
-    }
-
-    const handleOnClickFavorites = () => {
-        navigateFunction('favorites');
-        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
-    }
-
-    const handleOnClickNotificationsMobile = () => {
-        if (user) {
-            setIsModalOpenNotifications(true);
-        } else {
-            setIsModalOpenLogin(true);
-        }
-        setIsMobileMenuVisible(false);
-    }
     const handleOnCloseNotificationsMobile = () => setIsModalOpenNotifications(false);
 
-
-    const handleOnClickCart = () => {
-        navigateFunction('cart');
-        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
-    }
-
-    const handleOnClickHelp = () => {
-        navigateFunction('faq');
-        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
-    }
-
-    const handleOnClickOrders = () => {
-        navigateFunction('orders');
-        if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
-    }
-
     const handleOnCloseLogin = () => setIsModalOpenLogin(false);
-    const handleOnClickLogin = () => {
-        if (user) {
-            setUser(undefined);
-            logoutUser();
-            navigateFunction('home');
-            navigate(0);
-            clearInterval(userInterval.current)
-        } else {
-            setIsModalOpenLogin(true);
-            if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
-        }
-    }
 
-    const navButtonsList = [
-        {
-            id: 'favorites',
-            icon: favoritesIcon,
-            text: '',
-            handleOnClick: handleOnClickFavorites,
-        },
-        {
-            id: 'cart',
-            icon: cartIcon,
-            text: '',
-            handleOnClick: handleOnClickCart,
-        },
-        {
-            id: 'faq',
-            icon: FAQIcon,
-            text: 'Help',
-            handleOnClick: handleOnClickHelp,
-        },
-        {
-            id: 'orders',
-            icon: ordersIcon,
-            text: 'Orders',
-            handleOnClick: handleOnClickOrders,
-        },
-        {
-            id: 'login',
-            icon: loginIcon,
-            text: user ? 'Log out' : 'Log in',
-            handleOnClick: handleOnClickLogin,
-        },
-    ]
-
-    const navButtonsListMobile = [
-        {
-            id: 'notifications',
-            icon: notificationsIcon,
-            text: 'Notifications', 
-            handleOnClick: handleOnClickNotificationsMobile
-        },
-        {
-            id: 'favorites',
-            icon: favoritesIcon,
-            text: 'Favorites',    
-            handleOnClick: handleOnClickFavorites,
-        },
-        {
-            id: 'cart',
-            icon: cartIcon,
-            text: 'Cart',    
-            handleOnClick: handleOnClickCart,
-        },
-        {
-            id: 'faq',
-            icon: FAQIcon,
-            text: 'Help',    
-            handleOnClick: handleOnClickHelp,
-        },
-        {
-            id: 'orders',
-            icon: ordersIcon,
-            text: 'Orders',   
-            handleOnClick: handleOnClickOrders,
-        },
-        {
-            id: 'login',
-            icon: loginIcon,
-            text: user ? 'Log out' : 'Log in',   
-            handleOnClick: handleOnClickLogin,
-        },
-    ]
-
-    const navButtons = navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />)
-
-    const navButtonsMobile = navButtonsListMobile.reverse().map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />)
+    const [navButtons, setNavButtons] = useState([])
+    const [navButtonsMobile, setNavButtonsMobile] = useState([])
 
     // ================= Search bar ===============
 
@@ -325,6 +206,204 @@ const Navbar = () => {
     }, [isSearchMobileVisible]);
 
     useEffect(() => {
+        const navigateFunction = (url) => {
+            navigate(`/${url}`);
+            window.scrollTo(0, 0);
+        }
+
+        const handleOnClickFavorites = () => {
+            navigateFunction('favorites');
+            if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+        }
+
+        const handleOnClickNotificationsMobile = () => {
+            if (user) {
+                setIsModalOpenNotifications(true);
+            } else {
+                setIsModalOpenLogin(true);
+            }
+            setIsMobileMenuVisible(false);
+        }
+
+        const handleOnClickCart = () => {
+            navigateFunction('cart');
+            if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+        }
+
+        const handleOnClickHelp = () => {
+            navigateFunction('faq');
+            if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+        }
+
+        const handleOnClickOrders = () => {
+            navigateFunction('orders');
+            if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+        }
+
+        const handleOnClickLogin = () => {
+            if (user) {
+                setUser(undefined);
+                logoutUser();
+                navigateFunction('home');
+                navigate(0);
+                clearInterval(userInterval.current)
+            } else {
+                setIsModalOpenLogin(true);
+                if (window.innerWidth < 1100) setIsMobileMenuVisible(false);
+            }
+        }
+
+        let navButtonsList = [];
+        let navButtonsListMobile = [];
+        if (languageMode === 'en') {
+            navButtonsList = [
+                {
+                    id: 'favorites',
+                    icon: favoritesIcon,
+                    text: '',
+                    handleOnClick: handleOnClickFavorites,
+                },
+                {
+                    id: 'cart',
+                    icon: cartIcon,
+                    text: '',
+                    handleOnClick: handleOnClickCart,
+                },
+                {
+                    id: 'faq',
+                    icon: FAQIcon,
+                    text: 'Help',
+                    handleOnClick: handleOnClickHelp,
+                },
+                {
+                    id: 'orders',
+                    icon: ordersIcon,
+                    text: 'Orders',
+                    handleOnClick: handleOnClickOrders,
+                },
+                {
+                    id: 'login',
+                    icon: loginIcon,
+                    text: user ? 'Log out' : 'Log in',
+                    handleOnClick: handleOnClickLogin,
+                },
+            ]
+            navButtonsListMobile = [
+                {
+                    id: 'notifications',
+                    icon: notificationsIcon,
+                    text: 'Notifications', 
+                    handleOnClick: handleOnClickNotificationsMobile
+                },
+                {
+                    id: 'favorites',
+                    icon: favoritesIcon,
+                    text: 'Favorites',    
+                    handleOnClick: handleOnClickFavorites,
+                },
+                {
+                    id: 'cart',
+                    icon: cartIcon,
+                    text: 'Cart',    
+                    handleOnClick: handleOnClickCart,
+                },
+                {
+                    id: 'faq',
+                    icon: FAQIcon,
+                    text: 'Help',    
+                    handleOnClick: handleOnClickHelp,
+                },
+                {
+                    id: 'orders',
+                    icon: ordersIcon,
+                    text: 'Orders',   
+                    handleOnClick: handleOnClickOrders,
+                },
+                {
+                    id: 'login',
+                    icon: loginIcon,
+                    text: user ? 'Log out' : 'Log in',   
+                    handleOnClick: handleOnClickLogin,
+                },
+            ]
+        } else {
+            navButtonsList = [
+                {
+                    id: 'favorites',
+                    icon: favoritesIcon,
+                    text: '',
+                    handleOnClick: handleOnClickFavorites,
+                },
+                {
+                    id: 'cart',
+                    icon: cartIcon,
+                    text: '',
+                    handleOnClick: handleOnClickCart,
+                },
+                {
+                    id: 'faq',
+                    icon: FAQIcon,
+                    text: 'Pomoc',
+                    handleOnClick: handleOnClickHelp,
+                },
+                {
+                    id: 'orders',
+                    icon: ordersIcon,
+                    text: 'Zamówienia',
+                    handleOnClick: handleOnClickOrders,
+                },
+                {
+                    id: 'login',
+                    icon: loginIcon,
+                    text: user ? 'Wyloguj się' : 'Zaloguj się',
+                    handleOnClick: handleOnClickLogin,
+                },
+            ]
+            navButtonsListMobile = [
+                {
+                    id: 'notifications',
+                    icon: notificationsIcon,
+                    text: 'Powiadomienia', 
+                    handleOnClick: handleOnClickNotificationsMobile
+                },
+                {
+                    id: 'favorites',
+                    icon: favoritesIcon,
+                    text: 'Ulubione',    
+                    handleOnClick: handleOnClickFavorites,
+                },
+                {
+                    id: 'cart',
+                    icon: cartIcon,
+                    text: 'Koszyk',    
+                    handleOnClick: handleOnClickCart,
+                },
+                {
+                    id: 'faq',
+                    icon: FAQIcon,
+                    text: 'Pomoc',    
+                    handleOnClick: handleOnClickHelp,
+                },
+                {
+                    id: 'orders',
+                    icon: ordersIcon,
+                    text: 'Zamówienia',   
+                    handleOnClick: handleOnClickOrders,
+                },
+                {
+                    id: 'login',
+                    icon: loginIcon,
+                    text: user ? 'Wyloguj się' : 'Zaloguj się',   
+                    handleOnClick: handleOnClickLogin,
+                },
+            ]
+        }
+        setNavButtons(navButtonsList.map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />))
+        setNavButtonsMobile(navButtonsListMobile.reverse().map(item => <NavButton key={item.id} name={item.id} icon={item.icon} text={item.text} handleOnClick={item.handleOnClick} />))
+
+    }, [languageMode, user, navigate, setUser, userInterval])
+
+    useEffect(() => {
         const resizeFunc = () => {
             setIsSearchMobileVisible(false);
             setIsMobileMenuVisible(false);
@@ -363,7 +442,7 @@ const Navbar = () => {
                             <input
                                 ref={searchBar}
                                 type="text"
-                                placeholder='Search...'
+                                placeholder={languageMode === 'en' ? 'Search...' : 'Szukaj...'}
                                 value={searchValue}
                                 onChange={handleChangeSearchValue} />
                             {window.innerWidth > 1100 ?

@@ -27,3 +27,10 @@ export const updateUser = (userInfo) => {
 export const logoutUser = () => {
     localStorage.setItem('userInfo', JSON.stringify([]));
 }
+
+export const getLanguageMode = () => JSON.parse(localStorage.getItem('languageMode'));
+
+export const toggleLanguageMode = () => {
+    if (getLanguageMode() === 'en') localStorage.setItem('languageMode', JSON.stringify('pl'))
+    else localStorage.setItem('languageMode', JSON.stringify('en'))
+}

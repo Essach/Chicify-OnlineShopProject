@@ -6,7 +6,7 @@ import { StoreContext } from "../../../../store/StoreProvider";
 import Product from '../../../Product/Product';
 
 const SimilarProducts = () => {
-    const { products } = useContext(StoreContext);
+    const { products, languageMode } = useContext(StoreContext);
     const productsComponents = products.slice(0,3).map(product => (
         <Product key={product.ID}
             id={product.ID}
@@ -21,7 +21,7 @@ const SimilarProducts = () => {
     return (
         <similar-products>
             <sp-title>
-                <p>Similar products</p>
+                <p>{languageMode === 'en' ? 'Similar products' : 'Podobne produkty'}</p>
             </sp-title>
             <products-components>
                 {productsComponents}

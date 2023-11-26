@@ -5,14 +5,17 @@ import PropTypes from 'prop-types';
 import rateStarYellow from '../../../../../icons/rateStarYellow.svg';
 import rateStarDark from '../../../../../icons/rateStarDark.svg';
 import close from '../../../../../icons/closeBlack.svg';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import './Reviews.scss';
+import { StoreContext } from '../../../../../store/StoreProvider';
 
 const Reviews = (props) => {
     const { isOpen, closeReviews, reviews, productName } = props;
 
     const [renderedReviews, setRenderedReviews] = useState([]);
+
+    const {languageMode} = useContext(StoreContext)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,7 +39,7 @@ const Reviews = (props) => {
                         <review-stars>{stars}</review-stars>
                     </review-rating>
                     <review-comment>
-                        <p>Comment:</p>
+                        <p>{languageMode === 'en' ? 'Comment:' : 'Komentarz:'}</p>
                         <comment-area>
                             {review.comment}
                         </comment-area>
@@ -59,7 +62,7 @@ const Reviews = (props) => {
         <Modal isOpen={isOpen} handleOnClose={closeReviews} shouldBeClosedOnOutsideClick={true}>
             <product-reviews-window>
                 <reviews-title>
-                    <p>Reviews for: {productName}</p>
+                    <p>{languageMode === 'en' ? 'Reviews for:' : 'Oceny dla:'} {productName}</p>
                     <img src={close} alt="close reviews" onClick={closeReviews}/>
                 </reviews-title>
                 <user-reviews>

@@ -13,10 +13,13 @@ import request from '../../helpers/request';
 import { getCartSaved } from '../../helpers/localStorage';
 
 import { CartContext } from '../../context/CartContext';
+import { StoreContext } from '../../store/StoreProvider';
 
 const Cart = () => {
 
     const cartSaved = getCartSaved();
+
+    const { languageMode } = useContext(StoreContext);
 
     const { state } = useContext(CartContext)
 
@@ -98,7 +101,7 @@ const Cart = () => {
         <cart-container>
             <cart-title>
                     <img src={cartIcon} alt='cart icon' />
-                    <p>Cart</p>
+                <p>{languageMode === 'en' ? 'Cart' : 'Koszyk'}</p>
             </cart-title>
             <container-bottom>
                 <CartProducts products={products} />

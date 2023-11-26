@@ -9,7 +9,8 @@ import changeViewToSmall from '../../../../icons/changeViewSmallMobile.svg';
 import './OptionsMobile.scss';
 
 import Modal from '../../../Modal/Modal';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { StoreContext } from "../../../../store/StoreProvider";
 
 const OptionsMobile = (props) => {
     const { starFilter,
@@ -22,6 +23,8 @@ const OptionsMobile = (props) => {
         changeSortOption,
         handleChangeViewMode,
         viewMode } = props
+    
+    const { languageMode } = useContext(StoreContext);
     
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const handleOnCloseFilter = () => setIsFilterOpen(false);
@@ -67,7 +70,7 @@ const OptionsMobile = (props) => {
                     <img src={changeViewToBig} alt='change view' /> :
                     <img src={changeViewToSmall} alt='change view' />
                 }
-                <p>Change view</p>
+                <p>{languageMode === 'en' ? 'Change view' : 'Zmień wygląd'}</p>
             </change-view-btn>
         </div>
     );

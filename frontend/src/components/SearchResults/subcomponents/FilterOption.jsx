@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import star from '../../../icons/star.svg';
 import close from '../../../icons/closeBlack.svg';
 import { PropTypes } from 'prop-types';
+import { StoreContext } from '../../../store/StoreProvider';
 
 const FilterOption = (props) => {
     const { starFilter, priceFilterBottom, priceFilterTop, changeStarFilter, changePriceFilterBottom, changePriceFilterTop, handleOnCloseFilter } = props;
@@ -9,21 +10,23 @@ const FilterOption = (props) => {
     const [areOptionsVisible, setAreOptionsVisible] = useState(false);
     const handleClickFilterBtn = () => setAreOptionsVisible(prev => !prev);
 
+    const { languageMode } = useContext(StoreContext);
+
     return (
         <filter-option>
             {window.innerWidth > 1100 ?
                 <filter-btn onClick={handleClickFilterBtn}>
-                    Filter
+                    {languageMode === 'en' ? 'Filter' : 'Filtruj'}
                 </filter-btn> : 
                 <filter-top>
-                    <p>Filter</p>
+                    <p>{languageMode === 'en' ? 'Filter' : 'Filtruj'}</p>
                     <img src={close} alt='close filter options' onClick={handleOnCloseFilter}/>
                 </filter-top>
             }
             <div className={`filter-options-${areOptionsVisible || window.innerWidth < 1100 ? 'visible' : 'hidden'}`}>
                 <price-option>
                     <price-title>
-                        Price:
+                        {languageMode === 'en' ? 'Price:' : 'Cena: (US$)'}
                     </price-title>
                     <price-interval>
                         <input type="number" value={priceFilterBottom} onChange={changePriceFilterBottom}/>
@@ -32,7 +35,7 @@ const FilterOption = (props) => {
                     </price-interval>
                 </price-option>
                 <rating-option>
-                    <rating-title>Rating:</rating-title>
+                    <rating-title>{languageMode === 'en' ? 'Rating:' : 'Ocena: '}</rating-title>
                     <rating-options>
                         <div className={`rating-section${ starFilter === '5star' ? '-selected' : '' }`} onClick={() => changeStarFilter('5star')}>
                             <p>5</p>
@@ -75,7 +78,7 @@ const FilterOption = (props) => {
                             </star-icons>
                         </div>
                         <div className={`rating-section${ starFilter === 'any' ? '-selected' : '' }`} onClick={() => changeStarFilter('any')}>
-                            <p>Any</p>
+                            <p>{languageMode === 'en' ? 'Any' : 'Jakakolwiek'}</p>
                         </div>
                     </rating-options>
                 </rating-option>

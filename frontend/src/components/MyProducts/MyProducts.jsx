@@ -11,7 +11,7 @@ import MyProduct from "./subcomponents/MyProduct/MyProduct";
 import EditProduct from "./subcomponents/EditProduct/EditProduct";
 
 const MyProducts = () => {
-    const { user } = useContext(StoreContext);
+    const { user, languageMode } = useContext(StoreContext);
 
     const navigate = useNavigate();
 
@@ -29,7 +29,6 @@ const MyProducts = () => {
         setIsModalOpenEditProduct(true);
     }
 
-
     const [myProductsItems, setMyProductsItems] = useState([]); 
 
     const handleStartSellingBtn = () => {
@@ -46,7 +45,7 @@ const MyProducts = () => {
             if (user.productsForSale.length > 0) {
                 setMyProductsItems(user.productsForSale.map(product => <MyProduct key={product} handleEditProduct={handleEditProduct} id={product}/>))
             } else {
-                setMyProductsItems(<p className='createProducts'>{`You don't have any products put up for sale yet`}</p>)
+                setMyProductsItems(<p className='createProducts'>{languageMode === 'en' ? `You don't have any products put up for sale yet` : 'Nie masz jeszcze żadnych produktów na sprzedaż'}</p>)
             }
         }
     },[user, editId])
@@ -55,25 +54,25 @@ const MyProducts = () => {
         <>
             {user === null || user === undefined ?
             <login-request>
-                <p>Please login to see your products</p>
-                <login-btn onClick={handleOpenLogin}>Login</login-btn>
+                <p>{languageMode === 'en' ? 'Please login to see your products' : 'Zaloguj się, aby zobaczyć swoje produkty'}</p>
+                <login-btn onClick={handleOpenLogin}>{languageMode === 'en' ? 'Login' : 'Zaloguj się'}</login-btn>
                 <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpenLogin} />
             </login-request> :
             <>
                 {user.accessLevel < 2 ? 
                 <seller-request>
-                    <p>{`Become a seller to start putting up products for sale`}</p>
+                    <p>{languageMode === 'en' ? `Become a seller to start putting up products for sale` : 'Zostań sprzedawcą, aby zacząć sprzedawać'}</p>
                     <start-selling-btn onClick={handleStartSellingBtn}>
-                        <p>Start selling</p>
+                    <p>{languageMode === 'en' ? 'Start selling' : 'Zacznij sprzedawać'}</p>
                     </start-selling-btn>
                 </seller-request> :
                 <my-products-page>
                     <mp-title>
                         <img src={label} alt="label icon" />
-                        <p>Your products</p>
+                        <p>{languageMode === 'en' ? 'My products' : 'Moje produkty'}</p>
                     </mp-title>
                     <sell-product-btn onClick={() => { setIsModalOpenSellProduct(true)}}>
-                        Put up a new product for sale
+                        {languageMode === 'en' ? 'Put up a new product for sale' : 'Wystaw nowy produkt na sprzedaż'}
                     </sell-product-btn>
                     <my-products>
                         {myProductsItems}

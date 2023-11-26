@@ -9,6 +9,8 @@ import Login from '../Login/Login';
 const Notifications = () => {
     const { id: recipientId } = useParams();
 
+    const { languageMode } = useContext(StoreContext);
+
     const { user } = useContext(StoreContext);
 
     const [isMessagesOpenMobile, setIsMessagesOpenMobile] = useState(false);
@@ -25,8 +27,8 @@ const Notifications = () => {
         <>
             {user === null || user === undefined ?
                 <login-request>
-                    <p>Please login to see your messages</p>
-                    <login-btn onClick={handleOpenLogin}>Login</login-btn>
+                    <p>{languageMode === 'en' ? 'Please login to see your messages' : 'Zaloguj się, aby zobaczyć swoje wiadomości'}</p>
+                    <login-btn onClick={handleOpenLogin}>{languageMode === 'en' ? 'Login' : 'Zaloguj się'}</login-btn>
                     <Login handleOnClose={handleOnCloseLogin} isModalOpen={isModalOpen} />
                 </login-request> :
                 <notifications-page-container>

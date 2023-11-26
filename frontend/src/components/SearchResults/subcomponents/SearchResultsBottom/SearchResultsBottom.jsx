@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import SortOption from "../SortOption";
 import './SearchResultsBottom.scss';
 import changeViewToBig from '../../../../icons/changeViewBig.svg';
@@ -7,9 +7,12 @@ import FilterOption from "../FilterOption";
 import SearchProducts from "../SearchProducts";
 import { PropTypes } from 'prop-types';
 import OptionsMobile from "../OptionsMobile/OptionsMobile";
+import { StoreContext } from "../../../../store/StoreProvider";
 
 
-const SearchResultsBottom = ({itemName}) => {
+const SearchResultsBottom = ({ itemName }) => {
+    const { languageMode } = useContext(StoreContext);
+
     const [sortOption, setSortOption] = useState('accuracy');
     const changeSortOption = (option) => setSortOption(option);
 
@@ -117,7 +120,7 @@ const SearchResultsBottom = ({itemName}) => {
                                 <img src={changeViewToBig} alt='change view' /> :
                                 <img src={changeViewToSmall} alt='change view' />
                             }
-                            <p>Change view</p>
+                            <p>{languageMode === 'en' ? 'Change view' : 'Zmień wygląd'}</p>
                         </change-view-btn>
                         <FilterOption
                             starFilter={starFilter}

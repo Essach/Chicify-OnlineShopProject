@@ -1,13 +1,16 @@
 import './MyProduct.scss';
 import { PropTypes } from 'prop-types';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import request from '../../../../helpers/request';
 
 import rateStarYellow from '../../../../icons/rateStarYellow.svg';
 import rateStarDark from '../../../../icons/rateStarDark.svg';
+import { StoreContext } from '../../../../store/StoreProvider';
 
 const MyProduct = (props) => {
     const { id, handleEditProduct } = props;
+
+    const { languageMode } = useContext(StoreContext);
 
     const [productInfo, setProductInfo] = useState({
         id: '',
@@ -78,11 +81,11 @@ const MyProduct = (props) => {
                     </my-product-info>
                 </inner-box>
                 <product-price>
-                    {`US$ ${productInfo.price}`}
+                    {languageMode === 'en' ? `US$ ${productInfo.price}` : `${productInfo.price*4} zł`}
                 </product-price>
             </my-product-content>
             <my-product-footer onClick={() => { handleEditProduct(id) }}>
-                Edit
+                {languageMode === 'en' ? 'Edit' : 'Edytuj'}
             </my-product-footer>
         </my-product-item>
     );

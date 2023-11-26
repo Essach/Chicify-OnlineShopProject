@@ -17,7 +17,7 @@ import { useNavigate } from "react-router";
 const EditProduct = (props) => {
     const { handleOnClose, isOpen, id, resetEditId } = props;
     
-    const { user, setUser } = useContext(StoreContext);
+    const { user, setUser, languageMode } = useContext(StoreContext);
 
     const [loading, setLoading] = useState(false);
 
@@ -55,6 +55,38 @@ const EditProduct = (props) => {
         'Subscription Boxes',
         'Ethnic and Cultural'
     ].sort();  
+    const categoriesPl = [
+        'Odzież i Akcesoria',
+        'Elektronika',
+        'Dom i Meble',
+        'Zdrowie i Uroda',
+        'Sport i Rekreacja',
+        'Książki i Artykuły Biurowe',
+        'Zabawki i Gry',
+        'Biżuteria i Akcesoria',
+        'Motoryzacja',
+        'Żywność i Napoje Delikatesowe',
+        'Zoologiczne',
+        'Sztuka i Kolekcje',
+        'Sprzęt AGD',
+        'Ogród i Na Zewnątrz',
+        'Podróże i Bagaż',
+        'Sklepy Specjalistyczne',
+        'Fitness i Ćwiczenia',
+        'Dla Niemowląt i Małych Dzieci',
+        'Imprezy i Uroczystości',
+        'Narzędzia i Akcesoria do Majsterkowania',
+        'Rękodzieło i Hobby',
+        'Artykuły Biurowe i Szkolne',
+        'Instrumenty Muzyczne',
+        'Technologia i Gadżety',
+        'Remont i Wyposażenie Domu',
+        'Gry Wideo',
+        'Filmy i Muzyka',
+        'Vintage i Antyki',
+        'Pudełka z Subskrypcją',
+        'Etniczne i Kulturowe'
+    ].sort();
 
     const [oldFilePaths, setOldFilePaths] = useState([]);
 
@@ -70,16 +102,6 @@ const EditProduct = (props) => {
 
     const [validationMessage, setValidationMessage] = useState('');
     const [isFormValidated, setIsFormValidated] = useState(true);
-
-    const categoryItems = categories.map(category => <p
-        key={category}
-        className={`${selectedCategories.includes(category) ? 'selected' : 'none'} category`}
-        onClick={() => {
-            if (selectedCategories.includes(category)) setSelectedCategories(selectedCategories.filter(item => item !== category));
-            else setSelectedCategories([...selectedCategories, category]);
-        }}>
-        {category}
-    </p>)
 
     const handleChangeName = (e) => setNameValue(e.target.value); 
     const handleChangePrice = (e) => {
@@ -295,15 +317,15 @@ const EditProduct = (props) => {
                 <ep-top>
                     <ep-title>
                         <img src={edit} alt="add product" />
-                        <p>Edit product</p>
+                        <p>{languageMode === 'en' ? 'Edit product' : 'Edytuj produkt'}</p>
                     </ep-title>
                     <img src={close} alt="close" className='close' onClick={()=>{handleOnClose('closeBtn')}}/>
                 </ep-top>
                 <form-single>
-                    <p>Product name:</p>
+                    <p>{languageMode === 'en' ? 'Product name:' : 'Nazwa produktu:'}</p>
                     <input
                         type="text"
-                        placeholder="Name"
+                        placeholder={languageMode === 'en' ? "Name" : 'Nazwa'}
                         value={nameValue}
                         onChange={handleChangeName}
                     />
@@ -311,21 +333,21 @@ const EditProduct = (props) => {
                 <form-double>
                     <form-single>
                         <form-title>
-                            <p className="big">Price:</p>
+                            <p className="big">{languageMode === 'en' ? 'Price:' : 'Cena:'}</p>
                             <p className="small">{`(US$)`}</p>
                         </form-title>
                         <input
                             type="number"
                             value={priceValue}
                             onChange={handleChangePrice}
-                            placeholder="Price"
+                            placeholder={languageMode === 'en' ? "Price" : "Cena"}
                         />
                     </form-single>
                     <form-single>
-                        <p>Quantity:</p>
+                        <p>{languageMode === 'en' ? 'Quantity:' : 'Ilość'}</p>
                         <input
                             type="number"
-                            placeholder="Quantity"
+                            placeholder={languageMode === 'en' ? "Quantity" : "Ilość"}
                             value={quantityValue}
                             onChange={handleChangeQuantity}
                         />
@@ -334,15 +356,15 @@ const EditProduct = (props) => {
                 <form-double>
                     <form-single>
                         <form-title>
-                            <p className="big">Delivery options:</p>
-                            <p className="small">{`(Select at least 1 option)`}</p>
+                            <p className="big">{languageMode === 'en' ? 'Delivery options:' : 'Opcje dostawy:'}</p>
+                            <p className="small">{languageMode === 'en' ? `(Select at least 1 option)` : '(Co najmniej 1 opcja)'}</p>
                         </form-title>
                         <div className="select-options">
                             <p className={`${selectedDelivery.includes('Standard') ? 'selected' : 'none'} delivery`} onClick={() => {
                                 if (selectedDelivery.includes('Standard')) setSelectedDelivery(selectedDelivery.filter(item => item !== 'Standard'));
                                 else setSelectedDelivery([...selectedDelivery, 'Standard']);
                             }}>
-                                Standard
+                                {languageMode === 'en' ? 'Standard' : 'Standardowa'}
                             </p>
                             <p className={`${selectedDelivery.includes('Express') ? 'selected' : 'none'} delivery`} onClick={() => {
                                 if (selectedDelivery.includes('Express')) setSelectedDelivery(selectedDelivery.filter(item => item !== 'Express'));
@@ -354,17 +376,33 @@ const EditProduct = (props) => {
                     </form-single>
                     <form-single>
                         <form-title>
-                            <p className="big">Categories:</p>
-                            <p className="small">{`(Select at least 1 option)`}</p>
+                            <p className="big">{languageMode === 'en' ? 'Categories:' : 'Kategorie:'}</p>
+                            <p className="small">{languageMode === 'en' ? `(Select at least 1 option)` : '(Co najmniej 1 opcja)'}</p>
                         </form-title>
                         <div className="select-options scrollable">
-                            {categoryItems}
+                            {languageMode === 'en' ? categories.map(category => <p
+                                key={category}
+                                className={`${selectedCategories.includes(category) ? 'selected' : 'none'} category`}
+                                onClick={() => {
+                                    if (selectedCategories.includes(category)) setSelectedCategories(selectedCategories.filter(item => item !== category));
+                                    else setSelectedCategories([...selectedCategories, category]);
+                                }}>
+                                {category}
+                            </p>) : categoriesPl.map(category => <p
+                                key={category}
+                                className={`${selectedCategories.includes(category) ? 'selected' : 'none'} category`}
+                                onClick={() => {
+                                    if (selectedCategories.includes(category)) setSelectedCategories(selectedCategories.filter(item => item !== category));
+                                    else setSelectedCategories([...selectedCategories, category]);
+                                }}>
+                                {category}
+                            </p>)}
                         </div>
                     </form-single>
                 </form-double>
                 <form-single>
                     <p>
-                        Images:
+                        {languageMode === 'en' ? 'Images:' : 'Zdjęcia:'}
                     </p>
                     <added-images>
                         <label>
@@ -455,9 +493,9 @@ const EditProduct = (props) => {
                 </form-single>
                 <form-single>
                     <p>
-                        Description:
+                        {languageMode === 'en' ? 'Description:' : 'Opis:'}
                     </p>
-                    <textarea placeholder="Add your description here..." value={descriptionValue} onChange={handleChangeDescription}/>
+                    <textarea placeholder={languageMode === 'en' ? "Add your description here..." : 'Dodaj opis tutaj...'} value={descriptionValue} onChange={handleChangeDescription}/>
                 </form-single>
                 <validation-message>
                     {isFormValidated ? null : validationMessage}
@@ -467,12 +505,12 @@ const EditProduct = (props) => {
                         <p onClick={() => {
                             handleEditProductBtn()
                         }}>
-                            Edit product
+                            {languageMode === 'en' ? 'Edit product' : 'Zakończ edycję'}
                         </p>
                     </edit-product-btn>
                     <delete-product-btn>
                         <p onClick={handleDeleteProductBtn}>
-                            Delete product
+                            {languageMode === 'en' ? 'Delete product' : 'Usuń produkt'}
                         </p>
                     </delete-product-btn>
                 </editing-btns>

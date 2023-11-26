@@ -1,27 +1,31 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { StoreContext } from '../../../store/StoreProvider';
 
 const PaymentForm = (props) => {
     const { isVisible, cardHandler, expirationHandler, cvvHandler, postalHandler, creditValue, cvvValue, postalValue, goBackHandler} = props;
 
+    const { languageMode } = useContext(StoreContext);
+
     return (
         <div className={`cart-payment-form-${isVisible ? 'visible' : 'hidden'}`}>
                 <go-back-btn onClick={goBackHandler}>
-                    Go back
+                    {languageMode === 'en' ? 'Go back' : 'Powrót'}
                 </go-back-btn>
                 <form-label>
-                    <p>CREDIT CARD NUMBER</p>
+                    <p>{languageMode === 'en' ? 'CREDIT CARD NUMBER' : 'NUMER KARTY KREDYTOWEJ'}</p>
                 <input type='text' maxLength={16} value={creditValue} onChange={cardHandler} className='num' />
                 </form-label>
                 <form-label>
-                    <p>EXPIRATION DATE</p>
+                    <p>{languageMode === 'en' ? 'EXPIRATION DATE' : 'TERMIN WAŻNOŚCI'}</p>
                 <input type='month' onChange={expirationHandler} className='month' />
                 </form-label>
                 <form-label>
-                    <p>CVV NUMBER</p>
+                    <p>{languageMode === 'en' ? 'CVV NUMBER' : 'NUMER CVV'}</p>
                     <input type='text' maxLength={3} value={cvvValue} onChange={cvvHandler} className='num' />
                 </form-label>
                 <form-label>
-                    <p>POSTAL CODE</p>
+                    <p>{languageMode === 'en' ? 'POSTAL CODE' : 'KOD POCZTOWY'}</p>
                     <input type='text' maxLength={10} value={postalValue} onChange={postalHandler} className='num' />
                 </form-label>
         </div>

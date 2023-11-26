@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 
 import selectArrow from '../../../icons/selectArrow.svg';
+import { useContext } from 'react';
+import { StoreContext } from '../../../store/StoreProvider';
 
 const AddressForm = (props) => {
     const { isVisible, countryHandler, nameHandler, addressHandler, cityHandler, country, name, address, city } = props;
+
+	const { languageMode } = useContext(StoreContext);
 
     const countryList = [
 	"Afghanistan",
@@ -261,10 +265,10 @@ const AddressForm = (props) => {
 	return (
 		<div className={`address-form-${isVisible ? 'visible' : 'hidden'}`}>
 			<form-label>
-				<p>Country:</p>
+				<p>{languageMode === 'en' ? 'Country:' : 'Kraj:'}</p>
 				<select-container>
 					<select defaultValue={country} name='country' onChange={countryHandler}>
-					<option value=''>Please select a country</option>
+					<option value=''>{languageMode === 'en' ? 'Please select a country' : 'Proszę wybrać kraj'}</option>
 					{countryOptions}
 				</select>
 				<div className='icon-container'>
@@ -273,15 +277,15 @@ const AddressForm = (props) => {
 				</select-container>
 			</form-label>
 			<form-label>
-				<p>Full name:</p>
+				<p>{languageMode === 'en' ? 'Full name:' : 'Imie i nazwisko'}</p>
 				<input type='text' value={name} onChange={nameHandler} className="text"/>
 			</form-label>
 			<form-label>
-				<p>Address:</p>
+				<p>{languageMode === 'en' ? 'Address:' : 'Adres:'}</p>
 				<input type='text' value={address} onChange={addressHandler} className="text"/>
 			</form-label>
 			<form-label>
-				<p>City:</p>
+				<p>{languageMode === 'en' ? 'City:' : 'Miasto:'}</p>
 				<input type='text' value={city} onChange={cityHandler} className="text"/>
 			</form-label>
 		</div>

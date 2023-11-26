@@ -22,7 +22,7 @@ const CartForm = (props) => {
 
     const { state, dispatch } = useContext(CartContext)
 
-    const { user, setUser } = useContext(StoreContext);
+    const { user, setUser, languageMode } = useContext(StoreContext);
 
 
     const [countryValue, setCountryValue] = useState('');
@@ -191,18 +191,21 @@ const CartForm = (props) => {
         if (state !== undefined && state.cart.length <= 0) {
             if (!wasPurchaseMade) {
                 setIsFormValidatedOuter(false);
-                setFormMessage('The cart is empty');
+                if (languageMode === 'en') setFormMessage('The cart is empty');
+                else setFormMessage('Koszyk jest pusty');
             } else {
                 setIsFormValidatedOuter(false);
-                setFormMessage('Thank you for purchasing our products')
+                if (languageMode === 'en') setFormMessage('Thank you for purchasing our products')
+                else setFormMessage('Dziękujemy za zakup naszych produktów');
             }
         } else if (!user) {
             setIsFormValidatedOuter(false);
-            setFormMessage('Log in to proceed to payment');
+            if (languageMode === 'en') setFormMessage('Log in to proceed to payment');
+            else setFormMessage('Zaloguj się, aby przejść do płatności');
         } else {
             setIsFormValidatedOuter(true)
         }
-    },[user, state, wasPurchaseMade])
+    },[user, state, wasPurchaseMade, languageMode])
 
 
     return (
@@ -212,11 +215,11 @@ const CartForm = (props) => {
                 <cart-form-options>
                     <cart-form-container>
                         <cart-form-title>
-                            Payment method
+                            {languageMode === 'en' ? 'Payment method' : 'Opcja płatności'}
                         </cart-form-title>
                         <div className={paymentMethod === 'credit' ? 'option-active' : 'option-inactive'} onClick={handleClickCreditPayment}>
                             <img src={'http://localhost:8000/images/paymentImages/creditcard.png'} alt='visa or mastercard credit card' />
-                            <p>Credit card</p>
+                            <p>{languageMode === 'en' ? 'Credit card' : 'Karta kredytowa'}</p>
                         </div>
                         <div className={paymentMethod === 'gpay' ? 'option-active' : 'option-inactive'} onClick={handleClickGpayPayment}>
                             <img src={'http://localhost:8000/images/paymentImages/gpay.png'} alt='visa or mastercard credit card' />
@@ -225,18 +228,18 @@ const CartForm = (props) => {
                     </cart-form-container>
                     <cart-form-container>
                         <cart-form-title>
-                            Delivery option
+                            {languageMode === 'en' ? 'Delivery option' : 'Opcja dostawy'}
                         </cart-form-title>
                         {delivery.standardPrice !== 0 ?
                         <div className={deliveryOption === 'standard' ? 'option-active' : 'option-inactive'} onClick={handleClickStandardDelivery}>
                             <img src={standard} alt='standard delivery' />
-                            <p>Standard</p>
-                        </div> : <p>Standard delivery not possible for selected products</p> }
+                                <p>{languageMode === 'en' ? 'Standard' : 'Standardowa'}</p>
+                            </div> : <p>{languageMode === 'en' ? 'Standard delivery not possible for selected products' : 'Wybrane produkty nie obsługują dostawy standardowej'}</p> }
                         {delivery.expressPrice !== 0 ?
                         <div className={deliveryOption === 'express' ? 'option-active' : 'option-inactive'} onClick={handleClickExpressDelivery}>
                             <img src={express} alt='express delivery' />
                             <p>Express</p>
-                        </div> : <p>Express delivery not possible for selected products</p> }
+                        </div> : <p>{languageMode === 'en' ? 'Express delivery not possible for selected products' : 'Wybrane produkty nie obsługują dostawy express'}</p> }
                     </cart-form-container>
                 </cart-form-options>
                 {isAddressFormValidated ?
@@ -268,22 +271,28 @@ const CartForm = (props) => {
                     {(areFormsVisiblePayment && areFormsVisibleDelivery) ? <>
                             <price-and-button>
                                 <price-info>
-                                    <p className='small'>{`Products cost: US$ ${price}`}</p>
-                                    <p className='small'>{`Delivery cost: US$ ${deliveryPrice}`}</p>
-                                    <p className='big'>{`Total cost: US$ ${price + deliveryPrice}`}</p>
+                                    {languageMode === 'en' ? <>
+                                        <p className='small'>{`Products cost: US$ ${price}`}</p>
+                                        <p className='small'>{`Delivery cost: US$ ${deliveryPrice}`}</p>
+                                        <p className='big'>{`Total cost: US$ ${price + deliveryPrice}`}</p>
+                                    </> : <>
+                                        <p className='small'>{`Koszt produktów: ${price*4} zł`}</p>
+                                        <p className='small'>{`Koszt dostawy: ${deliveryPrice*4} zł`}</p>
+                                        <p className='big'>{`Całkowity koszt: ${(price + deliveryPrice)*4} zł`}</p>
+                                    </>}
                                 </price-info>
                                     {isAddressFormValidated ?
                                         <pay-and-order-btn>
                                             <p onClick={handlePayBtn}>
-                                                Pay and Order
+                                                {languageMode === 'en' ? 'Pay and Order' : 'Płacę i zamawiam'}
                                             </p>
                                         </pay-and-order-btn> :
                                         <proceed-button>
-                                            <p onClick={handleProceedBtnClick}>Proceed to payment</p>
+                                            <p onClick={handleProceedBtnClick}>{languageMode === 'en' ? 'Proceed to payment' : 'Przejdź do płatności'}</p>
                                         </proceed-button>}
                             </price-and-button>
                         </>
-                        : <select-message><p>Please select a payment and a delivery method</p></select-message>
+                        : <select-message><p>{languageMode === 'en' ? 'Please select a payment and a delivery method' : 'Proszę wybrać sposób płatności i dostawę'}</p></select-message>
                     }
             </div>
             :

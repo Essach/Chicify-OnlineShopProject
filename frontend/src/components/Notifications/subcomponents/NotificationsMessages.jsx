@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import notificationsIcon from '../../../icons/notifications.svg';
 import closeIcon from '../../../icons/close.svg';
 import request from "../../../helpers/request";
 import PropTypes from 'prop-types';
+import { StoreContext } from "../../../store/StoreProvider";
 
 
 const NotificationsMessages = ({user, isOpenMobile, handleToggleMessagesMobile}) => {
@@ -11,6 +12,8 @@ const NotificationsMessages = ({user, isOpenMobile, handleToggleMessagesMobile})
     const [notificationItems, setNotificationItems] = useState([])
 
     const navigate = useNavigate();
+
+    const { languageMode } = useContext(StoreContext);
 
     const fetchNotificationNames = async () => {
         let names = []
@@ -59,7 +62,7 @@ const NotificationsMessages = ({user, isOpenMobile, handleToggleMessagesMobile})
             <page-top>
                 <page-title>
                     <img src={notificationsIcon} alt="notifications icon" />
-                    <p>Notifications</p>
+                    <p>{languageMode === 'en' ? 'Notifications' : 'Powiadomienia'}</p>
                 </page-title>
                 <close-btn onClick={handleToggleMessagesMobile}>
                     <img src={closeIcon} alt="go back to conversation" />

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import rateStarYellow from '../../icons/rateStarYellow.svg';
@@ -10,10 +10,13 @@ import deliveryIconWhite from '../../icons/deliveryTruckWhite.svg';
 import productArrowRight from '../../icons/productArrowRight.svg';
 
 import './Product.scss';
+import { StoreContext } from '../../store/StoreProvider';
 
 const ProductSquare = (props) => {
     // eslint-disable-next-line no-unused-vars
     const { id, name, price, delivery, images, reviews, sellerId, type } = props;
+
+    const { languageMode } = useContext(StoreContext);
 
     const [ratingItem, setRatingItem] = useState()
     
@@ -62,6 +65,9 @@ const ProductSquare = (props) => {
     
     useEffect(() => {
         function getOrdinalSuffix(day) {
+            if (languageMode === 'pl') {
+                return '-ego'
+            }
             if (day >= 11 && day <= 13) {
                 return 'th';
             }
@@ -88,19 +94,21 @@ const ProductSquare = (props) => {
         const monthIndex = currentDate.getMonth();
 
         // Create an array of month names
-        const monthNames = [
+        const monthNames = languageMode === 'en' ? [
             "January", "February", "March",
             "April", "May", "June",
             "July", "August", "September",
             "October", "November", "December"
-        ];
+        ] : ["Stycznia", "Lutego", "Marca", "Kwietnia",
+            "Maja", "Czerwca", "Lipca", "Sierpnia",
+            "Września", "Października", "Listopada", "Grudnia"];
 
         // Format the result as 'day month'
         const formattedDate = day + getOrdinalSuffix(day) + ' ' + monthNames[monthIndex];
 
         // Display the result
         setDeliveryDate(formattedDate);
-    },[])
+    },[languageMode])
 
     return (
         <div onClick={handleOnClickProduct} className={type}>
@@ -120,17 +128,17 @@ const ProductSquare = (props) => {
                             {type === 'rectangleFavoritesPage' ? <img src={deliveryIconWhite} alt='delivery truck' /> :
                                 <img src={deliveryIcon} alt='delivery truck' />
                             }
-                            <p>Delivery by {deliveryDate}</p>
+                            <p>{languageMode === 'en' ? `Delivery by ${deliveryDate}` : `Dostawa od ${deliveryDate}`}</p>
                         </div>
                         <div>
-                            <p>{`Delivery from US$ ${cheapestDeliveryPrice}`}</p>
+                            <p>{languageMode === 'en' ? `Delivery from US$ ${cheapestDeliveryPrice}` : `Dostawa od ${cheapestDeliveryPrice * 4}`}</p>
                         </div>
                     </info-bottom>
                 </product-info>
             </product-inner-box>
             <product-price>
                 <p>
-                    {`US$ ${price}`}
+                    {languageMode === 'en' ? `US$${price}` : `${price * 4} zł`}
                 </p>
             </product-price>
             <product-arrow-right>

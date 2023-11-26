@@ -7,14 +7,17 @@ import passwordShow from '../../icons/passwordShow.svg';
 import passwordHide from '../../icons/passwordHide.svg';
 import user from '../../icons/userSignup.svg';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import request from '../../helpers/request';
 
 import { useNavigate } from 'react-router';
+import { StoreContext } from '../../store/StoreProvider';
 
 const SignUp = () => {
     const navigate = useNavigate()
+
+    const { languageMode } = useContext(StoreContext);
 
     const [userEmails, setUserEmails] = useState();
     const [userPhoneNumbers, setUserPhoneNumbers] = useState();
@@ -44,35 +47,43 @@ const SignUp = () => {
 
     const validateSignInForm = () => {
         if (usernameValue === '' || emailOrPhoneNumberValue === '' || passwordValue === '' || repeatPasswordValue === '') {
-            setErrorText('*Please fill in all fields');
+            if (languageMode === 'en') setErrorText('*Please fill in all fields');
+            else setErrorText('*Proszę uzupełnic wszystkie pola');
             setIsFormValidated(false);
             return false
         } else if (agreementValue === false) {
-            setErrorText('*You have to agree to terms & conditions to proceed');
+            if (languageMode === 'en') setErrorText('*You have to agree to terms & conditions to proceed');
+            else setErrorText('*Musisz wyrazić zgodę na warunki użytkowania');
             setIsFormValidated(false);
             return false
         } else if (!(/@/.test(emailOrPhoneNumberValue)) && !(/^[0-9]*$/.test(emailOrPhoneNumberValue))) {
-            setErrorText('*Please insert an email or phone number');
+            if (languageMode === 'en') setErrorText('*Please insert an email or phone number');
+            else setErrorText('*Proszę podać adres email lub number telefonu');
             setIsFormValidated(false);
             return false
         } else if (/^[0-9]*$/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.length !== 9) {
-            setErrorText('*Please insert an email or phone number');
+            if (languageMode === 'en') setErrorText('*Please insert an email or phone number');
+            else setErrorText('*Proszę podać adres email lub number telefonu');
             setIsFormValidated(false);
             return false
         } else if (repeatPasswordValue !== passwordValue) {
-            setErrorText("*Passwords don't match");
+            if (languageMode === 'en') setErrorText("*Passwords don't match");
+            else setErrorText("*Hasła się nie zgadzają");
             setIsFormValidated(false);
             return false
         } else if (userEmails === undefined || userPhoneNumbers === undefined) {
-            setErrorText('*Internal server error 2');
+            if (languageMode === 'en') setErrorText('*Internal server error 2');
+            else setErrorText('*Wewnętrzny błąd serwera');
             setIsFormValidated(false);
             return false
         } else if (userEmails.find(email => email === emailOrPhoneNumberValue) !== undefined) {
-            setErrorText('*Email already in use');
+            if (languageMode === 'en') setErrorText('*Email already in use');
+            else setErrorText('*Email jest już w użyciu');
             setIsFormValidated(false);
             return false
         } else if (userPhoneNumbers.find(phoneNum => phoneNum === emailOrPhoneNumberValue) !== undefined) {
-            setErrorText('*Phone number already in use');
+            if (languageMode === 'en') setErrorText('*Phone number already in use');
+            else setErrorText('*Number telefonu jest już w użyciu');
             setIsFormValidated(false);
             return false
         }
@@ -143,7 +154,7 @@ const SignUp = () => {
     return (
         <sign-up-dialog>
             <title-and-close>
-                <p>Create a new account</p>
+                <p>{languageMode === 'en' ? 'Create a new account' : 'Utwórz nowe konto'}</p>
                 <img src={close} alt='close sign in form' onClick={handleClose}/>
             </title-and-close>
             <sign-up-image>
@@ -151,36 +162,36 @@ const SignUp = () => {
             </sign-up-image>
             <sign-up-form>
                 <form-section>
-                    <p>Username:</p>
+                    <p>{languageMode === 'en' ? 'Username:' : 'Nazwa użytkownika'}</p>
                     <input-container>
                         <img src={user} alt='user icon' className='userIcon'/>
                         <input
                             type="text"
-                            placeholder='Username'
+                            placeholder={languageMode === 'en' ? 'Username:' : 'Nazwa użytkownika'}
                             value={usernameValue}
                             onChange={handleUsernameChange}
                         />
                     </input-container>
                 </form-section>
                 <form-section>
-                    <p>Your email or phone number:</p>
+                    <p>{languageMode === 'en' ? 'Your email or phone number:' : 'Twój adres email lub numer telefonu'}</p>
                     <input-container>
                         <img src={email} alt='letter icon' className='emailIcon'/>
                         <input
                             type="text"
-                            placeholder='Email or phone number'
+                            placeholder={languageMode === 'en' ? 'Email or phone number:' : 'Adres email lub numer telefonu'}
                             value={emailOrPhoneNumberValue}
                             onChange={handleEmailOrPhoneNumberChange}
                         />
                     </input-container>
                 </form-section>
                 <form-section>
-                    <p>New password:</p>
+                    <p>{languageMode === 'en' ? 'New password:' : 'Nowe hasło'}</p>
                     <input-container>
                         <img src={lock} alt='lock icon' className='lockIcon'/>
                         <input
                             type={isPasswordHidden ? 'password' : 'text'}
-                            placeholder='Password'
+                            placeholder={languageMode === 'en' ? 'Password' : 'Hasło'}
                             value={passwordValue}
                             onChange={handlePasswordChange}
                         />
@@ -189,12 +200,12 @@ const SignUp = () => {
                     </input-container>
                 </form-section>
                 <form-section>
-                    <p>Repeat password:</p>
+                    <p>{languageMode === 'en' ? 'Repeat password:' : 'Powtórz hasło'}</p>
                     <input-container>
                         <input
                             className='repeatPassword'
                             type='password'
-                            placeholder='Password'
+                            placeholder={languageMode === 'en' ? 'Password' : 'Hasło'}
                             value={repeatPasswordValue}
                             onChange={handleRepeatPasswordChange}
                         />
@@ -207,13 +218,13 @@ const SignUp = () => {
                         onChange={handleAgreementChange}    
                     />
                     <agreement-text>
-                        <p>I agree and consent to</p>
-                        <a href='/terms-and-conditions'>Terms & Conditions</a>
+                        <p>{languageMode === 'en' ? 'I agree and consent to' : 'Zgadzam się na'}</p>
+                        <a href='/terms-and-conditions'>{languageMode === 'en' ? 'Terms & Conditions' : 'Warunki użytkowania'}</a>
                     </agreement-text>
                 </checkbox-agreement>
             </sign-up-form>
             <validation-message>{isFormValidated ? null : <p>{errorText}</p>}</validation-message>
-            <create-account-button onClick={handleCreateAccountButton}><p>Create a new account</p></create-account-button>
+            <create-account-button onClick={handleCreateAccountButton}><p>{languageMode === 'en' ? 'Create a new account' : 'Utwórz nowe konto'}</p></create-account-button>
         </sign-up-dialog>
     );
 }
