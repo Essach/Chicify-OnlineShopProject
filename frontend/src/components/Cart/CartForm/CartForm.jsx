@@ -49,6 +49,7 @@ const CartForm = (props) => {
     const [isAddressFormValidated, setIsAddressFormValidated] = useState(false);
 
     const [isFormValidatedOuter, setIsFormValidatedOuter] = useState(true);
+    const [isFormValidatedUser, setIsFormValidatedUser] = useState(true);
     const [formMessage, setFormMessage] = useState('');
 
     const [wasPurchaseMade, setWasPurchaseMade] = useState(false);
@@ -162,11 +163,17 @@ const CartForm = (props) => {
             })
 
             if (paymentStatus === 200) {
-                const products = state.cart.map(item => ({...item, status: 'delivered'}))
-                const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: user.userId, paymentId: paymentData.paymentId, productBySeller: productsWithSellerIds });
+                const products = state.cart.map(item => ({ ...item, status: 'delivered' }))
+                let userId;
+                if (!user) userId = '1';
+                else userId = user.userId
+
+                const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: userId, paymentId: paymentData.paymentId, productBySeller: productsWithSellerIds });
                 if (userStatus === 200) {
-                    setUser(userData.user);
-                    updateUser(userData.user);
+                    if (user !== undefined && user !== null) {
+                        setUser(userData.user);
+                        updateUser(userData.user);
+                    }
                 } else {
                     throw new Error(userData.message);
                 }
@@ -198,19 +205,20 @@ const CartForm = (props) => {
                 if (languageMode === 'en') setFormMessage('Thank you for purchasing our products')
                 else setFormMessage('Dziękujemy za zakup naszych produktów');
             }
-        } else if (!user) {
-            setIsFormValidatedOuter(false);
-            if (languageMode === 'en') setFormMessage('Log in to proceed to payment');
-            else setFormMessage('Zaloguj się, aby przejść do płatności');
         } else {
             setIsFormValidatedOuter(true)
         }
-    },[user, state, wasPurchaseMade, languageMode])
 
+        if (!user && state.cart.length > 0) {
+            setIsFormValidatedUser(false);
+            if (languageMode === 'en') setFormMessage('Log in to track your order or');
+            else setFormMessage('Zaloguj się, aby śledzić swoje zamówienie lub');
+        }
+    },[user, state, wasPurchaseMade, languageMode])
 
     return (
         <cart-form-component>
-            {isFormValidatedOuter ? 
+            {isFormValidatedOuter && isFormValidatedUser ? 
             <div className='cart-box'>
                 <cart-form-options>
                     <cart-form-container>
@@ -296,8 +304,13 @@ const CartForm = (props) => {
                     }
             </div>
             :
-            <form-message>
+                <form-message>
                     <p className='form-message'>{formMessage}</p>
+                    {isFormValidatedUser || !isFormValidatedOuter ? null :
+                        <guest-btn onClick={()=>setIsFormValidatedUser(true)}>
+                            {languageMode === 'en' ? 'Buy as a guest' : 'Kupuj jako gość'}
+                        </guest-btn>
+                    }
             </form-message>
             }
         </cart-form-component>

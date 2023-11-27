@@ -108,7 +108,7 @@ const Cart = () => {
                 <CartForm price={price} delivery={delivery} />
             </container-bottom>
             <info-text>
-                {languageMode === 'en' ? `*This is not a real shopping website. Please don't put in your real private information, because the data is saved.` :
+                {languageMode === 'en' ? `*This is not a real shopping website. Please don't enter your real private information, because the data is saved.` :
                     '*To nie jest prawdziwa witryna zakupowa. Nie podawaj swoich prawdziwych prywatnych informacji, ponieważ dane są zapisywane.'}
             </info-text>
         </cart-container>
