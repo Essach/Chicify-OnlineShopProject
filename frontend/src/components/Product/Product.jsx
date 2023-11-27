@@ -131,7 +131,7 @@ const ProductSquare = (props) => {
                             <p>{languageMode === 'en' ? `Delivery by ${deliveryDate}` : `Dostawa od ${deliveryDate}`}</p>
                         </div>
                         <div>
-                            <p>{languageMode === 'en' ? `Delivery from US$ ${cheapestDeliveryPrice}` : `Dostawa od ${cheapestDeliveryPrice * 4}`}</p>
+                            <p>{languageMode === 'en' ? `Delivery from US$ ${cheapestDeliveryPrice}` : `Dostawa od ${cheapestDeliveryPrice * 4} zł`}</p>
                         </div>
                     </info-bottom>
                 </product-info>

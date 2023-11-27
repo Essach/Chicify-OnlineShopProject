@@ -51,7 +51,7 @@ const OptionsMobile = (props) => {
     return (
         <div className={`options-mobile-${areOptionsMobileFixed ? 'fixed' : 'normal'}`}>
             <filter-mobile>
-                <p onClick={handleOnClickFilter}>Filter</p>
+                <p onClick={handleOnClickFilter}>{languageMode === 'en' ? 'Filter' : 'Filtruj'}</p>
                 <Modal handleOnClose={handleOnCloseFilter} isOpen={isFilterOpen} shouldBeClosedOnOutsideClick={true}>
                     <FilterOption
                         starFilter={starFilter}
