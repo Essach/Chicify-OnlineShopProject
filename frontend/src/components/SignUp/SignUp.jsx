@@ -83,7 +83,7 @@ const SignUp = () => {
             return false
         } else if (userPhoneNumbers.find(phoneNum => phoneNum === emailOrPhoneNumberValue) !== undefined) {
             if (languageMode === 'en') setErrorText('*Phone number already in use');
-            else setErrorText('*Number telefonu jest już w użyciu');
+            else setErrorText('*Numer telefonu jest już w użyciu');
             setIsFormValidated(false);
             return false
         }
