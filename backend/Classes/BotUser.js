@@ -40,6 +40,7 @@ class BotUser {
         }
         ];
         this.userId = id;
+        this.orders = [];
     }
 
     sendMessage(recipientId, content) {

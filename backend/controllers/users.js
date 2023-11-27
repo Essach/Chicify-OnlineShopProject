@@ -4,6 +4,8 @@ const { productsData } = require('./products.js');
 const Product = require('../Classes/Product.js');
 const Review = require('../Classes/Review.js');
 
+const bcrypt = require('bcrypt');
+
 const { storage, firebaseConfig } = require('../firebase.js');
 const { ref, uploadBytes, getDownloadURL, deleteObject } = require("firebase/storage");
 const { v4 } = require('uuid');
@@ -11,24 +13,6 @@ const { initializeApp } = require("firebase/app");
 initializeApp(firebaseConfig);
 
 const usersData = [
-    new User(
-        1,
-        'User',
-        '123456789',
-        '',
-        '123',
-        [],
-        [],
-    ),
-    new User(
-        3,
-        'Essach',
-        '',
-        'mymail@gmail.com',
-        '***',
-        [],
-        [],
-    ),
     new BotUser("1", "Chicify Online Shop", "111111111", ""),
     new BotUser("2", "Test User", "123123123", ""),
 ]
@@ -78,11 +62,12 @@ const deleteImages = (imageFilePaths) => {
 
 }
 
-exports.postUserCreate = (request, response, next) => {
+exports.postUserCreate = async (request, response, next) => {
     try {
         const { username, phoneNumber, emailAddress, password } = request.body;
 
-        const newUser = new User(1, username, phoneNumber, emailAddress, password, [], []);
+        const hashedPassword = await bcrypt.hash(password, 10) 
+        const newUser = new User(1, username, phoneNumber, emailAddress, hashedPassword);
         usersData.push(newUser);
 
         response.status(200).json({
@@ -94,10 +79,29 @@ exports.postUserCreate = (request, response, next) => {
             message: 'Internal server error'
         })
     }
-
 }
 
-exports.postUserLogin = (request, response, next) => {
+const startingUsers = [{
+        accessLevel: 1,
+        username: 'User',
+        phoneNumber: '123456789',
+        emailAddress: '',
+        password: '123',
+        },
+    {
+        accessLevel: 3,
+        username: 'Essach',
+        phoneNumber: '',
+        email: 'mymail@gmail.com',
+        password: '***',
+    }]
+startingUsers.forEach(async (user) => {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const newUser = new User(user.accessLevel, user.username, user.phoneNumber, user.emailAddress, hashedPassword);
+    usersData.push(newUser);
+})
+
+exports.postUserLogin = async (request, response, next) => {
     try {
         const { loginType, login ,password } = request.body;
 
@@ -116,7 +120,8 @@ exports.postUserLogin = (request, response, next) => {
             return;
         }
 
-        const isPasswordCorrect = user.password === password;
+        // const isPasswordCorrect = user.password === password;
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             response.status(405).json({
                 message: 'Invalid login or password',
@@ -124,7 +129,6 @@ exports.postUserLogin = (request, response, next) => {
 
             return;
         }
-
 
         response.status(200).json({
             user,
@@ -410,6 +414,7 @@ exports.postReview = (request, response, next) => {
 exports.patchUserOrder = (request, response, next) => {
     try {
         const { products, price, userId, paymentId, productBySeller } = request.body;
+        console.log(products, price, userId, paymentId, productBySeller)
 
         const user = usersData.find(user => user.userId === userId);
 

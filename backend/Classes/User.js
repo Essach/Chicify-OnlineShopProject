@@ -1,13 +1,13 @@
 const { v4: uuidv4 } = require('uuid');
 class User {
-    constructor(accessLevel, username = '', phoneNumber = '', emailAddress = '', password, orders, favorites) {
+    constructor(accessLevel, username = '', phoneNumber = '', emailAddress = '', password) {
         this.accessLevel = accessLevel;
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
         this.password = password;
-        this.orders = orders;
-        this.favorites = favorites;
+        this.orders = [];
+        this.favorites = [];
         this.conversations = [{
             recipientId: "1",
             messages: [
