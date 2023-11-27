@@ -2,8 +2,9 @@
 
 cart-container {
     width: 60%;
-    height: 40rem;
-    margin: 1rem 0;
+    height: auto;
+    margin: 0.5rem 0;
+    gap: 0.5rem;
     display: flex;
     flex-direction: column;
 
@@ -15,7 +16,7 @@ cart-container {
 
     @media only screen and (max-width: 750px) {
         width: 100%;
-        margin: 1rem 0;
+        // margin: 1rem 0;
     }
 
     cart-title {
@@ -48,6 +49,11 @@ cart-container {
             column-gap: 0;
             row-gap: 1rem;
         }
+    }
+
+    info-text {
+        color: v.$white;
+        font-size: 1rem;
     }
 
 }

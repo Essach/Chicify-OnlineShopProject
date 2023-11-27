@@ -18,6 +18,7 @@ header {
         justify-content: space-between;
         align-items: center;
         width: 75%;
+        gap: 1rem;
 
         header-logo {
             display: flex;
@@ -63,6 +64,10 @@ header {
             gap: 1.5rem;
             align-items: center;
 
+            @media only screen and (max-width: 1100px) {
+                gap: 0.5rem
+            }
+
             language-select {
                 display: flex;
                 flex-direction: column;
@@ -74,6 +79,10 @@ header {
                 p {
                     color:v.$white;
                     font-size: 0.9rem;
+
+                    @media only screen and (max-width: 1100px) {
+                        display: none;
+                    }
                 }
 
                 .language-toggle {
@@ -168,8 +177,9 @@ header {
                         user-select: none;
 
                         @media only screen and (max-width: 1100px) {
-                            font-size: 1.2rem;
+                            font-size: 1rem;
                             margin: 0.5rem 1rem;
+                            white-space: nowrap;
                         }
                     }
                 }
