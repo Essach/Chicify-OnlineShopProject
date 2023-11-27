@@ -148,7 +148,7 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
                     </order-info>
                 </inner-box>
                 <product-price>
-                    {`US$ ${productInfo.price}`}
+                    {languageMode === 'en' ? `US$ ${productInfo.price}` : `${productInfo.price * 4} zł`}
                 </product-price>
             </order-content>
             <order-footer onClick={handleSeeMoreDetails}>
