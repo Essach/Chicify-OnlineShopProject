@@ -31,6 +31,7 @@ import Login from '../Login/Login';
 import { logoutUser } from '../../helpers/localStorage';
 import NotificationWindow from './subcomponents/Notification/NotificationWindow/NotificationWindow';
 import NotificationModal from './subcomponents/Notification/NotificationModal/NotificationModal';
+import { logoutAuth } from '../../helpers/firebaseAuth';
 
 
 const Navbar = () => {
@@ -244,6 +245,7 @@ const Navbar = () => {
             if (user) {
                 setUser(undefined);
                 logoutUser();
+                logoutAuth();
                 navigateFunction('home');
                 navigate(0);
                 clearInterval(userInterval.current)
