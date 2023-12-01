@@ -8,8 +8,8 @@ import Product from '../../../Product/Product';
 const SimilarProducts = () => {
     const { products, languageMode } = useContext(StoreContext);
     const productsComponents = products.slice(0,3).map(product => (
-        <Product key={product.ID}
-            id={product.ID}
+        <Product key={product.id}
+            id={product.id}
             name={product.name}
             price={product.price}
             delivery={product.delivery}

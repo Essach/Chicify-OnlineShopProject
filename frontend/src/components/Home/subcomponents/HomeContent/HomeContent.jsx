@@ -11,11 +11,11 @@ const HomeContent = () => {
 
     return (
         <home-content>
-            <ProductsPanel title={languageMode === 'en' ? 'Recommended for you' : 'Polecane dla Ciebie'} productsData={products.slice(0,5)} />
+            {products?.length > 0 ? <ProductsPanel title={languageMode === 'en' ? 'Recommended for you' : 'Polecane dla Ciebie'} productsData={products.slice(0, 5)} /> : null }
             <AdPanel imageUrl='http://localhost:8000/images/ad/1.jpg' title={languageMode === 'en' ? 'Mega sales | Up to 70%' : 'Mega wyprzedaż | Do 70%'} />
-            <ProductsPanel title={languageMode === 'en' ? 'New in our offer' : 'Nowe w naszej ofercie'} productsData={products.slice(5,10)} />
+            {products?.length > 0 ? <ProductsPanel title={languageMode === 'en' ? 'New in our offer' : 'Nowe w naszej ofercie'} productsData={products.slice(5,10)} /> : null }
             <AdPanel imageUrl='http://localhost:8000/images/ad/2.jpg' title={languageMode === 'en' ? 'Popular now' : 'Na czasie' } />
-            <ProductsPanel title={languageMode === 'en' ? 'Recommended for you' : 'Polecane dla Ciebie'} productsData={products.slice(10,15)} />
+            {products?.length > 0 ? <ProductsPanel title={languageMode === 'en' ? 'Recommended for you' : 'Polecane dla Ciebie'} productsData={products.slice(10,15)} /> : null }
             <AdPanel imageUrl='http://localhost:8000/images/ad/3.jpg' title={languageMode === 'en' ? 'Mega sales | Up to 70%' : 'Mega wyprzedaż | Do 70%'} />
         </home-content>
     );
