@@ -26,8 +26,8 @@ const Favorites = () => {
     const createFavoriteItems = async () => {
         const favorites = await fetchFavorites()
         const favoriteItems = favorites.slice().reverse().map(favorite => <ProductSquare
-            key={favorite.ID}
-            id={favorite.ID}
+            key={favorite.id}
+            id={favorite.id}
             name={favorite.name}
             price={favorite.price}
             delivery={favorite.delivery}

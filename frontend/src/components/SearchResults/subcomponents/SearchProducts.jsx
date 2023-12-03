@@ -50,8 +50,8 @@ const SearchProducts = (props) => {
         }
 
         const searchProductsItems = searchProducts.map(sp => <ProductSquare
-            key={sp.ID}
-            id={sp.ID}
+            key={sp.id}
+            id={sp.id}
             name={sp.name}
             price={sp.price}
             delivery={sp.delivery}

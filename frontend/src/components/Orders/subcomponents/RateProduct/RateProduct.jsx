@@ -8,6 +8,7 @@ import rateStarDark from '../../../../icons/rateStarDark.svg';
 import close from '../../../../icons/closeBlack.svg';
 import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../../../store/StoreProvider';
+import { ColorRing } from 'react-loader-spinner';
 
 const RateProduct = (props) => {
     const { isOpen,
@@ -16,7 +17,8 @@ const RateProduct = (props) => {
         rating,
         handleChangeRating,
         commentValue,
-        handleChangeCommentValue } = props;
+        handleChangeCommentValue,
+        loading} = props;
 
     const { languageMode } = useContext(StoreContext);
     
@@ -39,6 +41,16 @@ const RateProduct = (props) => {
     return (
     <Modal isOpen={isOpen} handleOnClose={closeRating} shouldBeClosedOnOutsideClick={false}>
         <rate-product>
+            {loading ? <loading-screen>
+                <ColorRing
+                    visible={true}
+                    height="200"
+                    width="200"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="blocks-wrapper"
+                    colors={['#153E47', '#4E8490', '#378EA1', '#388D9F', '#64C0D4']}
+                /></loading-screen> : null}
             <rp-top>
                 <rp-title>
                     <img src={rateStarTitle} alt='Rate the product'/>
@@ -80,6 +92,7 @@ RateProduct.propTypes = {
     handleChangeRating: PropTypes.func,
     commentValue: PropTypes.string,
     handleChangeCommentValue: PropTypes.func,
+    loading: PropTypes.bool,
 }
 
 export default RateProduct;

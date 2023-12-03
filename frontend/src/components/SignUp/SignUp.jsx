@@ -13,14 +13,16 @@ import request from '../../helpers/request';
 
 import { useNavigate } from 'react-router';
 import { StoreContext } from '../../store/StoreProvider';
+import { setAuth } from '../../helpers/firebaseAuth';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../firebase';
+import { ColorRing } from 'react-loader-spinner';
+import { updateUser } from '../../helpers/localStorage';
 
 const SignUp = () => {
     const navigate = useNavigate()
 
-    const { languageMode } = useContext(StoreContext);
-
-    const [userEmails, setUserEmails] = useState();
-    const [userPhoneNumbers, setUserPhoneNumbers] = useState();
+    const { languageMode, setUser, userInterval } = useContext(StoreContext);
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
     const [isFormValidated, setIsFormValidated] = useState(true);
@@ -31,6 +33,10 @@ const SignUp = () => {
     const [ passwordValue, setPasswordValue ] = useState('');
     const [ repeatPasswordValue, setRepeatPasswordValue ] = useState('');
     const [ agreementValue, setAgreementValue ] = useState(false)
+    
+    const [signUpImage, setSignUpImage] = useState();
+
+    const [loading, setLoading] = useState(false);
 
     const handleUsernameChange = (e) => setUsernameValue(e.target.value);
     const handleEmailOrPhoneNumberChange = (e) => setEmailOrPhoneNumberValue(e.target.value);
@@ -61,6 +67,11 @@ const SignUp = () => {
             else setErrorText('*Proszę podać adres email lub number telefonu');
             setIsFormValidated(false);
             return false
+        } else if (/@/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.indexOf('.') === -1) {
+            if (languageMode === 'en') setErrorText('*Please insert an email or phone number');
+            else setErrorText('*Proszę podać adres email lub number telefonu');
+            setIsFormValidated(false);
+            return false
         } else if (/^[0-9]*$/.test(emailOrPhoneNumberValue) && emailOrPhoneNumberValue.length !== 9) {
             if (languageMode === 'en') setErrorText('*Please insert an email or phone number');
             else setErrorText('*Proszę podać adres email lub number telefonu');
@@ -69,21 +80,6 @@ const SignUp = () => {
         } else if (repeatPasswordValue !== passwordValue) {
             if (languageMode === 'en') setErrorText("*Passwords don't match");
             else setErrorText("*Hasła się nie zgadzają");
-            setIsFormValidated(false);
-            return false
-        } else if (userEmails === undefined || userPhoneNumbers === undefined) {
-            if (languageMode === 'en') setErrorText('*Internal server error 2');
-            else setErrorText('*Wewnętrzny błąd serwera');
-            setIsFormValidated(false);
-            return false
-        } else if (userEmails.find(email => email === emailOrPhoneNumberValue) !== undefined) {
-            if (languageMode === 'en') setErrorText('*Email already in use');
-            else setErrorText('*Email jest już w użyciu');
-            setIsFormValidated(false);
-            return false
-        } else if (userPhoneNumbers.find(phoneNum => phoneNum === emailOrPhoneNumberValue) !== undefined) {
-            if (languageMode === 'en') setErrorText('*Phone number already in use');
-            else setErrorText('*Numer telefonu jest już w użyciu');
             setIsFormValidated(false);
             return false
         }
@@ -96,6 +92,7 @@ const SignUp = () => {
         const isFormValid = validateSignInForm();
         if (isFormValid) {
             setIsFormValidated(true);
+            setLoading(true);
 
             let createType;
             if (/@/.test(emailOrPhoneNumberValue)) {
@@ -121,6 +118,13 @@ const SignUp = () => {
             if (status === 200) {
                 setIsPasswordHidden(true);
                 setIsFormValidated(true);
+                setLoading(false);
+                updateUser(data.user);
+                userInterval.current = setInterval(() => {
+                    updateUserData(createType, emailOrPhoneNumberValue, passwordValue);
+                },10000) 
+                setUser(data.user);
+                setAuth(data.auth);
                 setErrorText('');
                 setUsernameValue('');
                 setEmailOrPhoneNumberValue('');
@@ -128,37 +132,55 @@ const SignUp = () => {
                 setRepeatPasswordValue('');
                 setAgreementValue('');
                 navigate('/home');
-                navigate(0);
                 window.scrollTo(0,0)
             } else {
                 setErrorText(data.message);
                 setIsFormValidated(false);
+                setLoading(false);
             }
 
         }
 
     }
 
-    const fetchUserInfo = async () => {
-        const { data, status } = await request.get('/users/all');
+    const updateUserData = async (loginType, emailOrPhoneNumberValue, passwordValue) => {
+        const { data, status } = await request.post(
+            '/users/login',
+            { loginType: loginType, login: emailOrPhoneNumberValue, password: passwordValue },
+        );
+
         if (status === 200) {
-            setUserEmails(data.userEmails);
-            setUserPhoneNumbers(data.userPhoneNumbers);
+            updateUser(data.user);
+            setUser(data.user);
         }
-    }
+    } 
 
     useEffect(() => {
-        fetchUserInfo();
-    })
+        const imageRef = ref(storage, `chicifyImages/login/signin.png`);
+        getDownloadURL(imageRef).then((url) => {
+            setSignUpImage(url);
+        })
+    },[])
 
     return (
         <sign-up-dialog>
+            {loading ? <loading-screen>
+                <ColorRing
+                    visible={true}
+                    height="200"
+                    width="200"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="blocks-wrapper"
+                    colors={['#153E47', '#4E8490', '#378EA1', '#388D9F', '#64C0D4']}
+                />
+            </loading-screen> : null}
             <title-and-close>
                 <p>{languageMode === 'en' ? 'Create a new account' : 'Utwórz nowe konto'}</p>
                 <img src={close} alt='close sign in form' onClick={handleClose}/>
             </title-and-close>
             <sign-up-image>
-                <img src='http://localhost:8000/images/Login/signin.png' alt='sign in image'/>
+                {signUpImage !== undefined && <img src={signUpImage} alt='sign in image' />}
             </sign-up-image>
             <sign-up-form>
                 <form-section>
@@ -224,7 +246,7 @@ const SignUp = () => {
                 </checkbox-agreement>
             </sign-up-form>
             <validation-message>{isFormValidated ? null : <p>{errorText}</p>}</validation-message>
-            <create-account-button onClick={handleCreateAccountButton}><p>{languageMode === 'en' ? 'Create a new account' : 'Utwórz nowe konto'}</p></create-account-button>
+            <create-account-button><p onClick={handleCreateAccountButton}>{languageMode === 'en' ? 'Create a new account' : 'Utwórz nowe konto'}</p></create-account-button>
         </sign-up-dialog>
     );
 }

@@ -1,17 +1,26 @@
-const Payment = require('../Classes/Payment.js')
+const { db } = require('../config/firebase.js');
+const { addDoc,
+    collection,
+    getDoc,
+    doc
+} = require('firebase/firestore');
 
-const paymentsData = [
-]
 
-exports.postPayment = (request, response, next) => {
+exports.postPayment = async (request, response, next) => {
     try {
         const { products, price, address, cardInfo } = request.body;
 
-        const newPayment = new Payment(paymentsData.length + 1, products, price, address, cardInfo);
-        paymentsData.push(newPayment);
+        const paymentsCollectionRef = collection(db, "payments");
+        const newPaymentRef = await addDoc(paymentsCollectionRef, {
+            products: products,
+            price: parseInt(price),
+            address: address,
+            cardInfo: cardInfo
+        })
+        const paymentData = await getDoc(newPaymentRef);
 
         response.status(200).json({
-            paymentId: newPayment.id,
+            paymentId: paymentData.id,
             message: 'Payment sent',
         })
 
@@ -24,15 +33,15 @@ exports.postPayment = (request, response, next) => {
     }
 }
 
-exports.getPaymentInfo = (request, response, next) => {
+exports.getPaymentInfo = async (request, response, next) => {
     try {
         const { id } = request.params;
-
-        const payment = paymentsData.find(item => item.id === parseInt(id));
         
+        const paymentRef = doc(db, "payments", id);
+        const paymentData = await getDoc(paymentRef);
+        const payment = { ...paymentData.data(), id: paymentData.id }
 
-
-        if (!payment) {
+        if (payment.cardInfo === undefined) {
             response.status(404).json({
                 message: `Couldn't find payment with given id`,
             });
@@ -54,8 +63,4 @@ exports.getPaymentInfo = (request, response, next) => {
             message: 'Code error',
         })
     }
-}
-
-const makeTransferFromAccount = function () {
-    return;
 }

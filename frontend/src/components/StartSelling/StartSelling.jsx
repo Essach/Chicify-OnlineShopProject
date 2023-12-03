@@ -313,7 +313,7 @@ const StartSelling = () => {
 
         if (isValid) {
             const { data, status } = await request.patch(`/users/seller`,
-                { id: user.userId, name: name, country: country, city: city, street: street, postal: postal, accountNumber: accountNumber });
+                { id: user.id, name: name, country: country, city: city, street: street, postal: postal, accountNumber: accountNumber });
 
             if (status === 200) {
                 updateUser(data.user);
@@ -330,6 +330,7 @@ const StartSelling = () => {
                 if (languageMode === 'en') setValidationMessage("You're already signed up for the seller program");
                 else setValidationMessage("Jesteś już zarejestrowany w programie dla sprzedawców");
             } else {
+                console.log(data, status)
                 setIsFormValidated(false);
                 if (languageMode === 'en') setValidationMessage('*Internal server error');
                 else setValidationMessage('*Wewnętrzny błąd serwera');

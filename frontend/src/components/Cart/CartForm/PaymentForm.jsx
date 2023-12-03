@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { StoreContext } from '../../../store/StoreProvider';
+import calendar from '../../../icons/calendarIcon.svg';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const PaymentForm = (props) => {
-    const { isVisible, cardHandler, expirationHandler, cvvHandler, postalHandler, creditValue, cvvValue, postalValue, goBackHandler} = props;
+    // eslint-disable-next-line react/prop-types
+    const { isVisible, cardHandler, expirationHandler, cvvHandler, postalHandler, creditValue, cvvValue, postalValue, goBackHandler, expirationDate} = props;
 
     const { languageMode } = useContext(StoreContext);
 
@@ -18,7 +23,15 @@ const PaymentForm = (props) => {
                 </form-label>
                 <form-label>
                     <p>{languageMode === 'en' ? 'EXPIRATION DATE' : 'TERMIN WAŻNOŚCI'}</p>
-                <input type='month' onChange={expirationHandler} className='month' />
+                    <label style={{position: 'relative', width: '10rem'}}>
+                        <DatePicker
+                            selected={expirationDate}
+                            onChange={expirationHandler}
+                            showMonthYearPicker
+                            className='custom-datepicker'
+                        />
+                        <img src={calendar} alt='calendar icon' style={{position: 'absolute', right: '5px', top: '2px', transform: 'scale(0.8)'}}/>
+                    </label>
                 </form-label>
                 <form-label>
                     <p>{languageMode === 'en' ? 'CVV NUMBER' : 'NUMER CVV'}</p>

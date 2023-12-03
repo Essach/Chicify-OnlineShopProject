@@ -41,7 +41,7 @@ const NotificationsConversation = (props) => {
                 <conversation-messages ref={messagesRef}>
                     {messages}
                 </conversation-messages>
-                <NewMessage recipientId={recipientId} userId={user.userId} />
+                <NewMessage recipientId={recipientId} userId={user.id} />
             </>}
         </conversation-section>
     );

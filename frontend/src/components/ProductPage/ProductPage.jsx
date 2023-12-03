@@ -36,7 +36,6 @@ const ProductPage = () => {
 
     const fetchData = async (id) => {
         const { data, status } = await request.get(`/products/${id}`);
-        console.log(data)
         if (status === 200) {
             const productInfo = data.product;
             productInfo.images = productInfo.images.map(image => image.url);

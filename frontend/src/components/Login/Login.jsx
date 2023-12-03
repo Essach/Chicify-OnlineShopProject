@@ -18,6 +18,8 @@ import Modal from '../Modal/Modal';
 import PropTypes from 'prop-types';
 
 import { updateUser } from '../../helpers/localStorage';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../firebase';
 
 
 const Login = ({handleOnClose, isModalOpen}) => {
@@ -32,6 +34,8 @@ const Login = ({handleOnClose, isModalOpen}) => {
 
     const [errorText, setErrorText] = useState('');
     const [isFormValidated, setIsFormValidated] = useState(true);
+
+    const [loginImg, setLoginImg] = useState();
 
     const resetStateOfInputs = () => {
         setIsPasswordHidden(true);
@@ -143,6 +147,13 @@ const Login = ({handleOnClose, isModalOpen}) => {
 
     },[isModalOpen])
 
+    useEffect(() => {
+        const imageRef = ref(storage, `chicifyImages/login/login.png`);
+        getDownloadURL(imageRef).then((url) => {
+            setLoginImg(url);
+        })
+    },[])
+
     return (
         <Modal handleOnClose={handleOnClose} isOpen={isModalOpen} shouldBeClosedOnOutsideClick={false} >
             <login-dialog>
@@ -151,7 +162,7 @@ const Login = ({handleOnClose, isModalOpen}) => {
                     <img src={close} alt='close login form' onClick={handleOnCloseModal}/>
                 </title-and-close>
                 <login-image>
-                    <img src='http://localhost:8000/images/Login/login.png' alt='login image'/>
+                    {loginImg !== undefined && <img src={loginImg} alt='login image' />}
                 </login-image>
                 <login-form>
                     <form-section>

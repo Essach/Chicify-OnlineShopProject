@@ -168,7 +168,7 @@ const NewProduct = ({ handleOnClose, isOpen}) => {
             formData.append('price', price);
             formData.append('quantity', quantity);
             formData.append('description', descriptionValue);
-            formData.append('sellerId', user.userId);
+            formData.append('sellerId', user.id);
 
             const { data, status } = await request.post('/users/productAdd', formData);
 

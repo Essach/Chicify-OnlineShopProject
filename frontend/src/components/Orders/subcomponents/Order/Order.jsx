@@ -35,6 +35,8 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
     
     const [ratingItem, setRatingItem] = useState()
 
+    const [loading, setLoading] = useState(false);
+
     let orderHeader;
     if (status === 'inDelivery') {
         orderHeader = (
@@ -69,8 +71,10 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
     const [isRatingOpen, setIsRatingOpen] = useState(false);
 
     const sendReview = async () => {
+        setLoading(true);
+
         const { status, data } = await request.post('/users/review', {
-            rating: rating, comment: commentValue, productId: id, userId: user.userId
+            rating: rating, comment: commentValue, productId: id, userId: user.id
         })
 
         if (status === 200) {
@@ -83,6 +87,8 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
         else {
             throw new Error(data.message);
         }
+
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -128,7 +134,8 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
                         rating={rating}
                         handleChangeRating={(value)=>setRating(value)}
                         commentValue={commentValue}
-                        handleChangeCommentValue={(value)=>setCommentValue(value)}
+                        handleChangeCommentValue={(value) => setCommentValue(value)}
+                        loading={loading}
                     />
                 </> :
                 null }
@@ -136,7 +143,7 @@ const Order = ({id, status, setOrderId, openOrderPage}) => {
             <order-content>
                 <inner-box>
                     <order-image>
-                        <img src={productInfo.images[0]} alt={productInfo.name}/>
+                        {productInfo.images[0] !== undefined && <img src={productInfo.images[0]} alt={productInfo.name} />}
                     </order-image>
                     <order-info>
                         <product-name>

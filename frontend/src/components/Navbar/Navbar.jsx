@@ -32,6 +32,8 @@ import { logoutUser } from '../../helpers/localStorage';
 import NotificationWindow from './subcomponents/Notification/NotificationWindow/NotificationWindow';
 import NotificationModal from './subcomponents/Notification/NotificationModal/NotificationModal';
 import { logoutAuth } from '../../helpers/firebaseAuth';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../firebase';
 
 
 const Navbar = () => {
@@ -55,6 +57,15 @@ const Navbar = () => {
     const handleCloseMenu = () => {
         setIsMobileMenuVisible(false);
     }
+
+    const [patternImg, setPatternImg] = useState();
+
+    useEffect(() => {
+        const imageRef = ref(storage, `chicifyImages/pattern.png`);
+        getDownloadURL(imageRef).then((url) => {
+            setPatternImg(url);
+        })
+    },[])
 
     // Navigate buttons
 
@@ -425,7 +436,9 @@ const Navbar = () => {
             <div className={isMobileMenuVisible ? 'show-mobile-menu' : 'hide-mobile-menu'}>
                 <menu-close-btn onClick={handleCloseMenu}><img src={closeIcon} alt='close menu' /></menu-close-btn>
                 <menu-buttons>{navButtonsMobile}</menu-buttons>
-                <div className='menu-pattern'></div>
+                {isMobileMenuVisible ? <div className='menu-pattern'>
+                    {patternImg !== undefined ? <img src={patternImg} alt='pattern' /> : <div className='white-block' />}
+                </div> : null}
             </div>
             <nav ref={navRef} className={isNavFixed ? 'nav-fixed': null}>
                 <nav-container>

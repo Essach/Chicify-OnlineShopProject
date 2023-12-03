@@ -12,7 +12,7 @@ const NewMessage = (props) => {
 
     const [isShiftClicked, setIsShiftClicked] = useState(false);
 
-    const { setUser, languageMode } = useContext(StoreContext);
+    const { setUser, languageMode, user } = useContext(StoreContext);
 
     const handleChangeContent = e => {
         if (e.target.value.length < 200) {
@@ -32,7 +32,23 @@ const NewMessage = (props) => {
     }
 
     const handleSendMessage = async () => {
-        const { data, status } = await request.patch('/users/message', { senderId: userId, recipientId: recipientId, content: content });
+        const contentCopy = content;
+
+        const userConversationsTemporary = user.conversations.map((item) => {
+            if (item.recipientId === recipientId) {
+                item.messages.push({
+                    type: 'sent',
+                    content: content,
+                })
+            }
+            return item
+        });
+        setUser({...user, conversations: userConversationsTemporary})
+        setIsShiftClicked(false);
+        setContent('');
+
+        const { data, status } = await request.patch('/users/message', { senderId: userId, recipientId: recipientId, content: contentCopy });
+
         if (status === 200) {
             setIsShiftClicked(false);
             setContent('');

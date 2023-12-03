@@ -16,6 +16,9 @@ import AddressForm from './AddressForm';
 import request from '../../../helpers/request';
 
 import { updateUser } from '../../../helpers/localStorage';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../../firebase';
+import { ColorRing } from 'react-loader-spinner';
 
 const CartForm = (props) => {
     const { price, delivery } = props;
@@ -24,6 +27,8 @@ const CartForm = (props) => {
 
     const { user, setUser, languageMode } = useContext(StoreContext);
 
+    const [gpayImg, setGpayImg] = useState();
+    const [cardImg, setCardImg] = useState();
 
     const [countryValue, setCountryValue] = useState('');
     const [nameValue, setNameValue] = useState('')
@@ -54,6 +59,8 @@ const CartForm = (props) => {
 
     const [wasPurchaseMade, setWasPurchaseMade] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
     const handleChangeCountry = e => setCountryValue(e.target.value);
     const handleChangeName = e => setNameValue(e.target.value);
     const handleChangeAddress = e => setAddressValue(e.target.value);
@@ -64,7 +71,7 @@ const CartForm = (props) => {
             setCreditCardNum(e.target.value);
         }
     }
-    const handleChangeExpirationDate = e => setExpirationDate(e.target.value);
+    const handleChangeExpirationDate = e => setExpirationDate(e);
     const handleChangeCvvNumber = e => {
         if (/^[0-9]*$/.test(e.target.value) || e.target.value.at(-1) === undefined) {
             setCvvNumber(e.target.value);
@@ -131,8 +138,8 @@ const CartForm = (props) => {
             setValidationMessage('*Please fill in all the fields');
             setIsValidationMessageVisible(true);
             return false
-        } else if ((parseInt(expirationDate.split('-')[0]) < date.getFullYear()) ||
-            (parseInt(expirationDate.split('-')[0]) === date.getFullYear() && parseInt(expirationDate.split('-')[1]) < date.getMonth() + 1)) {
+        } else if ((expirationDate.getFullYear() < date.getFullYear()) ||
+            (expirationDate.getFullYear() === date.getFullYear() && expirationDate.getMonth() < date.getMonth())) {
             setValidationMessage('*Please enter valid data');
             setIsValidationMessageVisible(true);
             return false
@@ -147,7 +154,8 @@ const CartForm = (props) => {
     const handlePayBtn = async () => {
         const isValidated = validatePaymentForm();
         if (isValidated) {
-            
+            setLoading(true);
+
             const { data: paymentData, status: paymentStatus } = await request.post('/payments', {
                 products: state.cart,
                 price: price + deliveryPrice,
@@ -166,7 +174,7 @@ const CartForm = (props) => {
                 const products = state.cart.map(item => ({ ...item, status: 'delivered' }))
                 let userId;
                 if (!user) userId = '1';
-                else userId = user.userId
+                else userId = user.id
 
                 const { data: userData, status: userStatus } = await request.patch('/users/orders', { products: products, price: price + deliveryPrice, userId: userId, paymentId: paymentData.paymentId, productBySeller: productsWithSellerIds });
                 if (userStatus === 200) {
@@ -178,6 +186,7 @@ const CartForm = (props) => {
                     throw new Error(userData.message);
                 }
 
+                setLoading(false);
                 setValidationMessage('');
                 setIsValidationMessageVisible(false);
                 dispatch({
@@ -187,6 +196,7 @@ const CartForm = (props) => {
                 setWasPurchaseMade(true);
                 setTimeout(() => setWasPurchaseMade(false), 2000);
             } else {
+                setLoading(false);
                 throw new Error(paymentData.message)
             }
 
@@ -214,10 +224,33 @@ const CartForm = (props) => {
             if (languageMode === 'en') setFormMessage('Log in to track your order or');
             else setFormMessage('Zaloguj się, aby śledzić swoje zamówienie lub');
         }
-    },[user, state, wasPurchaseMade, languageMode])
+    }, [user, state, wasPurchaseMade, languageMode])
+    
+    useEffect(() => {
+        const imageRefGpay = ref(storage, `chicifyImages/payment/gpay.png`);
+        getDownloadURL(imageRefGpay).then((url) => {
+            setGpayImg(url);
+        })
+        const imageRefCard = ref(storage, `chicifyImages/payment/creditcard.png`);
+        getDownloadURL(imageRefCard).then((url) => {
+            setCardImg(url);
+        })
+    },[])
+
 
     return (
         <cart-form-component>
+            {loading ? <loading-screen>
+                <ColorRing
+                    visible={true}
+                    height="200"
+                    width="200"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="blocks-wrapper"
+                    colors={['#153E47', '#4E8490', '#378EA1', '#388D9F', '#64C0D4']}
+                />
+            </loading-screen> : null}
             {isFormValidatedOuter && isFormValidatedUser ? 
             <div className='cart-box'>
                 <cart-form-options>
@@ -226,11 +259,11 @@ const CartForm = (props) => {
                             {languageMode === 'en' ? 'Payment method' : 'Opcja płatności'}
                         </cart-form-title>
                         <div className={paymentMethod === 'credit' ? 'option-active' : 'option-inactive'} onClick={handleClickCreditPayment}>
-                            <img src={'http://localhost:8000/images/paymentImages/creditcard.png'} alt='visa or mastercard credit card' />
+                            {cardImg !== undefined && <img src={cardImg} alt='visa or mastercard credit card' />}
                             <p>{languageMode === 'en' ? 'Credit card' : 'Karta kredytowa'}</p>
                         </div>
                         <div className={paymentMethod === 'gpay' ? 'option-active' : 'option-inactive'} onClick={handleClickGpayPayment}>
-                            <img src={'http://localhost:8000/images/paymentImages/gpay.png'} alt='visa or mastercard credit card' />
+                            {gpayImg !== undefined && <img src={gpayImg} alt='visa or mastercard credit card' />}
                             <p>Google pay</p>
                         </div>
                     </cart-form-container>
@@ -250,6 +283,7 @@ const CartForm = (props) => {
                         </div> : <p>{languageMode === 'en' ? 'Express delivery not possible for selected products' : 'Wybrane produkty nie obsługują dostawy express'}</p> }
                     </cart-form-container>
                 </cart-form-options>
+                {isValidationMessageVisible ? <validation-message>{validationMessage}</validation-message> : null}
                 {isAddressFormValidated ?
                     <PaymentForm
                         isVisible={areFormsVisiblePayment && areFormsVisibleDelivery}
@@ -261,7 +295,7 @@ const CartForm = (props) => {
                         cvvValue={cvvNumber}
                         postalValue={postalCode}
                         goBackHandler={handleGoBackBtn}
-                        
+                        expirationDate={expirationDate}
                     /> :
                     <AddressForm
                         isVisible={areFormsVisiblePayment && areFormsVisibleDelivery}
@@ -275,7 +309,6 @@ const CartForm = (props) => {
                         city={cityValue}
                     />
                     }
-                    {isValidationMessageVisible ? <validation-message>{validationMessage}</validation-message> : null}
                     {(areFormsVisiblePayment && areFormsVisibleDelivery) ? <>
                             <price-and-button>
                                 <price-info>

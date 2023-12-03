@@ -331,8 +331,18 @@ menu-buttons {
             flex-grow: 1;
             margin-top: 30px;
             border-top: 4px solid v.$white;
-            background-image: url('http://localhost:8000/images/pattern.png');
-            background-repeat: repeat;
+            overflow: hidden;
+
+            img {
+                transform: scale(1.3);
+                object-fit: contain;
+            }
+
+            .white-block {
+                height: 100%;
+                width: 100%;
+                background-color: v.$white;
+            }
         }
     }
 

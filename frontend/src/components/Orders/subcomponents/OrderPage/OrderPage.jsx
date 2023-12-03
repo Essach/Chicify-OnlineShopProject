@@ -64,7 +64,7 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
     let q;
     let allQ = 0;
     for (let i = 0; i < details.products.length; i++){
-        if (details.products[i].id === productInfo.ID) {
+        if (details.products[i].id === productInfo.id) {
             q = details.products[i].quantity
         }
         allQ = allQ + details.products[i].quantity
@@ -116,7 +116,7 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
                 </box-title>
                 <product-item onClick={handleClickProductItem}>
                     <order-image>
-                        <img src={productInfo.images[0]} alt={`${productInfo.name} image`} />
+                        {productInfo.images[0] !== undefined && <img src={productInfo.images[0]} alt={`${productInfo.name} image`} /> }
                     </order-image>
                     <order-info>
                         <product-name>
@@ -154,7 +154,7 @@ const OrderPage = ({ productId ,paymentId, closeOrderPage }) => {
 
 OrderPage.propTypes = {
     productId: PropTypes.string,
-    paymentId: PropTypes.number,
+    paymentId: PropTypes.string,
     closeOrderPage: PropTypes.func,
 }
 

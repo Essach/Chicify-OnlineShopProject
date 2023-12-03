@@ -177,8 +177,9 @@ const EditProduct = (props) => {
             formData.append('price', price);
             formData.append('quantity', quantity);
             formData.append('description', descriptionValue);
-            formData.append('sellerId', user.userId);
+            formData.append('sellerId', user.id);
             formData.append('productId', id);
+            console.log(id)
 
             const { data, status } = await request.post('/users/productEdit', formData);
 
@@ -209,7 +210,7 @@ const EditProduct = (props) => {
             for (let i = 0; i < oldFilePaths.length; i++){
                 formData.append(`imageFilePath${i}`, oldFilePaths[i]);
             }
-            formData.append('sellerId', user.userId);
+            formData.append('sellerId', user.id);
             formData.append('productId', id);
 
             const { data, status } = await request.post('/users/productDelete', formData);

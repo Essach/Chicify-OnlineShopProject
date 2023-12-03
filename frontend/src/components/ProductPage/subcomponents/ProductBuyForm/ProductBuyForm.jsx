@@ -41,6 +41,8 @@ const ProductBuyForm = (props) => {
 
     const [sellerName, setSellerName] = useState('');
 
+    const [canFavorite, setCanFavorite] = useState(true);
+
     const handleIncreaseButton = () => {
         if (currentQuantity < quantity) {
             setCurrentQuantity(prev => prev + 1)
@@ -104,30 +106,42 @@ const ProductBuyForm = (props) => {
     }
 
     const handleAddToFavorites = async () => {
-        if (user !== undefined && user !== null) {
-            const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'add' });
-            if (status === 200) {
-                setUser(data.user);
-                updateUser(data.user);
+        if (canFavorite) {
+            setCanFavorite(false);
+            if (user !== undefined && user !== null) {
+                const { status, data } = await request.patch('/users/favorites', { userId: user.id, productId: id, action: 'add' });
+                if (status === 200) {
+                    setUser(data.user);
+                    updateUser(data.user);
+                } else {
+                    throw new Error(data.message)
+                }
             } else {
-                throw new Error(data.message)
+                setIsModalOpenLogin(true);
             }
-        } else {
-            setIsModalOpenLogin(true);
+            setTimeout(() => {
+                setCanFavorite(true);
+            }, 2000)
         }
     }
 
     const handleRemoveFromFavorites = async () => {
-        if (user !== undefined && user !== null) {
-        const { status, data } = await request.patch('/users/favorites', { userId: user.userId, productId: id, action: 'remove' });
-            if (status === 200) {
-                setUser(data.user);
-                updateUser(data.user);
+        if (canFavorite) {
+            setCanFavorite(false);
+            if (user !== undefined && user !== null) {
+                const { status, data } = await request.patch('/users/favorites', { userId: user.id, productId: id, action: 'remove' });
+                if (status === 200) {
+                    setUser(data.user);
+                    updateUser(data.user);
+                } else {
+                    throw new Error(data.message)
+                }
             } else {
-                throw new Error(data.message)
+                setIsModalOpenLogin(true);
             }
-        } else {
-            setIsModalOpenLogin(true);
+            setTimeout(() => {
+                setCanFavorite(true);
+            }, 2000)
         }
     }
 
